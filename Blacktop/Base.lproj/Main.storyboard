@@ -129,6 +129,9 @@
                                                 <state key="normal" title="Log In">
                                                     <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="pressedLogInButton:" destination="kDn-J3-dDc" eventType="touchUpInside" id="Xpr-Qp-xeq"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yfW-Ju-eKw">
                                                 <rect key="frame" x="99.666666666666686" y="210" width="96" height="29"/>
@@ -173,6 +176,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nT1-f5-dT7"/>
                     </view>
+                    <connections>
+                        <outlet property="userEmail" destination="6pE-gt-LPK" id="xmj-EW-8yw"/>
+                        <outlet property="userPassword" destination="S0D-VD-PBd" id="bll-f0-gJ9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hz4-Wy-Taf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -240,6 +247,9 @@
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="L9n-ru-pLZ">
                                                         <rect key="frame" x="167.66666666666669" y="0.0" width="51" height="31"/>
+                                                        <connections>
+                                                            <action selector="switchButton:" destination="ERl-Qh-00b" eventType="valueChanged" id="WcQ-kW-SaD"/>
+                                                        </connections>
                                                     </switch>
                                                 </subviews>
                                             </stackView>
@@ -254,6 +264,9 @@
                                                 <state key="normal" title="Sign Up">
                                                     <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="pressedSignUpButton:" destination="ERl-Qh-00b" eventType="touchUpInside" id="Llw-dC-8t6"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -277,6 +290,9 @@
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <segue destination="kDn-J3-dDc" kind="show" id="8yx-6i-kb4"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -288,6 +304,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WCS-Pn-s6e"/>
                     </view>
+                    <connections>
+                        <outlet property="userEmail" destination="9xJ-Ve-l6m" id="eKv-Lv-HMU"/>
+                        <outlet property="userName" destination="oxd-Eb-v6d" id="0d4-BB-llu"/>
+                        <outlet property="userPassword" destination="63l-7Y-WSQ" id="sq5-vW-XqT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Dg-vt-gvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -300,5 +321,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="KPN-bx-P6m"/>
+        <segue reference="8yx-6i-kb4"/>
     </inferredMetricsTieBreakers>
 </document>

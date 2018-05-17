@@ -7,29 +7,40 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpVC: UIViewController {
 
+    @IBOutlet weak var userName: CustomTextField!
+    @IBOutlet weak var userEmail: CustomTextField!
+    @IBOutlet weak var userPassword: CustomTextField!
+    
+    var userRole = "user"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func switchButton(_ sender: UISwitch) {
+        if (sender.isOn == false) {
+            userRole = "user"
+        } else {
+            userRole = "cafe"
+        }
     }
-    */
-
+    
+    @IBAction func pressedSignUpButton(_ sender: Any) {
+        if userName.text != nil && userEmail.text != nil && userPassword.text != nil {
+            AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
+                if success {
+                    AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
+                        print("Successfully registered user")
+                    })
+                } else {
+                    print(String(describing: error?.localizedDescription))
+                }
+            }
+        }
+    }
 }
