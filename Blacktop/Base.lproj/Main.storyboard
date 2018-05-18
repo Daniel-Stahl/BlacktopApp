@@ -116,7 +116,7 @@
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EEn-W1-roV" customClass="CustomButton" customModule="Blacktop" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="140" width="295" height="50"/>
@@ -179,11 +179,79 @@
                     <connections>
                         <outlet property="userEmail" destination="6pE-gt-LPK" id="xmj-EW-8yw"/>
                         <outlet property="userPassword" destination="S0D-VD-PBd" id="bll-f0-gJ9"/>
+                        <segue destination="nyF-l5-JFo" kind="show" identifier="mapVC" id="OMD-hZ-LNF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hz4-Wy-Taf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="994" y="-194"/>
+        </scene>
+        <!--MapVC-->
+        <scene sceneID="Ohu-pz-kBa">
+            <objects>
+                <viewController storyboardIdentifier="mapVC" id="nyF-l5-JFo" customClass="MapVC" customModule="Blacktop" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="P3t-Ex-5kF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gF1-Jy-XXW">
+                                <rect key="frame" x="0.0" y="732" width="375" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="guX-AD-3uu"/>
+                                    <constraint firstAttribute="width" constant="375" id="sqg-pC-NQr"/>
+                                </constraints>
+                                <items>
+                                    <tabBarItem title="Nearby" id="r6b-vY-TuJ"/>
+                                    <tabBarItem systemItem="favorites" id="vtP-Qg-8lw"/>
+                                    <tabBarItem title="Profile" id="lYp-UV-dke"/>
+                                </items>
+                            </tabBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fgs-Ew-YDC">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="732"/>
+                            </mapView>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aF1-IF-Ifv">
+                                <rect key="frame" x="0.0" y="44" width="375" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="6Jr-0k-R1N"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qUq-7b-xLd">
+                                <rect key="frame" x="302" y="676" width="53" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Center">
+                                    <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="centerUserLocationButton:" destination="nyF-l5-JFo" eventType="touchUpInside" id="ZNO-1E-MiY"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="aF1-IF-Ifv" firstAttribute="top" secondItem="guO-L7-urx" secondAttribute="top" id="4c7-FQ-ycs"/>
+                            <constraint firstItem="Fgs-Ew-YDC" firstAttribute="top" secondItem="P3t-Ex-5kF" secondAttribute="top" id="93H-e3-Fgd"/>
+                            <constraint firstItem="aF1-IF-Ifv" firstAttribute="trailing" secondItem="guO-L7-urx" secondAttribute="trailing" id="Eag-Ai-mFL"/>
+                            <constraint firstItem="Fgs-Ew-YDC" firstAttribute="trailing" secondItem="guO-L7-urx" secondAttribute="trailing" id="VYU-t4-chZ"/>
+                            <constraint firstItem="gF1-Jy-XXW" firstAttribute="leading" secondItem="guO-L7-urx" secondAttribute="leading" id="Vgs-yI-aif"/>
+                            <constraint firstAttribute="bottom" secondItem="gF1-Jy-XXW" secondAttribute="bottom" id="WpI-iR-KzN"/>
+                            <constraint firstItem="gF1-Jy-XXW" firstAttribute="trailing" secondItem="guO-L7-urx" secondAttribute="trailing" id="cdr-Sr-2Lu"/>
+                            <constraint firstItem="gF1-Jy-XXW" firstAttribute="top" secondItem="qUq-7b-xLd" secondAttribute="bottom" constant="20" id="eTl-ou-RZc"/>
+                            <constraint firstItem="Fgs-Ew-YDC" firstAttribute="leading" secondItem="guO-L7-urx" secondAttribute="leading" id="p5H-TL-iU8"/>
+                            <constraint firstItem="gF1-Jy-XXW" firstAttribute="top" secondItem="Fgs-Ew-YDC" secondAttribute="bottom" id="viv-uD-kup"/>
+                            <constraint firstItem="aF1-IF-Ifv" firstAttribute="leading" secondItem="guO-L7-urx" secondAttribute="leading" id="vkf-OI-jYX"/>
+                            <constraint firstItem="guO-L7-urx" firstAttribute="trailing" secondItem="qUq-7b-xLd" secondAttribute="trailing" constant="20" id="yGg-jR-fAJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="guO-L7-urx"/>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="Fgs-Ew-YDC" id="m7x-D6-5oq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZMD-4n-W8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1972" y="-194"/>
         </scene>
         <!--Sign UpVC-->
         <scene sceneID="s3m-Qr-ldo">
@@ -234,7 +302,7 @@
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="20"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                             </textField>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="WuO-Az-LJn">
                                                 <rect key="frame" x="39.666666666666671" y="209.99999999999997" width="216.66666666666663" height="31"/>
@@ -308,6 +376,7 @@
                         <outlet property="userEmail" destination="9xJ-Ve-l6m" id="eKv-Lv-HMU"/>
                         <outlet property="userName" destination="oxd-Eb-v6d" id="0d4-BB-llu"/>
                         <outlet property="userPassword" destination="63l-7Y-WSQ" id="sq5-vW-XqT"/>
+                        <segue destination="nyF-l5-JFo" kind="show" identifier="mapVC" id="fMD-yr-ChU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Dg-vt-gvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -321,6 +390,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="KPN-bx-P6m"/>
+        <segue reference="fMD-yr-ChU"/>
         <segue reference="8yx-6i-kb4"/>
     </inferredMetricsTieBreakers>
 </document>

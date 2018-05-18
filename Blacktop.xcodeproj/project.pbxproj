@@ -21,6 +21,7 @@
 		432FF76920ACE4ED00FC2F8B /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76820ACE4ED00FC2F8B /* DataService.swift */; };
 		432FF76B20ACE9D900FC2F8B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76A20ACE9D900FC2F8B /* AuthService.swift */; };
 		432FF76D20AE246A00FC2F8B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */; };
+		432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76E20AF5F9400FC2F8B /* MapVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		432FF76820ACE4ED00FC2F8B /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		432FF76A20ACE9D900FC2F8B /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		432FF76E20AF5F9400FC2F8B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blacktop.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,8 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				432FF76720ACE4DC00FC2F8B /* Services */,
-				432FF75E20ACD31B00FC2F8B /* Controllers */,
 				432FF75B20ACD15500FC2F8B /* Views */,
+				432FF75E20ACD31B00FC2F8B /* Controllers */,
 				432FF74720ACACB800FC2F8B /* AppDelegate.swift */,
 				432FF74B20ACACB800FC2F8B /* Main.storyboard */,
 				432FF74E20ACACB900FC2F8B /* Assets.xcassets */,
@@ -106,6 +108,7 @@
 				432FF74920ACACB800FC2F8B /* WelcomeVC.swift */,
 				432FF75F20ACD40400FC2F8B /* LogInVC.swift */,
 				432FF76520ACDF4C00FC2F8B /* SignUpVC.swift */,
+				432FF76E20AF5F9400FC2F8B /* MapVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,
 				432FF76B20ACE9D900FC2F8B /* AuthService.swift in Sources */,
 				432FF76920ACE4ED00FC2F8B /* DataService.swift in Sources */,
+				432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */,
 				432FF76020ACD40400FC2F8B /* LogInVC.swift in Sources */,
 				432FF76420ACD90900FC2F8B /* CustomView.swift in Sources */,
 				432FF75D20ACD18D00FC2F8B /* CustomButton.swift in Sources */,

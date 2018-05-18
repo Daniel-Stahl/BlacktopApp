@@ -22,7 +22,7 @@ class LogInVC: UIViewController {
         if userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.loginUser(email: userEmail.text!, password: userPassword.text!) { (success, error) in
                 if success {
-                    print("Log in user successful")
+                    self.performSegue(withIdentifier: "mapVC", sender: nil)
                 } else {
                     print(String(describing: error?.localizedDescription))
                 }
