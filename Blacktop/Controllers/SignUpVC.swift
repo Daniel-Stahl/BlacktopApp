@@ -35,7 +35,7 @@ class SignUpVC: UIViewController {
             AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        self.performSegue(withIdentifier: "mapVC", sender: nil)
+                        self.dismiss(animated: true, completion: nil)
                     })
                 } else {
                     print(String(describing: error?.localizedDescription))
