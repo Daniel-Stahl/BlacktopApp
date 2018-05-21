@@ -23,6 +23,7 @@
 		432FF76D20AE246A00FC2F8B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */; };
 		432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76E20AF5F9400FC2F8B /* MapVC.swift */; };
 		432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77020AF8E2000FC2F8B /* ProfileVC.swift */; };
+		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		432FF76E20AF5F9400FC2F8B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		432FF77020AF8E2000FC2F8B /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeProfileVC.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blacktop.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -112,6 +114,7 @@
 				432FF76520ACDF4C00FC2F8B /* SignUpVC.swift */,
 				432FF76E20AF5F9400FC2F8B /* MapVC.swift */,
 				432FF77020AF8E2000FC2F8B /* ProfileVC.swift */,
+				432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */,
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
 				432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,

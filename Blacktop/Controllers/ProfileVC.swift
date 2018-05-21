@@ -11,11 +11,38 @@ import Firebase
 
 class ProfileVC: UIViewController {
 
+    @IBOutlet weak var childVC: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DataService.instance.REF_USERS.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+            let data = Snapshot.value as! [String: Any]
+            let userRole = data["role"] as! String
+            
+            if userRole == "cafe" {
+                self.childVC.isHidden = false
+            } else {
+                self.childVC.isHidden = true
+            }
+        }
+    }
+    
+//    let userDict = snapshot.value as! [String: Any]
+//    let favFood = userDict["fav_food"] as! String
+//    let userRole = userDict["user_role"] as! String
+//    print("  \(favFood)  \(userRole")
+//
+//    if userRole == "admin" {
+//    //display admin viewController
+//    } else {
+//    //display normal user viewController
+//    }
 
     @IBAction func pressedExitButton(_ sender: Any) {
         let logoutPopup = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)

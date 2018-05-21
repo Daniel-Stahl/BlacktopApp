@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         if Auth.auth().currentUser == nil {
-            let storybpard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let welcomeVC = storybpard.instantiateViewController(withIdentifier: "WelcomeVC")
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let welcomeVC = storyboard.instantiateViewController(withIdentifier: "WelcomeVC")
             window?.makeKeyAndVisible()
             window?.rootViewController?.present(welcomeVC, animated: true, completion: nil)
         }
