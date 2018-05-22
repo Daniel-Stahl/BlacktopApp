@@ -11,21 +11,16 @@ import Firebase
 
 class CafeProfileVC: UIViewController {
 
-//    let toolBar = UIToolbar()
+    @IBOutlet weak var tableView: UITableView!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
 
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
-//
-//        toolBar.setItems([doneButton], animated: false)
-//        toolBar.sizeToFit()
     }
-    
-//    @objc func doneClicked() {
-//        view.endEditing(true)
-//    }
-
 
     @IBAction func pressedLogoutButton(_ sender: Any) {
         let logoutPopup = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
@@ -42,5 +37,27 @@ class CafeProfileVC: UIViewController {
         logoutPopup.addAction(logoutAction)
         present(logoutPopup, animated: true, completion: nil)
     }
-    
 }
+
+extension CafeProfileVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 15
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? Cell else { return UITableViewCell() }
+        return cell
+    }
+}
+
+
+
+
+
+
+
+

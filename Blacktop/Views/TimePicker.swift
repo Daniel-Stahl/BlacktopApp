@@ -47,6 +47,4 @@ class TimePicker: UITextField, UITextFieldDelegate {
     @objc func doneClicked() {
             self.endEditing(true)
     }
-    
-
 }
