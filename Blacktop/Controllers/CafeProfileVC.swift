@@ -11,11 +11,20 @@ import Firebase
 
 class CafeProfileVC: UIViewController {
 
+//    let toolBar = UIToolbar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+//
+//        toolBar.setItems([doneButton], animated: false)
+//        toolBar.sizeToFit()
     }
+    
+//    @objc func doneClicked() {
+//        view.endEditing(true)
+//    }
 
 
     @IBAction func pressedLogoutButton(_ sender: Any) {

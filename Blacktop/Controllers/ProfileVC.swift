@@ -32,17 +32,6 @@ class ProfileVC: UIViewController {
             }
         }
     }
-    
-//    let userDict = snapshot.value as! [String: Any]
-//    let favFood = userDict["fav_food"] as! String
-//    let userRole = userDict["user_role"] as! String
-//    print("  \(favFood)  \(userRole")
-//
-//    if userRole == "admin" {
-//    //display admin viewController
-//    } else {
-//    //display normal user viewController
-//    }
 
     @IBAction func pressedExitButton(_ sender: Any) {
         let logoutPopup = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
@@ -59,6 +48,4 @@ class ProfileVC: UIViewController {
         logoutPopup.addAction(logoutAction)
         present(logoutPopup, animated: true, completion: nil)
     }
-    
-
 }

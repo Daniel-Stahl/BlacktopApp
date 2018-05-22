@@ -24,6 +24,8 @@
 		432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76E20AF5F9400FC2F8B /* MapVC.swift */; };
 		432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77020AF8E2000FC2F8B /* ProfileVC.swift */; };
 		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
+		432FF77620B3818000FC2F8B /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77520B3818000FC2F8B /* Cafe.swift */; };
+		432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77720B389DC00FC2F8B /* TimePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		432FF76E20AF5F9400FC2F8B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		432FF77020AF8E2000FC2F8B /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeProfileVC.swift; sourceTree = "<group>"; };
+		432FF77520B3818000FC2F8B /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
+		432FF77720B389DC00FC2F8B /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blacktop.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +88,7 @@
 		432FF74620ACACB800FC2F8B /* Blacktop */ = {
 			isa = PBXGroup;
 			children = (
+				432FF77420B3816300FC2F8B /* Models */,
 				432FF76720ACE4DC00FC2F8B /* Services */,
 				432FF75B20ACD15500FC2F8B /* Views */,
 				432FF75E20ACD31B00FC2F8B /* Controllers */,
@@ -102,6 +107,7 @@
 				432FF75C20ACD18D00FC2F8B /* CustomButton.swift */,
 				432FF76120ACD7D400FC2F8B /* CustomTextField.swift */,
 				432FF76320ACD90900FC2F8B /* CustomView.swift */,
+				432FF77720B389DC00FC2F8B /* TimePicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -126,6 +132,14 @@
 				432FF76A20ACE9D900FC2F8B /* AuthService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		432FF77420B3816300FC2F8B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				432FF77520B3818000FC2F8B /* Cafe.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		8D85275CB44B4643342A0E38 /* Frameworks */ = {
@@ -271,6 +285,7 @@
 			files = (
 				432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */,
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
+				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
 				432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,
 				432FF76B20ACE9D900FC2F8B /* AuthService.swift in Sources */,
@@ -281,6 +296,7 @@
 				432FF75D20ACD18D00FC2F8B /* CustomButton.swift in Sources */,
 				432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */,
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,
+				432FF77620B3818000FC2F8B /* Cafe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
