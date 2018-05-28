@@ -34,4 +34,12 @@ class DataService {
     func createUser(uid: String, userData: Dictionary<String, Any>) {
         REF_USERS.child(uid).updateChildValues(userData)
     }
+    
+    func saveCafeInfo(name: String, address: String, city: String, state: String, zipcode: Int, phone: Int, website: String, completionHandler: @escaping (_ status: Bool, _ error: Error?) -> ()) {
+        REF_USERS.child((Auth.auth().currentUser?.uid)!).updateChildValues(["name": name, "address": address, "city": city, "state": state, "zipcode": zipcode, "phone": phone, "website": website])
+    }
+    
+    func saveCafeHours(monFrom: String, monTo: String, tueFrom: String, tueTo: String) {
+        REF_USERS.child((Auth.auth().currentUser?.uid)!).child("hours").updateChildValues(["mondayFrom": monFrom, "mondayTo": monTo, "tuesdayFrom": tueFrom, "tuesdayTo": tueTo])
+    }
 }
