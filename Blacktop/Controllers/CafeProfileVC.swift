@@ -41,6 +41,7 @@ class CafeProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        showcafeInfo()
     }
 
     @IBAction func pressedLogoutButton(_ sender: Any) {
@@ -63,22 +64,58 @@ class CafeProfileVC: UIViewController {
         changeImageButton.isHidden = false
         editCafeProfileButton.isHidden = true
         saveCafeProfileButton.isHidden = false
-        
+        name.isEnabled = true
     }
     
-    @IBAction func pressedSaveButton(_ sender: Any) {
-        DataService.instance.saveCafeInfo(name: name.text!, address: address.text!, city: city.text!, state: state.text!, zipcode: Int(zipcode.text!)!, phone: Int(phone.text!)!, website: website.text!) { (success, error) in
-            if success {
-                self.changeImageButton.isHidden = true
-                self.editCafeProfileButton.isHidden = false
-                self.saveCafeProfileButton.isHidden = true
-            } else {
-            print(String(describing: error?.localizedDescription))
+    func showcafeInfo() {
+        DataService.instance.REF_USERS.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+            let data = Snapshot.value as! [String: Any]
+            if let cafeName = data["name"] as? String {
+                self.name.text = cafeName
+            }
+            if let cafeAddress = data["address"] as? String {
+                self.address.text = cafeAddress
+            }
+            if let cafeCity = data["city"] as? String {
+                self.city.text = cafeCity
+            }
+            if let cafeState = data["state"] as? String {
+                self.state.text = cafeState
+            }
+            if let cafeZipcode = data["zipcode"] as? Int {
+                self.zipcode.text = String (cafeZipcode)
+            }
+            if let cafePhone = data["phone"] as? Int {
+                self.phone.text = String (cafePhone)
+            }
+            if let cafeWebsite = data["website"] as? String {
+                self.website.text = cafeWebsite
             }
         }
     }
     
+    @IBAction func pressedSaveButton(_ sender: Any) {
+//        DataService.instance.saveCafeInfo(name: name.text!, address: address.text!, city: city.text!, state: state.text!, zipcode: Int(zipcode.text!)!, phone: Int(phone.text!)!, website: website.text!) { (success, error) in
+//            if success {
+//
+//            }
+//        }
+        
+        let saveCafeInfo = Cafe(name: name.text!, address: address.text!, city: city.text!, state: state.text!, zipcode: Int(zipcode.text!)!, phone: Int(phone.text!)!, website: website.text!)
+        saveCafeInfo.save()
+        
+        self.changeImageButton.isHidden = true
+        self.editCafeProfileButton.isHidden = false
+        self.saveCafeProfileButton.isHidden = true
+        self.showAlert()
+        name.isEnabled = false
+    }
     
+    func showAlert() {
+    let alert = UIAlertController(title: "Success!", message: "Your information was saved successfully!", preferredStyle: .alert)
+    self.present(alert, animated: true, completion: nil)
+    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
+    }
     
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {

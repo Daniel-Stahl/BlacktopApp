@@ -35,7 +35,7 @@ class DataService {
         REF_USERS.child(uid).updateChildValues(userData)
     }
     
-    func saveCafeInfo(name: String, address: String, city: String, state: String, zipcode: Int, phone: Int, website: String, completionHandler: @escaping (_ status: Bool, _ error: Error?) -> ()) {
+    func saveCafeInfo(name: String, address: String = "", city: String = "", state: String = "", zipcode: Int = 0, phone: Int = 0, website: String = "", completionHandler: @escaping (_ status: Bool, _ error: Error?) -> ()) {
         REF_USERS.child((Auth.auth().currentUser?.uid)!).updateChildValues(["name": name, "address": address, "city": city, "state": state, "zipcode": zipcode, "phone": phone, "website": website])
     }
     

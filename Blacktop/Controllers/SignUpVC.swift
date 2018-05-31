@@ -34,6 +34,7 @@ class SignUpVC: UIViewController {
         if userName.text != nil && userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
+                    
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
                         self.dismiss(animated: true, completion: nil)
                     })
