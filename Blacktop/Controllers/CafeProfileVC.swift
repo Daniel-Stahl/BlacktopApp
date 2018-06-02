@@ -41,11 +41,13 @@ class CafeProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        showcafeInfo()
+        showcafeInfo()
     }
+    
 
     @IBAction func pressedLogoutButton(_ sender: Any) {
         let logoutPopup = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
+        let logoutCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let logoutAction = UIAlertAction(title: "Logout?", style: .destructive) { (buttonTapped) in
             
             do {
@@ -57,6 +59,7 @@ class CafeProfileVC: UIViewController {
             }
         }
         logoutPopup.addAction(logoutAction)
+        logoutPopup.addAction(logoutCancel)
         present(logoutPopup, animated: true, completion: nil)
     }
     
@@ -65,57 +68,74 @@ class CafeProfileVC: UIViewController {
         editCafeProfileButton.isHidden = true
         saveCafeProfileButton.isHidden = false
         name.isEnabled = true
+        address.isEnabled = true
+        city.isEnabled = true
+        state.isEnabled = true
+        zipcode.isEnabled = true
+        phone.isEnabled = true
+        website.isEnabled = true
     }
     
     func showcafeInfo() {
-        DataService.instance.REF_USERS.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
-            let data = Snapshot.value as! [String: Any]
-            if let cafeName = data["name"] as? String {
-                self.name.text = cafeName
-            }
-            if let cafeAddress = data["address"] as? String {
-                self.address.text = cafeAddress
-            }
-            if let cafeCity = data["city"] as? String {
-                self.city.text = cafeCity
-            }
-            if let cafeState = data["state"] as? String {
-                self.state.text = cafeState
-            }
-            if let cafeZipcode = data["zipcode"] as? Int {
-                self.zipcode.text = String (cafeZipcode)
-            }
-            if let cafePhone = data["phone"] as? Int {
-                self.phone.text = String (cafePhone)
-            }
-            if let cafeWebsite = data["website"] as? String {
-                self.website.text = cafeWebsite
-            }
+        FirebaseService.instance.refUsers.child((Auth.auth().currentUser?.uid)!).observe(.value) { (Datasnapshot) in
+            let data = Datasnapshot.value as? NSDictionary
+            guard let cafeName = data!["name"] as? String else { return }
+            guard let cafeAddress = data!["location"] as? String else { return }
+//            guard let cafeCity = data["city"] as? String else { return }
+//            guard let cafeState = data["state"] as? String else { return }
+//            guard let cafeZipcode = data["zipcode"] as? Int else { return }
+//            guard let cafePhone = data["phone"] as? Int else { return }
+//            guard let cafeWebsite = data["website"] as? String else { return }
+            
+            self.name.text = cafeName
+            print(cafeAddress)
+//            self.address.text = cafeAddress
+//            self.city.text = cafeCity
+//            self.state.text = cafeState
+//            self.zipcode.text = String(cafeZipcode)
+//            self.phone.text = String(cafePhone)
+//            self.website.text = cafeWebsite
         }
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {
-//        DataService.instance.saveCafeInfo(name: name.text!, address: address.text!, city: city.text!, state: state.text!, zipcode: Int(zipcode.text!)!, phone: Int(phone.text!)!, website: website.text!) { (success, error) in
-//            if success {
-//
-//            }
-//        }
+//        guard let cafeName = name.text else { return }
+//        guard let cafeAddress = address.text else { return }
+//        guard let cafeCity = city.text else { return }
+//        guard let cafeState = state.text else { return }
+//        guard let cafeZipcode = zipcode.text else { return }
+//        guard let cafePhone = phone.text else { return }
+//        guard let cafeWebsite = website.text else { return }
+        guard let monFrom = monFrom.text else { return }
+        guard let monTo = monTo.text else { return }
+        guard let tueFrom = tueFrom.text else { return }
+        guard let tueTo = tueTo.text else { return }
+        guard let wedFrom = wedFrom.text else { return }
+        guard let wedTo = wedTo.text else { return }
+        guard let thuFrom = thuFrom.text else { return }
+        guard let thuTo = thuTo.text else { return }
+        guard let friFrom = friFrom.text else { return }
+        guard let friTo = friTo.text else { return }
+        guard let satFrom = satFrom.text else { return }
+        guard let satTo = satTo.text else { return }
+        guard let sunFrom = sunFrom.text else { return }
+        guard let sunTo = sunTo.text else { return }
         
-        let saveCafeInfo = Cafe(name: name.text!, address: address.text!, city: city.text!, state: state.text!, zipcode: Int(zipcode.text!)!, phone: Int(phone.text!)!, website: website.text!)
-        saveCafeInfo.save()
+        let cafeDetails = ["name": name.text!, "location": ["address": address.text!, "city": city.text!, "state": state.text!, "zipcode": zipcode.text!], "phone": phone.text!, "website": website.text!, "monFrom": monFrom, "monTo": monTo, "tueFrom": tueFrom] as [String : Any]
+        FirebaseService.instance.saveCafeInfo(cafeData: cafeDetails)
         
         self.changeImageButton.isHidden = true
         self.editCafeProfileButton.isHidden = false
         self.saveCafeProfileButton.isHidden = true
-        self.showAlert()
         name.isEnabled = false
+        address.isEnabled = false
+        city.isEnabled = false
+        state.isEnabled = false
+        zipcode.isEnabled = false
+        phone.isEnabled = false
+        website.isEnabled = false
     }
-    
-    func showAlert() {
-    let alert = UIAlertController(title: "Success!", message: "Your information was saved successfully!", preferredStyle: .alert)
-    self.present(alert, animated: true, completion: nil)
-    Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: { _ in alert.dismiss(animated: true, completion: nil)} )
-    }
+
     
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {

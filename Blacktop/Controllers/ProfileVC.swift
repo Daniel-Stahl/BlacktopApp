@@ -16,7 +16,7 @@ class ProfileVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            DataService.instance.REF_USERS.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+            FirebaseService.instance.refUsers.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
                 let data = Snapshot.value as! [String: Any]
                 let userRole = data["role"] as! String
                 
