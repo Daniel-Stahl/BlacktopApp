@@ -10,7 +10,9 @@ import UIKit
 import Firebase
 
 class CafeProfileVC: UIViewController {
-
+    var ref: DatabaseReference!
+    let currentUser = Auth.auth().currentUser?.uid
+    
     @IBOutlet weak var editCafeProfileButton: UIButton!
     @IBOutlet weak var saveCafeProfileButton: UIButton!
     @IBOutlet weak var profileImage: UIImageView!
@@ -38,8 +40,11 @@ class CafeProfileVC: UIViewController {
     @IBOutlet weak var sunFrom: TimePicker!
     @IBOutlet weak var sunTo: TimePicker!
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref = Database.database().reference()
         
         showcafeInfo()
     }
@@ -78,24 +83,30 @@ class CafeProfileVC: UIViewController {
     
     func showcafeInfo() {
         FirebaseService.instance.refUsers.child((Auth.auth().currentUser?.uid)!).observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            guard let cafeName = data!["name"] as? String else { return }
-            guard let cafeAddress = data!["location"] as? String else { return }
-//            guard let cafeCity = data["city"] as? String else { return }
-//            guard let cafeState = data["state"] as? String else { return }
-//            guard let cafeZipcode = data["zipcode"] as? Int else { return }
-//            guard let cafePhone = data["phone"] as? Int else { return }
-//            guard let cafeWebsite = data["website"] as? String else { return }
+            let data = Datasnapshot.value as! [String: Any]
+            let cafeName = data["name"] as? String
+            let cafePhone = data["phone"] as? String
+            let cafeWebsite = data["website"] as? String
             
             self.name.text = cafeName
-            print(cafeAddress)
-//            self.address.text = cafeAddress
-//            self.city.text = cafeCity
-//            self.state.text = cafeState
-//            self.zipcode.text = String(cafeZipcode)
-//            self.phone.text = String(cafePhone)
-//            self.website.text = cafeWebsite
+            self.phone.text = cafePhone
+            self.website.text = cafeWebsite
         }
+        
+        ref.child("users").child(currentUser!).child("location").observe(.value) { (Datasnapshot) in
+            let data = Datasnapshot.value as! [String: Any]
+            let cafeAddress = data["address"] as? String
+            let cafeCity = data["city"] as? String
+            let cafeState = data["state"] as? String
+            let cafeZipcode = data["zipcode"] as? String
+            
+            
+            self.address.text = cafeAddress
+            self.city.text = cafeCity
+            self.state.text = cafeState
+            self.zipcode.text = cafeZipcode
+        }
+
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {
@@ -121,7 +132,7 @@ class CafeProfileVC: UIViewController {
         guard let sunFrom = sunFrom.text else { return }
         guard let sunTo = sunTo.text else { return }
         
-        let cafeDetails = ["name": name.text!, "location": ["address": address.text!, "city": city.text!, "state": state.text!, "zipcode": zipcode.text!], "phone": phone.text!, "website": website.text!, "monFrom": monFrom, "monTo": monTo, "tueFrom": tueFrom] as [String : Any]
+        let cafeDetails = ["name": name.text!, "location": ["address": address.text!, "city": city.text!, "state": state.text!, "zipcode": zipcode.text!], "phone": phone.text!, "website": website.text!, "hours": ["monFrom": monFrom, "monTo": monTo, "tueFrom": tueFrom]] as [String : Any]
         FirebaseService.instance.saveCafeInfo(cafeData: cafeDetails)
         
         self.changeImageButton.isHidden = true
