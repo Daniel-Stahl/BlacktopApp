@@ -20,11 +20,5 @@ class FirebaseService {
         refUsers.child(uid).updateChildValues(userData)
     }
     
-    func saveCafeInfo(cafeData: Dictionary<String, Any>) {
-        refUsers.child((Auth.auth().currentUser?.uid)!).updateChildValues(cafeData)
-    }
-    
-    func saveCafeHours(monFrom: String, monTo: String, tueFrom: String, tueTo: String) {
-        refUsers.child((Auth.auth().currentUser?.uid)!).child("hours").updateChildValues(["mondayFrom": monFrom, "mondayTo": monTo, "tuesdayFrom": tueFrom, "tuesdayTo": tueTo])
-    }
+    //Refactor code
 }

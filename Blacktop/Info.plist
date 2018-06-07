@@ -45,5 +45,7 @@
 	<string>Allow us to use your location to show you cafes </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Allow us to use your location to show you cafes </string>
+	<key>NSCameraUsageDescription</key>
+	<string>All us to use your camera to take photos</string>
 </dict>
 </plist>

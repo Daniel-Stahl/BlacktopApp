@@ -20,7 +20,7 @@ class CafeProfileVC: UIViewController {
     
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var changeImageButton: UIButton!
-    var takenImage: UIImage?
+    var takenImage: UIImage!
     var imageDownloadURL: String?
     
     @IBOutlet weak var name: UITextField!
@@ -149,16 +149,19 @@ class CafeProfileVC: UIViewController {
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {
-        if let imageData = UIImageJPEGRepresentation(takenImage!, 0.0) {
+        if takenImage != nil {
+            let imageData = UIImageJPEGRepresentation(takenImage, 0.0)
             let imageRef = storage.child("photos").child(currentUser!)
             
-            imageRef.putData(imageData).observe(.success) { (Imagesnapshot) in
+            imageRef.putData(imageData!).observe(.success) { (Imagesnapshot) in
                 self.imageDownloadURL = Imagesnapshot.metadata?.downloadURL()?.absoluteString
             }
+        } else {
+            print("takenImage is nil")
         }
         
         let cafeDetails = ["name": name.text!, "location": ["address": address.text!, "city": city.text!, "state": state.text!, "zipcode": zipcode.text!], "phone": phone.text!, "website": website.text!, "hours": ["monOpen": monOpen.text!, "monClose": monClose.text!, "tueOpen": tueOpen.text!, "tueClose": tueClose.text!, "wedOpen": wedOpen.text!, "wedClose": wedClose.text!, "thuOpen": thuOpen.text!, "thuClose": thuClose.text!, "friOpen": friOpen.text!, "friClose": friClose.text!, "satOpen": satOpen.text!, "satClose": satClose.text!, "sunOpen": sunOpen.text!, "sunClose": sunClose.text!]] as [String : Any]
-//        FirebaseService.instance.saveCafeInfo(cafeData: cafeDetails)
+        
         ref.child("users").child(currentUser!).updateChildValues(cafeDetails)
             
         self.changeImageButton.isHidden = true
@@ -268,12 +271,4 @@ extension CafeProfileVC {
         sunOpen.isEnabled = true
         sunClose.isEnabled = true
     }
-    
-    // refactor firebaseservice here
 }
-
-
-
-
-
-

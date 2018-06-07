@@ -29,4 +29,10 @@ class LogInVC: UIViewController {
             }
         }
     }
+    
+    @IBAction func sendUserToSignup(_ sender: Any) {
+        let loginVC = storyboard?.instantiateViewController(withIdentifier: "SignUpVC")
+        present(loginVC!, animated: true, completion: nil)
+    }
+    
 }

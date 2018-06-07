@@ -164,6 +164,9 @@
                                 <state key="normal" title="Sign Up">
                                     <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="sendUserToSignup:" destination="kDn-J3-dDc" eventType="touchUpInside" id="XDK-dD-NVh"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -478,6 +481,9 @@
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="sendUserToLogin:" destination="ERl-Qh-00b" eventType="touchUpInside" id="s3s-Bj-0e0"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -495,6 +501,7 @@
                     </view>
                     <connections>
                         <outlet property="userEmail" destination="9xJ-Ve-l6m" id="eKv-Lv-HMU"/>
+                        <outlet property="userName" destination="oxd-Eb-v6d" id="D3f-z2-TlJ"/>
                         <outlet property="userPassword" destination="63l-7Y-WSQ" id="sq5-vW-XqT"/>
                     </connections>
                 </viewController>

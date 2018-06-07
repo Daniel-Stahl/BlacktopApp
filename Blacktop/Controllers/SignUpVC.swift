@@ -11,7 +11,7 @@ import Firebase
 
 class SignUpVC: UIViewController {
 
-//    @IBOutlet weak var userName: CustomTextField!
+    @IBOutlet weak var userName: CustomTextField!
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
     
@@ -32,7 +32,7 @@ class SignUpVC: UIViewController {
     
     @IBAction func pressedSignUpButton(_ sender: Any) {
         if userEmail.text != nil && userPassword.text != nil {
-            AuthService.instance.registerUser(email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
+            AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
                     
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
@@ -43,5 +43,10 @@ class SignUpVC: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func sendUserToLogin(_ sender: Any) {
+        let loginVC = storyboard?.instantiateViewController(withIdentifier: "LogInVC")
+        present(loginVC!, animated: true, completion: nil)
     }
 }
