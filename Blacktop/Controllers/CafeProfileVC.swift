@@ -81,7 +81,7 @@ class CafeProfileVC: UIViewController {
     
     func showcafeInfo() {
         let imageRef = storage.child("photos").child(currentUser!)
-        let downloadTask = imageRef.getData(maxSize: 512 * 512) { (data, error) in
+        let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
             if let data = data {
                 let image = UIImage(data: data)
                 self.profileImage.image = image
@@ -220,6 +220,7 @@ extension CafeProfileVC: UIImagePickerControllerDelegate, UINavigationController
         self.takenImage = imageBG
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
+        // If user uploads a larger image that can write then notify user image is to large
     }
 }
 

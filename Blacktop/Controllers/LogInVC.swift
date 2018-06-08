@@ -22,7 +22,8 @@ class LogInVC: UIViewController {
         if userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.loginUser(email: userEmail.text!, password: userPassword.text!) { (success, error) in
                 if success {
-                    self.dismiss(animated: true, completion: nil)
+                    let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+                    self.present(mapVC!, animated: true, completion: nil)
                 } else {
                     print(String(describing: error?.localizedDescription))
                 }

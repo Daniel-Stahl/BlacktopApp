@@ -45,25 +45,28 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func cafePins() {
+        
+        
         ref.child("users").observe(.value) { (Datasnapshot) in
             guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
             for cafeData in data {
-                guard let address = cafeData.childSnapshot(forPath: "address").value as? String else { continue }
-                guard let city = cafeData.childSnapshot(forPath: "city").value as? String else { continue }
-                guard let state = cafeData.childSnapshot(forPath: "state").value as? String else { continue }
-                guard let zipcode = cafeData.childSnapshot(forPath: "zipcode").value as? Int else { continue }
+                guard let address = cafeData.childSnapshot(forPath: "location/address").value as? String else { continue }
+                guard let city = cafeData.childSnapshot(forPath: "location/city").value as? String else { continue }
+                guard let state = cafeData.childSnapshot(forPath: "location/state").value as? String else { continue }
+                guard let zipcode = cafeData.childSnapshot(forPath: "location/zipcode").value as? String else { continue }
                 
-                print("\(address)\(city)\(state)\(zipcode)")
-//                let geoCoder = CLGeocoder()
-//                geoCoder.geocodeAddressString(address, completionHandler: { (cafeLocation, error) in
-//                    let location = cafeLocation?.first?.location
-//                    let annotation = MKPointAnnotation()
-//                    let pinDrop = [location]
-//                    for location in pinDrop {
-//                        annotation.coordinate = (location?.coordinate)!
-//                        self.mapView.addAnnotation(annotation)
-//                    }
-//                })
+                print("\(address) \(city) \(state) \(zipcode)")
+                let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
+                let geoCoder = CLGeocoder()
+                geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
+                    let location = cafeLocation?.first?.location
+                    let annotation = MKPointAnnotation()
+                    let pinDrop = [location]
+                    for location in pinDrop {
+                        annotation.coordinate = (location?.coordinate)!
+                        self.mapView.addAnnotation(annotation)
+                    }
+                })
             }
         }
     }

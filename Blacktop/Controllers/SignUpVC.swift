@@ -36,7 +36,8 @@ class SignUpVC: UIViewController {
                 if success {
                     
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        self.dismiss(animated: true, completion: nil)
+                        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+                        self.present(mapVC!, animated: true, completion: nil)
                     })
                 } else {
                     print(String(describing: error?.localizedDescription))
