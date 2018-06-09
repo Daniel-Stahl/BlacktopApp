@@ -15,6 +15,14 @@ class MapVC: UIViewController {
     var ref: DatabaseReference!
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var cafeDetailsView: CustomView!
+    @IBOutlet weak var cafePhoto: UIImageView!
+    @IBOutlet weak var cafeName: UILabel!
+    @IBOutlet weak var cafeAddress: UILabel!
+    @IBOutlet weak var cafeCityStateZip: UILabel!
+    @IBOutlet weak var cafePhone: UILabel!
+    @IBOutlet weak var cafeHours: UILabel!
+    
     
     let locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
@@ -28,6 +36,7 @@ class MapVC: UIViewController {
         locationManager.delegate = self
         confirmAuthorization()
         cafePins()
+//        cafeDetailsView.isHidden = true
     }
     
     @IBAction func centerUserLocationButton(_ sender: Any) {
@@ -45,8 +54,6 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func cafePins() {
-        
-        
         ref.child("users").observe(.value) { (Datasnapshot) in
             guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
             for cafeData in data {
@@ -55,23 +62,30 @@ extension MapVC: MKMapViewDelegate {
                 guard let state = cafeData.childSnapshot(forPath: "location/state").value as? String else { continue }
                 guard let zipcode = cafeData.childSnapshot(forPath: "location/zipcode").value as? String else { continue }
                 
-                print("\(address) \(city) \(state) \(zipcode)")
-                let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
-                let geoCoder = CLGeocoder()
-                geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
-                    let location = cafeLocation?.first?.location
-                    let annotation = MKPointAnnotation()
-                    let pinDrop = [location]
-                    for location in pinDrop {
-                        annotation.coordinate = (location?.coordinate)!
-                        self.mapView.addAnnotation(annotation)
-                    }
-                })
+                if address != "" && city != "" && state != "" && zipcode != "" {
+                    let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
+                    let geoCoder = CLGeocoder()
+                    geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
+                        let location = cafeLocation?.first?.location
+                        let annotation = MKPointAnnotation()
+                        let pinDrop = [location]
+                        for location in pinDrop {
+                            annotation.coordinate = (location?.coordinate)!
+                            self.mapView.addAnnotation(annotation)
+                        }
+                    })
+                }
             }
         }
     }
     
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        cafeDetailsView.isHidden = false
+    }
     
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        cafeDetailsView.isHidden = true
+    }
     
 }
 
