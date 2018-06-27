@@ -12,7 +12,6 @@ import Firebase
 class ProfileVC: UIViewController {
 
     @IBOutlet weak var childVC: UIView!
-//    let main = DispatchQueue.main
     
     override func viewDidLoad() {
         super.viewDidLoad()

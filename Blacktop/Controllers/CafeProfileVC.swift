@@ -220,7 +220,7 @@ extension CafeProfileVC: UIImagePickerControllerDelegate, UINavigationController
         self.takenImage = imageBG
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
-        // If user uploads a larger image that can write then notify user image is to large
+        //TO-DO: If user uploads a larger image that can write then notify user image is to large
     }
 }
 
