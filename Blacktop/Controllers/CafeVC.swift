@@ -19,10 +19,15 @@ class CafeVC: UIViewController {
     @IBOutlet weak var cafeHours: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
     
-
+    var passedCafeID: String = ""
+    
+    func initData(uid: String) {
+        self.passedCafeID = uid
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadProfile()
         
     }
     
@@ -33,6 +38,10 @@ class CafeVC: UIViewController {
     @IBAction func editProfileButtonPressed(_ sender: Any) {
         let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
         self.present(profileVC!, animated: true, completion: nil)
+    }
+    
+    func loadProfile() {
+        print(passedCafeID)
     }
 
 }

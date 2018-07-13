@@ -11,6 +11,7 @@ import MapKit
 
 class CafeAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
+    var uid: String
     var name: String
     var address: String
     var city: String
@@ -18,8 +19,9 @@ class CafeAnnotation: NSObject, MKAnnotation {
     var zipcode: String
     var phoneNumber: String
     
-    init(coordinate: CLLocationCoordinate2D, name: String, address: String, city: String, state: String, zipcode: String, phoneNumber: String) {
+    init(coordinate: CLLocationCoordinate2D, uid: String, name: String, address: String, city: String, state: String, zipcode: String, phoneNumber: String) {
         self.coordinate = coordinate
+        self.uid = uid
         self.name = name
         self.address = address
         self.city = city

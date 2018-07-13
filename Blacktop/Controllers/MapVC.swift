@@ -20,6 +20,7 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutAddress: UILabel!
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
+    var cafeID = ""
     
     let locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
@@ -42,8 +43,10 @@ class MapVC: UIViewController {
     
     
     @IBAction func viewCafePressed(_ sender: Any) {
-        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC")
+        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+        cafeVC?.initData(uid: cafeID)
         self.present(cafeVC!, animated: true, completion: nil)
+        
     }
     
     
@@ -72,12 +75,14 @@ extension MapVC: MKMapViewDelegate {
                     let name = cafeData.childSnapshot(forPath: "name").value as? String,
                     let phoneNumber = cafeData.childSnapshot(forPath: "phone").value as? String else { continue }
                 
+                    let cafeID = cafeData.key
+                
                 if address != "" && city != "" && state != "" && zipcode != "" {
                     let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
                     let geoCoder = CLGeocoder()
                     geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
                         let location = cafeLocation?.first?.location?.coordinate
-                        let annotation = CafeAnnotation(coordinate: location!, name: name, address: address, city: city, state: state, zipcode: zipcode, phoneNumber: phoneNumber)
+                        let annotation = CafeAnnotation(coordinate: location!, uid: cafeID, name: name, address: address, city: city, state: state, zipcode: zipcode, phoneNumber: phoneNumber)
                         self.mapView.addAnnotation(annotation)
                     })
                 }
@@ -108,6 +113,7 @@ extension MapVC: MKMapViewDelegate {
         cafeCalloutAddress.text = cafeAnnotation.address
         cafeCalloutCityStateZip.text = "\(cafeAnnotation.city), \(cafeAnnotation.state) \(cafeAnnotation.zipcode)"
         cafeCalloutPhone.text = cafeAnnotation.phoneNumber
+        cafeID = cafeAnnotation.uid
         cafeCalloutView.isHidden = false
 
         let coordinateRegion = MKCoordinateRegionMakeWithDistance((view.annotation?.coordinate)!, regionRadius * 2, regionRadius * 2)
