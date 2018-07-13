@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import Firebase
 
 class CafeVC: UIViewController {
+    var ref: DatabaseReference!
+    let storage = Storage.storage().reference()
     
     @IBOutlet weak var cafeImage: UIImageView!
     @IBOutlet weak var cafeName: UILabel!
@@ -27,6 +30,7 @@ class CafeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref = Database.database().reference()
         loadProfile()
         
     }
@@ -41,7 +45,36 @@ class CafeVC: UIViewController {
     }
     
     func loadProfile() {
-        print(passedCafeID)
+        let imageRef = storage.child("photos").child(passedCafeID)
+        let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
+            if let data = data {
+                let image = UIImage(data: data)
+                self.cafeImage.image = image
+            }
+            print(error ?? "No error")
+        }
+        
+        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
+            guard let data = Datasnapshot.value as? [String: Any] else { return }
+            let name = data["name"] as? String
+            let phone = data["phone"] as? String
+            let website = data["website"] as? String
+            
+            self.cafeName.text = name
+            self.cafePhone.text = phone
+            self.cafeWebsite.text = website
+        }
+        
+        ref.child("users").child(passedCafeID).child("location").observe(.value) { (Datasnapshot) in
+            guard let data = Datasnapshot.value as? [String: Any] else { return }
+            let address = data["address"] as? String
+            let city = data["city"] as? String
+            let state = data["state"] as? String
+            let zipcode = data["zipcode"] as? String
+            
+            self.cafeAddress.text = address
+            self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+        }
     }
 
 }
