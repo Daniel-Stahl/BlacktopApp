@@ -22,6 +22,9 @@ class CafeVC: UIViewController {
     @IBOutlet weak var cafeWebsite: UILabel!
     @IBOutlet weak var cafeHours: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var addCoffeeButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
     
     var passedCafeID: String = ""
     
@@ -93,9 +96,46 @@ class CafeVC: UIViewController {
             self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
         }
         
-        
+        ref.child("users").child(passedCafeID).child("hours").observe(.value) { (Datasnapshot) in
+            guard let data = Datasnapshot.value as? [String: Any] else { return }
+            let mondayOpen = data["monOpen"] as? String
+            let mondayClose = data["monClose"] as? String
+            let tuesdayOpen = data["tueOpen"] as? String
+            let tuesdayClose = data["tueClose"] as? String
+            let wednesdayOpen = data["wedOpen"] as? String
+            let wednesdayClose = data["wedClose"] as? String
+            let thursdayOpen = data["thuOpen"] as? String
+            let thursdayClose = data["thuClose"] as? String
+            let fridayOpen = data["friOpen"] as? String
+            let fridayClose = data["friClose"] as? String
+            let saturdayOpen = data["satOpen"] as? String
+            let saturdayClose = data["satClose"] as? String
+            let sundayOpen = data["sunOpen"] as? String
+            let sundayClose = data["sunClose"] as? String
+            
+            let dayOfTheWeek = "\(Date().dayOfWeek()!)"
+            
+            switch dayOfTheWeek {
+                case "Monday": self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
+                case "Tuesday": self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
+                case "Wednesday": self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
+                case "Thursday": self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
+                case "Friday": self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
+                case "Saturday": self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
+                case "Sunday": self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+                default: self.cafeHours.text = "Not open"
+            }
+        }
     }
 
+    @IBAction func addCoffeePressed(_ sender: Any) {
+        //User taps to add what coffee beans they are brewing with
+        //Pop up shows with text field
+        //2 buttons save and cancel
+    }
+    
+    
+    
 }
 
 extension Date {

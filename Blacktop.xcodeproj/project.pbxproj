@@ -27,10 +27,9 @@
 		432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77020AF8E2000FC2F8B /* ProfileVC.swift */; };
 		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
 		432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77720B389DC00FC2F8B /* TimePicker.swift */; };
+		43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */; };
 		43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */; };
 		43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3F20E1A0B700EB1E44 /* Cafe.swift */; };
-		43FEED4420E43A5800EB1E44 /* CustomCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43FEED4320E43A5800EB1E44 /* CustomCalloutView.xib */; };
-		43FEED4620E43B7600EB1E44 /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED4520E43B7600EB1E44 /* CustomCalloutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,10 +55,9 @@
 		432FF77020AF8E2000FC2F8B /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeProfileVC.swift; sourceTree = "<group>"; };
 		432FF77720B389DC00FC2F8B /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
+		43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBeanCell.swift; sourceTree = "<group>"; };
 		43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeAnnotation.swift; sourceTree = "<group>"; };
 		43FEED3F20E1A0B700EB1E44 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
-		43FEED4320E43A5800EB1E44 /* CustomCalloutView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCalloutView.xib; sourceTree = "<group>"; };
-		43FEED4520E43B7600EB1E44 /* CustomCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blacktop.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,8 +116,7 @@
 				432FF76120ACD7D400FC2F8B /* CustomTextField.swift */,
 				432FF76320ACD90900FC2F8B /* CustomView.swift */,
 				432FF77720B389DC00FC2F8B /* TimePicker.swift */,
-				43FEED4320E43A5800EB1E44 /* CustomCalloutView.xib */,
-				43FEED4520E43B7600EB1E44 /* CustomCalloutView.swift */,
+				43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -239,7 +236,6 @@
 				432FF76D20AE246A00FC2F8B /* GoogleService-Info.plist in Resources */,
 				432FF75220ACACB900FC2F8B /* LaunchScreen.storyboard in Resources */,
 				432FF74F20ACACB900FC2F8B /* Assets.xcassets in Resources */,
-				43FEED4420E43A5800EB1E44 /* CustomCalloutView.xib in Resources */,
 				432FF74D20ACACB800FC2F8B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -300,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */,
+				43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */,
 				432C37F420F0350000CC25D7 /* CafeAnnotationView.swift in Sources */,
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
 				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
@@ -313,7 +310,6 @@
 				432FF76420ACD90900FC2F8B /* CustomView.swift in Sources */,
 				432FF75D20ACD18D00FC2F8B /* CustomButton.swift in Sources */,
 				432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */,
-				43FEED4620E43B7600EB1E44 /* CustomCalloutView.swift in Sources */,
 				432C37F620F3E26300CC25D7 /* CafeVC.swift in Sources */,
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,
 				43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */,
