@@ -10,23 +10,16 @@ import UIKit
 import Firebase
 
 class ProfileVC: UIViewController {
-
-    @IBOutlet weak var childVC: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            FirebaseService.instance.refUsers.child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
-                let data = Snapshot.value as! [String: Any]
-                let userRole = data["role"] as! String
-                
-                if userRole == "cafe" {
-                    self.childVC.isHidden = false
-                } else {
-                    self.childVC.isHidden = true
-                }
-            }
+            
     }
-
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func pressedExitButton(_ sender: Any) {
         let logoutPopup = UIAlertController(title: "Logout?", message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
         let logoutCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

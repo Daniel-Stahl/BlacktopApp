@@ -12,6 +12,7 @@ import Firebase
 class CafeVC: UIViewController {
     var ref: DatabaseReference!
     let storage = Storage.storage().reference()
+    let currentUser = Auth.auth().currentUser?.uid
     
     @IBOutlet weak var cafeImage: UIImageView!
     @IBOutlet weak var cafeName: UILabel!
@@ -31,6 +32,11 @@ class CafeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        print(Date().dayOfWeek()!)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         loadProfile()
         
     }
@@ -45,6 +51,17 @@ class CafeVC: UIViewController {
     }
     
     func loadProfile() {
+        ref.child("users").child(passedCafeID).observeSingleEvent(of: .value) { (Snapshot) in
+            let data = Snapshot.value as! [String: Any]
+            let userRole = data["role"] as! String
+            
+            if userRole == "cafe" && self.passedCafeID == self.currentUser {
+                self.editProfileButton.isHidden = false
+            } else {
+                self.editProfileButton.isHidden = true
+            }
+        }
+        
         let imageRef = storage.child("photos").child(passedCafeID)
         let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
             if let data = data {
@@ -75,6 +92,17 @@ class CafeVC: UIViewController {
             self.cafeAddress.text = address
             self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
         }
+        
+        
     }
 
+}
+
+extension Date {
+    func dayOfWeek() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from: self).capitalized
+        
+    }
 }

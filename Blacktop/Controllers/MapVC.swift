@@ -29,16 +29,32 @@ class MapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
         cafeCalloutView.isHidden = true
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
-        cafePins()
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        cafePins()
+    }
+    
     @IBAction func profileButtonPressed(_ sender: Any) {
+        ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+            let data = Snapshot.value as! [String: Any]
+            let userRole = data["role"] as! String
+            
+            if userRole == "cafe" {
+                let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+                cafeVC?.initData(uid: (Auth.auth().currentUser?.uid)!)
+                self.present(cafeVC!, animated: true, completion: nil)
+            } else {
+                let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileVC")
+                self.present(profileVC!, animated: true, completion: nil)
+            }
+        }
     }
     
     
@@ -100,7 +116,7 @@ extension MapVC: MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
-        annotationView?.image = UIImage(named: "starbucks")
+        annotationView?.image = UIImage(named: "coffee")
         return annotationView
     }
     
