@@ -28,6 +28,8 @@
 		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
 		432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77720B389DC00FC2F8B /* TimePicker.swift */; };
 		43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */; };
+		43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */; };
+		43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D202302100015500C8F0FD /* CoffeeBean.swift */; };
 		43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */; };
 		43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3F20E1A0B700EB1E44 /* Cafe.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +58,8 @@
 		432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeProfileVC.swift; sourceTree = "<group>"; };
 		432FF77720B389DC00FC2F8B /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 		43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBeanCell.swift; sourceTree = "<group>"; };
+		43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeBeanVC.swift; sourceTree = "<group>"; };
+		43D202302100015500C8F0FD /* CoffeeBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBean.swift; sourceTree = "<group>"; };
 		43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeAnnotation.swift; sourceTree = "<group>"; };
 		43FEED3F20E1A0B700EB1E44 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +135,7 @@
 				432FF77020AF8E2000FC2F8B /* ProfileVC.swift */,
 				432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */,
 				432C37F520F3E26300CC25D7 /* CafeVC.swift */,
+				43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 				43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */,
 				43FEED3F20E1A0B700EB1E44 /* Cafe.swift */,
 				432C37F320F0350000CC25D7 /* CafeAnnotationView.swift */,
+				43D202302100015500C8F0FD /* CoffeeBean.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -300,6 +306,7 @@
 				432C37F420F0350000CC25D7 /* CafeAnnotationView.swift in Sources */,
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
 				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
+				43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */,
 				432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */,
 				43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,
@@ -313,6 +320,7 @@
 				432C37F620F3E26300CC25D7 /* CafeVC.swift in Sources */,
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,
 				43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */,
+				43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

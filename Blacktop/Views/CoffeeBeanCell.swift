@@ -10,15 +10,11 @@ import UIKit
 
 class CoffeeBeanCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var beanName: UILabel!
+    @IBOutlet weak var roasterName: UILabel!
+    
+    func configureCell(name: String, roaster: String) {
+        self.beanName.text = name
+        self.roasterName.text = roaster
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

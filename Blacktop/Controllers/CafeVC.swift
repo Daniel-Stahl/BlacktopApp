@@ -25,6 +25,7 @@ class CafeVC: UIViewController {
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var coffeeBeans = [CoffeeBean]()
     
     var passedCafeID: String = ""
     
@@ -35,13 +36,15 @@ class CafeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        print(Date().dayOfWeek()!)
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadProfile()
-        
+        getCoffeeBeans()
+        tableView.reloadData()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -131,11 +134,42 @@ class CafeVC: UIViewController {
     @IBAction func addCoffeePressed(_ sender: Any) {
         //User taps to add what coffee beans they are brewing with
         //Pop up shows with text field
-        //2 buttons save and cancel
+    }
+    
+    func getCoffeeBeans() {
+        ref.child("users").child(passedCafeID).child("beans").observe(.value) { (Datasnapshot) in
+            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
+            for beans in data {
+                guard let beanName = beans.childSnapshot(forPath: "name").value as? String,
+                    let roasterName = beans.childSnapshot(forPath: "roaster").value as? String else { return }
+                
+                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName)
+                self.coffeeBeans.append(coffeeBean)
+                print(beanName + roasterName)
+            }
+            
+        }
     }
     
     
     
+}
+
+extension CafeVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return coffeeBeans.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CoffeeBeanCell", for: indexPath) as? CoffeeBeanCell else { return UITableViewCell() }
+        let data = coffeeBeans[indexPath.row]
+        cell.configureCell(name: data.beanName, roaster: data.roasterName)
+        return cell
+    }
 }
 
 extension Date {

@@ -410,20 +410,44 @@
                                     <action selector="editProfileButtonPressed:" destination="zfX-zw-tf9" eventType="touchUpInside" id="9XN-la-1rG"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="30" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GZb-oa-bZJ">
-                                <rect key="frame" x="16" y="588" width="343" height="190"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GZb-oa-bZJ">
+                                <rect key="frame" x="20" y="588" width="335" height="190"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="7p3-K5-twm"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="30" id="sRN-fs-3Gk" customClass="CoffeeBeanCell" customModule="Blacktop" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="30"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CoffeeBeanCell" rowHeight="50" id="sRN-fs-3Gk" customClass="CoffeeBeanCell" customModule="Blacktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="335" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sRN-fs-3Gk" id="dLA-qr-slp">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="29.666666666666668"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="49.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CwM-LO-yCg">
+                                                    <rect key="frame" x="0.0" y="5" width="135" height="38.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coffee Bean name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qC7-8P-TQf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="135" height="22"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roaster" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uID-q0-Kj4">
+                                                            <rect key="frame" x="0.0" y="22" width="135" height="16.666666666666671"/>
+                                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="12"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="beanName" destination="qC7-8P-TQf" id="ceP-r9-EyY"/>
+                                            <outlet property="roasterName" destination="uID-q0-Kj4" id="BJd-lr-dGK"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -438,6 +462,7 @@
                                 <state key="normal" image="plus"/>
                                 <connections>
                                     <action selector="addCoffeePressed:" destination="zfX-zw-tf9" eventType="touchUpInside" id="LEm-bN-fud"/>
+                                    <segue destination="f5t-GC-HYA" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="J51-Bk-NNJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -448,9 +473,9 @@
                             <constraint firstItem="wn5-02-tox" firstAttribute="trailing" secondItem="0dt-zn-lA0" secondAttribute="trailing" constant="20" id="Ky5-ro-As2"/>
                             <constraint firstItem="4Pz-cn-8BM" firstAttribute="leading" secondItem="wn5-02-tox" secondAttribute="leading" id="OsN-d4-VJE"/>
                             <constraint firstItem="r9v-Fr-vMc" firstAttribute="top" secondItem="wn5-02-tox" secondAttribute="top" id="QPO-ZI-dCX"/>
-                            <constraint firstItem="wn5-02-tox" firstAttribute="trailing" secondItem="GZb-oa-bZJ" secondAttribute="trailing" constant="16" id="SVB-5K-I5a"/>
+                            <constraint firstItem="wn5-02-tox" firstAttribute="trailing" secondItem="GZb-oa-bZJ" secondAttribute="trailing" constant="20" id="SVB-5K-I5a"/>
                             <constraint firstItem="r9v-Fr-vMc" firstAttribute="leading" secondItem="wn5-02-tox" secondAttribute="leading" constant="20" id="W12-Q7-7OK"/>
-                            <constraint firstItem="GZb-oa-bZJ" firstAttribute="leading" secondItem="wn5-02-tox" secondAttribute="leading" constant="16" id="WNi-eS-6oo"/>
+                            <constraint firstItem="GZb-oa-bZJ" firstAttribute="leading" secondItem="wn5-02-tox" secondAttribute="leading" constant="20" id="WNi-eS-6oo"/>
                             <constraint firstItem="Vrj-mC-kP0" firstAttribute="leading" secondItem="wn5-02-tox" secondAttribute="leading" constant="20" id="Zke-AK-l5G"/>
                             <constraint firstItem="4Pz-cn-8BM" firstAttribute="top" secondItem="0dt-zn-lA0" secondAttribute="bottom" constant="30" id="cwt-IG-n8c"/>
                             <constraint firstItem="wn5-02-tox" firstAttribute="trailing" secondItem="bAM-ZT-YKB" secondAttribute="trailing" constant="20" id="eDK-N2-vCq"/>
@@ -480,6 +505,97 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zbv-qx-w3g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2029.5999999999999" y="719.70443349753702"/>
+        </scene>
+        <!--Add Coffee BeanVC-->
+        <scene sceneID="qKo-9y-a8h">
+            <objects>
+                <viewController id="f5t-GC-HYA" customClass="AddCoffeeBeanVC" customModule="Blacktop" customModuleProvider="target" sceneMemberID="viewController">
+                    <visualEffectView key="view" opaque="NO" contentMode="scaleToFill" id="kW1-Vm-GMP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bRS-3X-z8d">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I0J-zk-ksf" customClass="CustomView" customModule="Blacktop" customModuleProvider="target">
+                                    <rect key="frame" x="27.666666666666657" y="302" width="320" height="208"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="MGw-e0-WUg">
+                                            <rect key="frame" x="16" y="62" width="288" height="130"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Bean name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hC1-da-2g6" customClass="CustomTextField" customModule="Blacktop" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="288" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="wb5-gn-6Qe"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Roaster name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="elo-Um-xJQ" customClass="CustomTextField" customModule="Blacktop" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="48" width="288" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="ABD-Hs-5xn"/>
+                                                    </constraints>
+                                                    <color key="textColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Td9-eH-jiW" customClass="CustomButton" customModule="Blacktop" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="96" width="288" height="34"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                                    <state key="normal" title="Add">
+                                                        <color key="titleColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="addButtonPressed:" destination="f5t-GC-HYA" eventType="touchUpInside" id="GDT-f9-VyU"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Td9-eH-jiW" firstAttribute="leading" secondItem="MGw-e0-WUg" secondAttribute="leading" id="5nQ-hs-VVY"/>
+                                                <constraint firstAttribute="trailing" secondItem="hC1-da-2g6" secondAttribute="trailing" id="JBo-Fj-ovX"/>
+                                                <constraint firstAttribute="trailing" secondItem="elo-Um-xJQ" secondAttribute="trailing" id="Ocs-Lz-sUZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="Td9-eH-jiW" secondAttribute="trailing" id="Q4I-2k-13Q"/>
+                                                <constraint firstItem="elo-Um-xJQ" firstAttribute="leading" secondItem="MGw-e0-WUg" secondAttribute="leading" id="Q62-4e-I5R"/>
+                                                <constraint firstItem="hC1-da-2g6" firstAttribute="leading" secondItem="MGw-e0-WUg" secondAttribute="leading" id="dTW-8O-ArP"/>
+                                            </constraints>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LJZ-eY-bgb">
+                                            <rect key="frame" x="282" y="16" width="30" height="30"/>
+                                            <state key="normal" image="cancel"/>
+                                            <connections>
+                                                <action selector="closeButtonPressed:" destination="f5t-GC-HYA" eventType="touchUpInside" id="Scw-Y6-oQe"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="MGw-e0-WUg" secondAttribute="bottom" constant="16" id="IAf-p8-Pcq"/>
+                                        <constraint firstAttribute="trailing" secondItem="MGw-e0-WUg" secondAttribute="trailing" constant="16" id="SUC-be-cpX"/>
+                                        <constraint firstAttribute="width" constant="320" id="U5Q-Mi-kDX"/>
+                                        <constraint firstAttribute="trailing" secondItem="LJZ-eY-bgb" secondAttribute="trailing" constant="8" id="nmr-5B-Sg7"/>
+                                        <constraint firstItem="MGw-e0-WUg" firstAttribute="top" secondItem="LJZ-eY-bgb" secondAttribute="bottom" constant="16" id="pCG-MA-o8x"/>
+                                        <constraint firstAttribute="height" constant="208" id="q32-JQ-u0v"/>
+                                        <constraint firstItem="MGw-e0-WUg" firstAttribute="leading" secondItem="I0J-zk-ksf" secondAttribute="leading" constant="16" id="xLf-5r-D6t"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="I0J-zk-ksf" firstAttribute="centerX" secondItem="bRS-3X-z8d" secondAttribute="centerX" id="Ujs-6D-FaW"/>
+                                <constraint firstItem="I0J-zk-ksf" firstAttribute="centerY" secondItem="bRS-3X-z8d" secondAttribute="centerY" id="ZBT-Q9-c6J"/>
+                            </constraints>
+                        </view>
+                        <blurEffect style="light"/>
+                    </visualEffectView>
+                    <connections>
+                        <outlet property="beanName" destination="hC1-da-2g6" id="MH1-hl-KQd"/>
+                        <outlet property="roasterName" destination="elo-Um-xJQ" id="vHO-IM-DKW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mrt-A4-1ss" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2026.4000000000001" y="1436.4532019704434"/>
         </scene>
         <!--Profile-->
         <scene sceneID="fJi-JF-D99">
@@ -1405,6 +1521,7 @@
         <image name="Cup2" width="375" height="812"/>
         <image name="Cup3" width="375" height="812"/>
         <image name="back" width="30" height="30"/>
+        <image name="cancel" width="30" height="30"/>
         <image name="center-user" width="30" height="30"/>
         <image name="defaultcupimage" width="375" height="200"/>
         <image name="plus" width="30" height="30"/>
