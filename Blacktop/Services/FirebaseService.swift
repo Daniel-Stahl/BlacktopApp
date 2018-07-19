@@ -20,33 +20,35 @@ class FirebaseService {
         refUsers.child(uid).updateChildValues(userData)
     }
     
-    func getCafeData() {
-        
-        ref.child("users").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
-            for cafeData in data {
-                guard let address = cafeData.childSnapshot(forPath: "location/address").value as? String else { continue }
-                guard let city = cafeData.childSnapshot(forPath: "location/city").value as? String else { continue }
-                guard let state = cafeData.childSnapshot(forPath: "location/state").value as? String else { continue }
-                guard let zipcode = cafeData.childSnapshot(forPath: "location/zipcode").value as? String else { continue }
-                guard let name = cafeData.childSnapshot(forPath: "name").value as? String else { continue }
-                
-                
-                
-                
-//                if address != "" && city != "" && state != "" && zipcode != "" {
-//                    let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
-//                    let geoCoder = CLGeocoder()
-//                    geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
-//                        let location = cafeLocation?.first?.location?.coordinate
-//                        let cafeList = Cafe(name: name)
-//                        cafeList.location = location!
-//                        self.cafe.append(cafeList)
-//                    })
-//                }
+    func getCoffeeBeans(passedUID: String, handler: @escaping (_ coffeebeans: [CoffeeBean]) -> ()) {
+        var beansArray = [CoffeeBean]()
+        refUsers.child(passedUID).child("beans").observe(.value) { (beanSnapshot) in
+            beansArray.removeAll()
+            guard let data = beanSnapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            for bean in data {
+                let beanName = bean.childSnapshot(forPath: "name").value as! String
+                let roasterName = bean.childSnapshot(forPath: "roaster").value as! String
+                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName)
+                beansArray.append(coffeeBean)
             }
+            handler(beansArray)
         }
     }
+    
+//    func getAllFeedMessages(handler: @escaping (_ messages: [Message]) -> ()) {
+//        var messageArray = [Message]()
+//        REF_FEED.observeSingleEvent(of: .value) { (feedMessageSnapshot) in
+//            guard let feedMessageSnapshot = feedMessageSnapshot.children.allObjects as? [DataSnapshot] else { return }
+//            for message in feedMessageSnapshot {
+//                let content = message.childSnapshot(forPath: "content").value as! String
+//                let senderId = message.childSnapshot(forPath: "senderId").value as! String
+//                let message = Message(content: content, senderId: senderId)
+//                messageArray.append(message)
+//            }
+//            handler(messageArray)
+//        }
+//    }
     
     //Refactor code
 }

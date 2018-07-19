@@ -25,7 +25,7 @@ class CafeVC: UIViewController {
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var coffeeBeans = [CoffeeBean]()
+    var coffeeBean = [CoffeeBean]()
     
     var passedCafeID: String = ""
     
@@ -43,8 +43,11 @@ class CafeVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadProfile()
-        getCoffeeBeans()
-        tableView.reloadData()
+        FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
+            self.coffeeBean = returnedCoffeeBeans
+            self.tableView.reloadData()
+        }
+        //getCoffeeBeans()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -63,8 +66,10 @@ class CafeVC: UIViewController {
             
             if userRole == "cafe" && self.passedCafeID == self.currentUser {
                 self.editProfileButton.isHidden = false
+                self.addCoffeeButton.isHidden = false
             } else {
                 self.editProfileButton.isHidden = true
+                self.addCoffeeButton.isHidden = true
             }
         }
         
@@ -132,27 +137,24 @@ class CafeVC: UIViewController {
     }
 
     @IBAction func addCoffeePressed(_ sender: Any) {
-        //User taps to add what coffee beans they are brewing with
-        //Pop up shows with text field
+        
     }
     
-    func getCoffeeBeans() {
-        ref.child("users").child(passedCafeID).child("beans").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
-            for beans in data {
-                guard let beanName = beans.childSnapshot(forPath: "name").value as? String,
-                    let roasterName = beans.childSnapshot(forPath: "roaster").value as? String else { return }
-                
-                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName)
-                self.coffeeBeans.append(coffeeBean)
-                print(beanName + roasterName)
-            }
-            
-        }
-    }
-    
-    
-    
+//    func getCoffeeBeans() {
+//        var coffeeBeans = [CoffeeBean]()
+//        ref.child("users").child(passedCafeID).child("beans").observe(.value) { (Datasnapshot) in
+//            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
+//            for beans in data {
+//                guard let beanName = beans.childSnapshot(forPath: "name").value as? String,
+//                    let roasterName = beans.childSnapshot(forPath: "roaster").value as? String else { return }
+//
+//                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName)
+//                coffeeBeans.append(coffeeBean)
+//                //print(beanName)
+//                //print(roasterName)
+//            }
+//        }
+//    }
 }
 
 extension CafeVC: UITableViewDelegate, UITableViewDataSource {
@@ -161,12 +163,12 @@ extension CafeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coffeeBeans.count
+        return coffeeBean.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CoffeeBeanCell", for: indexPath) as? CoffeeBeanCell else { return UITableViewCell() }
-        let data = coffeeBeans[indexPath.row]
+        let data = coffeeBean[indexPath.row]
         cell.configureCell(name: data.beanName, roaster: data.roasterName)
         return cell
     }
