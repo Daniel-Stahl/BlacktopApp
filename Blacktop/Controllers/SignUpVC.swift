@@ -17,9 +17,23 @@ class SignUpVC: UIViewController {
     
     var userRole = "user"
     
+    let toolBar = UIToolbar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        userName.inputAccessoryView = toolBar
+        userEmail.inputAccessoryView = toolBar
+        userPassword.inputAccessoryView = toolBar
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.sizeToFit()
+        
+    }
+    
+    @objc func doneClicked() {
+        view.endEditing(true)
     }
     
     @IBAction func switchButton(_ sender: UISwitch) {
@@ -36,8 +50,13 @@ class SignUpVC: UIViewController {
                 if success {
                     
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-                        self.present(mapVC!, animated: true, completion: nil)
+                        if self.userRole == "cafe" {
+                            let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
+                            self.present(cafeProfileVC!, animated: true, completion: nil)
+                        } else {
+                            let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+                            self.present(mapVC!, animated: true, completion: nil)
+                        }
                     })
                 } else {
                     print(String(describing: error?.localizedDescription))

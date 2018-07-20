@@ -54,7 +54,7 @@ class CafeProfileVC: UIViewController {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
     }
     
     @IBAction func pressedLogoutButton(_ sender: Any) {

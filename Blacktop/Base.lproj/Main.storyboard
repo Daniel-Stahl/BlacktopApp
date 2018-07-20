@@ -917,6 +917,7 @@
                                         <state key="normal" image="back"/>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="hWn-V9-pXD" eventType="touchUpInside" id="OZX-IV-aZV"/>
+                                            <segue destination="zfX-zw-tf9" kind="show" id="ehn-jf-EWI"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1513,7 +1514,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ItI-8W-5a9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2853.5999999999999" y="787.6847290640394"/>
+            <point key="canvasLocation" x="2903" y="808"/>
         </scene>
     </scenes>
     <resources>
