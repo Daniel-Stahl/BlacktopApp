@@ -9,20 +9,22 @@
 import Foundation
 import Firebase
 
-let ref = Database.database().reference()
+var ref: DatabaseReference!
 
 class FirebaseService {
     static let instance = FirebaseService()
     
-    let refUsers = ref.child("users")
+    //let refUsers = ref.child("users")
     
     func createUser(uid: String, userData: Dictionary<String, Any>) {
-        refUsers.child(uid).updateChildValues(userData)
+        ref = Database.database().reference()
+        ref.child("users").child(uid).updateChildValues(userData)
     }
     
     func getCoffeeBeans(passedUID: String, handler: @escaping (_ coffeebeans: [CoffeeBean]) -> ()) {
+        ref = Database.database().reference()
         var beansArray = [CoffeeBean]()
-        refUsers.child(passedUID).child("beans").observe(.value) { (beanSnapshot) in
+        ref.child("users").child(passedUID).child("beans").observe(.value) { (beanSnapshot) in
             beansArray.removeAll()
             guard let data = beanSnapshot.children.allObjects as? [DataSnapshot] else { return }
             

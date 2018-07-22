@@ -48,13 +48,20 @@ class CafeProfileVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
+        //ref = Database.database().reference()
         
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        ref = Database.database().reference()
         showcafeInfo()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        //dismiss(animated: true, completion: nil)
+        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+        cafeVC?.initData(uid: currentUser!)
+        self.present(cafeVC!, animated: true, completion: nil)
     }
     
     @IBAction func pressedLogoutButton(_ sender: Any) {

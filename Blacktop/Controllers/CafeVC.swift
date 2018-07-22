@@ -35,23 +35,24 @@ class CafeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
+        //ref = Database.database().reference()
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        ref = Database.database().reference()
         loadProfile()
         FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
         }
-        //getCoffeeBeans()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+        self.present(mapVC!, animated: true, completion: nil)
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
@@ -139,22 +140,6 @@ class CafeVC: UIViewController {
     @IBAction func addCoffeePressed(_ sender: Any) {
         
     }
-    
-//    func getCoffeeBeans() {
-//        var coffeeBeans = [CoffeeBean]()
-//        ref.child("users").child(passedCafeID).child("beans").observe(.value) { (Datasnapshot) in
-//            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
-//            for beans in data {
-//                guard let beanName = beans.childSnapshot(forPath: "name").value as? String,
-//                    let roasterName = beans.childSnapshot(forPath: "roaster").value as? String else { return }
-//
-//                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName)
-//                coffeeBeans.append(coffeeBean)
-//                //print(beanName)
-//                //print(roasterName)
-//            }
-//        }
-//    }
 }
 
 extension CafeVC: UITableViewDelegate, UITableViewDataSource {

@@ -917,7 +917,6 @@
                                         <state key="normal" image="back"/>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="hWn-V9-pXD" eventType="touchUpInside" id="OZX-IV-aZV"/>
-                                            <segue destination="zfX-zw-tf9" kind="show" id="ehn-jf-EWI"/>
                                         </connections>
                                     </button>
                                 </subviews>

@@ -13,23 +13,12 @@ class LogInVC: UIViewController {
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
     
-    let toolBar = UIToolbar()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userEmail.inputAccessoryView = toolBar
-        userPassword.inputAccessoryView = toolBar
+        keyboardDoneButton(textfield: userEmail)
+        keyboardDoneButton(textfield: userPassword)
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
-        
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.sizeToFit()
-        
-    }
-    
-    @objc func doneClicked() {
-        view.endEditing(true)
     }
     
     @IBAction func pressedLogInButton(_ sender: Any) {

@@ -17,23 +17,13 @@ class SignUpVC: UIViewController {
     
     var userRole = "user"
     
-    let toolBar = UIToolbar()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userName.inputAccessoryView = toolBar
-        userEmail.inputAccessoryView = toolBar
-        userPassword.inputAccessoryView = toolBar
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        keyboardDoneButton(textfield: userName)
+        keyboardDoneButton(textfield: userEmail)
+        keyboardDoneButton(textfield: userPassword)
         
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.sizeToFit()
-        
-    }
-    
-    @objc func doneClicked() {
-        view.endEditing(true)
     }
     
     @IBAction func switchButton(_ sender: UISwitch) {
