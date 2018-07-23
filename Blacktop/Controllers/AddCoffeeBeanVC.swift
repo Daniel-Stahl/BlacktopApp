@@ -14,9 +14,12 @@ class AddCoffeeBeanVC: UIViewController {
     let currentUser = Auth.auth().currentUser?.uid
     @IBOutlet weak var beanName: CustomTextField!
     @IBOutlet weak var roasterName: CustomTextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        keyboardDoneButton(textfield: beanName)
+        keyboardDoneButton(textfield: roasterName)
         
     }
     

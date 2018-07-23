@@ -35,14 +35,13 @@ class CafeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //ref = Database.database().reference()
+        ref = Database.database().reference()
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        ref = Database.database().reference()
         loadProfile()
         FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans

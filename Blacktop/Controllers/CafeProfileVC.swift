@@ -48,13 +48,16 @@ class CafeProfileVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //ref = Database.database().reference()
-        
+        ref = Database.database().reference()
+        keyboardDoneButton(textfield: name)
+        keyboardDoneButton(textfield: address)
+        keyboardDoneButton(textfield: city)
+        keyboardDoneButton(textfield: website)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        ref = Database.database().reference()
+        super.viewDidAppear(animated)
         showcafeInfo()
     }
     
