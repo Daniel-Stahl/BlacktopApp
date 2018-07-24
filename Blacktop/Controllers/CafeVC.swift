@@ -38,6 +38,7 @@ class CafeVC: UIViewController {
         ref = Database.database().reference()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -124,13 +125,41 @@ class CafeVC: UIViewController {
             let dayOfTheWeek = "\(Date().dayOfWeek()!)"
             
             switch dayOfTheWeek {
-                case "Monday": self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
-                case "Tuesday": self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
-                case "Wednesday": self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
-                case "Thursday": self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
-                case "Friday": self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
-                case "Saturday": self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
-                case "Sunday": self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+            case "Monday": if mondayOpen == "" && mondayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
+            }
+            case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
+            }
+            case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+               self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
+            }
+            case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
+            }
+            case "Friday": if fridayOpen == "" && fridayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
+            }
+            case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
+            }
+            case "Sunday": if sundayOpen == "" && sundayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+            }
                 default: self.cafeHours.text = "Not open"
             }
         }

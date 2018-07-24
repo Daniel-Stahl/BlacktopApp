@@ -31,6 +31,7 @@
 		43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */; };
 		43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D202302100015500C8F0FD /* CoffeeBean.swift */; };
 		43D2023421041F9C00C8F0FD /* KeyboardDoneBUtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2023321041F9C00C8F0FD /* KeyboardDoneBUtton.swift */; };
+		43D2023621064F9C00C8F0FD /* StatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2023521064F9C00C8F0FD /* StatePicker.swift */; };
 		43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */; };
 		43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3F20E1A0B700EB1E44 /* Cafe.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeBeanVC.swift; sourceTree = "<group>"; };
 		43D202302100015500C8F0FD /* CoffeeBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBean.swift; sourceTree = "<group>"; };
 		43D2023321041F9C00C8F0FD /* KeyboardDoneBUtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDoneBUtton.swift; sourceTree = "<group>"; };
+		43D2023521064F9C00C8F0FD /* StatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatePicker.swift; sourceTree = "<group>"; };
 		43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeAnnotation.swift; sourceTree = "<group>"; };
 		43FEED3F20E1A0B700EB1E44 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +126,7 @@
 				432FF76320ACD90900FC2F8B /* CustomView.swift */,
 				432FF77720B389DC00FC2F8B /* TimePicker.swift */,
 				43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */,
+				43D2023521064F9C00C8F0FD /* StatePicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
 				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
 				43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */,
+				43D2023621064F9C00C8F0FD /* StatePicker.swift in Sources */,
 				432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */,
 				43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,

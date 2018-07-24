@@ -23,6 +23,8 @@ class CafeProfileVC: UIViewController {
     var takenImage: UIImage!
     var imageDownloadURL: String?
     
+    var statePicker = UIPickerView()
+    
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
     @IBOutlet weak var city: UITextField!
@@ -46,13 +48,27 @@ class CafeProfileVC: UIViewController {
     @IBOutlet weak var sunOpen: TimePicker!
     @IBOutlet weak var sunClose: TimePicker!
     
+    var states = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
         keyboardDoneButton(textfield: name)
         keyboardDoneButton(textfield: address)
         keyboardDoneButton(textfield: city)
+        keyboardDoneButton(textfield: state)
+        keyboardDoneButton(textfield: zipcode)
         keyboardDoneButton(textfield: website)
+        keyboardDoneButton(textfield: phone)
+        
+        zipcode.keyboardType = UIKeyboardType.numberPad
+        
+        statePicker.delegate = self
+        state.inputView = statePicker
+        
+        
         
     }
     
@@ -284,5 +300,24 @@ extension CafeProfileVC {
         satClose.isEnabled = true
         sunOpen.isEnabled = true
         sunClose.isEnabled = true
+    }
+}
+
+extension CafeProfileVC: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return states.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return states[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        state.text = states[row]
     }
 }
