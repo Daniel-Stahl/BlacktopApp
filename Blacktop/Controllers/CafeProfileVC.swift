@@ -240,6 +240,13 @@ class CafeProfileVC: UIViewController {
 }
 
 extension CafeProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func cropImage(rawImage: UIImage) -> UIImage {
+        let crop = CGRect(x: 0, y: 0, width: 375, height: 200)
+        let imageRef: CGImage = rawImage.cgImage!.cropping(to: crop)!
+        let image: UIImage = UIImage(cgImage: imageRef, scale: rawImage.scale, orientation: rawImage.imageOrientation)
+        return image
+    }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
