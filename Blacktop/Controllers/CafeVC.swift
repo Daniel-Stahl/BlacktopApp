@@ -51,8 +51,7 @@ class CafeVC: UIViewController {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-        self.present(mapVC!, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
@@ -102,7 +101,11 @@ class CafeVC: UIViewController {
             let zipcode = data["zipcode"] as? String
             
             self.cafeAddress.text = address
-            self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+            if city == "" && state == "" && zipcode == "" {
+                self.cafeCityStateZip.text = ""
+            } else {
+                self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+            }
         }
         
         ref.child("users").child(passedCafeID).child("hours").observe(.value) { (Datasnapshot) in
@@ -184,6 +187,25 @@ extension CafeVC: UITableViewDelegate, UITableViewDataSource {
         let data = coffeeBean[indexPath.row]
         cell.configureCell(name: data.beanName, roaster: data.roasterName)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if currentUser != passedCafeID {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            let beanData = coffeeBean[indexPath.row]
+            
+            ref.child("users").child(currentUser!).child("beans").child(beanData.key).removeValue()
+            coffeeBean.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            
+        }
     }
 }
 

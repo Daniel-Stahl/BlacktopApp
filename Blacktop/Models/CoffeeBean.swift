@@ -11,9 +11,11 @@ import UIKit
 class CoffeeBean {
     var beanName: String
     var roasterName: String
+    var key: String
     
-    init(beanName: String, roasterName: String) {
+    init(beanName: String, roasterName: String, key: String) {
         self.beanName = beanName
         self.roasterName = roasterName
+        self.key = key
     }
 }
