@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class CafeVC: UIViewController {
+class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     var ref: DatabaseReference!
     let storage = Storage.storage().reference()
     let currentUser = Auth.auth().currentUser?.uid
@@ -39,6 +39,14 @@ class CafeVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        let linkTap = UITapGestureRecognizer(target: self, action: #selector(tappedLink))
+        linkTap.numberOfTapsRequired = 1
+        cafeWebsite.addGestureRecognizer(linkTap)
+        
+        let phoneTap = UITapGestureRecognizer(target: self, action: #selector(tappedPhone))
+        phoneTap.numberOfTapsRequired = 1
+        cafePhone.addGestureRecognizer(phoneTap)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,13 +58,31 @@ class CafeVC: UIViewController {
         }
     }
     
+    @objc func tappedLink() {
+        let url = URL(string: "https://\(cafeWebsite.text!)")
+        UIApplication.shared.open(url!)
+    }
+    
+    @objc func tappedPhone() {
+        let phoneNumber = URL(string: "tel://\(cafePhone.text!)")
+        UIApplication.shared.open(phoneNumber!)
+    }
+    
     @IBAction func backButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "unwindToVC1", sender: nil)
+        
+//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+//        self.present(mapVC!, animated: true, completion: nil)
+        
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
         let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
         self.present(profileVC!, animated: true, completion: nil)
+    }
+    
+    @IBAction func linkPressed(_ sender: Any) {
+        
     }
     
     func loadProfile() {

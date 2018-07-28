@@ -20,6 +20,7 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutAddress: UILabel!
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
+    @IBAction func unwindToVC1(segue:UIStoryboardSegue) { }
     var cafeID = ""
     
     let locationManager = CLLocationManager()
