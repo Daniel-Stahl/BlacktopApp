@@ -20,10 +20,6 @@ class SignUpVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        keyboardDoneButton(textfield: userName)
-        keyboardDoneButton(textfield: userEmail)
-        keyboardDoneButton(textfield: userPassword)
-        
     }
     
     @IBAction func switchButton(_ sender: UISwitch) {

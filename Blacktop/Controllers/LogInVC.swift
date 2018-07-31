@@ -16,9 +16,6 @@ class LogInVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        keyboardDoneButton(textfield: userEmail)
-        keyboardDoneButton(textfield: userPassword)
-        
     }
     
     @IBAction func pressedLogInButton(_ sender: Any) {

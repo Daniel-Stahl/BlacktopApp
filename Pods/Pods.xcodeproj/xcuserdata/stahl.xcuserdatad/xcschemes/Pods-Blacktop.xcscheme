@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D91E152DEA547D12DE54819711A745FC"
+               BlueprintIdentifier = "61D5B85A7D60F712968750E3AAB0199D"
                BuildableName = "Pods_Blacktop.framework"
                BlueprintName = "Pods-Blacktop"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D91E152DEA547D12DE54819711A745FC"
+            BlueprintIdentifier = "61D5B85A7D60F712968750E3AAB0199D"
             BuildableName = "Pods_Blacktop.framework"
             BlueprintName = "Pods-Blacktop"
             ReferencedContainer = "container:Pods.xcodeproj">

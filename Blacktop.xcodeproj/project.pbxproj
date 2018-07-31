@@ -27,10 +27,11 @@
 		432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77020AF8E2000FC2F8B /* ProfileVC.swift */; };
 		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
 		432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77720B389DC00FC2F8B /* TimePicker.swift */; };
+		43920C0F210FE05C0023B3AF /* Pods-Blacktop.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3599970CAF1E974C6FB64D6A /* Pods-Blacktop.debug.xcconfig */; };
+		43920C10210FE0610023B3AF /* Pods-Blacktop.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */; };
 		43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */; };
 		43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */; };
 		43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D202302100015500C8F0FD /* CoffeeBean.swift */; };
-		43D2023421041F9C00C8F0FD /* KeyboardDoneBUtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2023321041F9C00C8F0FD /* KeyboardDoneBUtton.swift */; };
 		43D2023621064F9C00C8F0FD /* StatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2023521064F9C00C8F0FD /* StatePicker.swift */; };
 		43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */; };
 		43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3F20E1A0B700EB1E44 /* Cafe.swift */; };
@@ -62,7 +63,6 @@
 		43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBeanCell.swift; sourceTree = "<group>"; };
 		43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeBeanVC.swift; sourceTree = "<group>"; };
 		43D202302100015500C8F0FD /* CoffeeBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBean.swift; sourceTree = "<group>"; };
-		43D2023321041F9C00C8F0FD /* KeyboardDoneBUtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDoneBUtton.swift; sourceTree = "<group>"; };
 		43D2023521064F9C00C8F0FD /* StatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatePicker.swift; sourceTree = "<group>"; };
 		43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeAnnotation.swift; sourceTree = "<group>"; };
 		43FEED3F20E1A0B700EB1E44 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
@@ -169,7 +169,6 @@
 		43D2023221041F5400C8F0FD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				43D2023321041F9C00C8F0FD /* KeyboardDoneBUtton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -203,7 +202,6 @@
 				432FF74120ACACB800FC2F8B /* Frameworks */,
 				432FF74220ACACB800FC2F8B /* Resources */,
 				E293048390287E1C2A1E3159 /* [CP] Embed Pods Frameworks */,
-				192F2290E64D61C96A7AC4D9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -254,43 +252,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				432FF76D20AE246A00FC2F8B /* GoogleService-Info.plist in Resources */,
+				43920C10210FE0610023B3AF /* Pods-Blacktop.release.xcconfig in Resources */,
 				432FF75220ACACB900FC2F8B /* LaunchScreen.storyboard in Resources */,
 				432FF74F20ACACB900FC2F8B /* Assets.xcassets in Resources */,
 				432FF74D20ACACB800FC2F8B /* Main.storyboard in Resources */,
+				43920C0F210FE05C0023B3AF /* Pods-Blacktop.debug.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		192F2290E64D61C96A7AC4D9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		763BE2FB528DB4F41E2698AD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Blacktop-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E293048390287E1C2A1E3159 /* [CP] Embed Pods Frameworks */ = {
@@ -299,9 +287,20 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -315,7 +314,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43D2023421041F9C00C8F0FD /* KeyboardDoneBUtton.swift in Sources */,
 				432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */,
 				43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */,
 				432C37F420F0350000CC25D7 /* CafeAnnotationView.swift in Sources */,
@@ -420,6 +418,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -473,6 +472,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

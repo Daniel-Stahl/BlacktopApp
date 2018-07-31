@@ -18,8 +18,6 @@ class AddCoffeeBeanVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        keyboardDoneButton(textfield: beanName)
-        keyboardDoneButton(textfield: roasterName)
         
     }
     

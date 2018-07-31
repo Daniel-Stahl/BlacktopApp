@@ -10,27 +10,20 @@ import UIKit
 
 class TimePicker: UITextField, UITextFieldDelegate {
     
-    let toolBar = UIToolbar()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         textFieldDidBeginEditing(self)
-        self.inputAccessoryView = toolBar
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
 
-        toolBar.setItems([doneButton], animated: false)
-        toolBar.sizeToFit()
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         let timePickerView: UIDatePicker = UIDatePicker()
         
-        timePickerView.datePickerMode = UIDatePickerMode.time
+        timePickerView.datePickerMode = UIDatePicker.Mode.time
         
         self.inputView = timePickerView
         
-        timePickerView.addTarget(self, action: #selector(timePickerValueChanged), for: UIControlEvents.valueChanged)
+        timePickerView.addTarget(self, action: #selector(timePickerValueChanged), for: UIControl.Event.valueChanged)
         
     }
     
@@ -42,9 +35,5 @@ class TimePicker: UITextField, UITextFieldDelegate {
         
         self.text = timeFormatter.string(from: sender.date)
         
-    }
-
-    @objc func doneClicked() {
-            self.endEditing(true)
     }
 }
