@@ -8,8 +8,9 @@
 
 import UIKit
 import Firebase
+import Photos
 
-class CafeProfileVC: UIViewController {
+class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var ref: DatabaseReference!
     let currentUser = Auth.auth().currentUser?.uid
     
@@ -24,6 +25,7 @@ class CafeProfileVC: UIViewController {
     var imageDownloadURL: String?
     
     var statePicker = UIPickerView()
+    let picker = UIImagePickerController()
     
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
@@ -61,13 +63,14 @@ class CafeProfileVC: UIViewController {
         statePicker.delegate = self
         state.inputView = statePicker
         
-        
+        picker.delegate = self
+        showcafeInfo()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showcafeInfo()
+        //showcafeInfo()
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -102,27 +105,26 @@ class CafeProfileVC: UIViewController {
     }
     
     func showcafeInfo() {
-        let imageRef = storage.child("photos").child(currentUser!)
-        imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
-            if error != nil {
-                print(error)
-            } else {
-                let image: UIImage = UIImage(data: data!)!
-                self.profileImage.image = image
-            }
-//            if let data = data {
-//                let image = UIImage(data: data)
+//        let imageRef = storage.child("photos").child(currentUser!)
+//        imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
+//            if error != nil {
+//                print(error)
+//            } else {
+//                let image: UIImage = UIImage(data: data!)!
 //                self.profileImage.image = image
 //            }
-            print(error ?? "No error")
-        }
+//        }
         
         ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let cafeName = data["name"] as? String
-            let cafePhone = data["phone"] as? String
-            let cafeWebsite = data["website"] as? String
+            let data = Datasnapshot.value as? NSDictionary
+            guard let cafePhoto = data?["photoURL"] as? String,
+            let cafeName = data?["name"] as? String,
+            let cafePhone = data?["phone"] as? String,
+            let cafeWebsite = data?["website"] as? String else { return }
             
+            guard let url = URL(string: cafePhoto) else { return }
+            let imageData = try? Data(contentsOf: url)
+            self.profileImage.image = UIImage(data: imageData!)
             self.name.text = cafeName
             self.phone.text = cafePhone
             self.website.text = cafeWebsite
@@ -234,7 +236,34 @@ class CafeProfileVC: UIViewController {
     }
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {
-        showImageSheet()
+        //showImageSheet()
+        checkPermission {
+            self.picker.allowsEditing = false
+            self.picker.sourceType = .photoLibrary
+            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+            self.present(self.picker, animated: true, completion: nil)
+        }
+        
+        
+        
+    }
+    
+    func checkPermission(hanler: @escaping () -> Void) {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            // Access is already granted by user
+            hanler()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { (newStatus) in
+                if newStatus == PHAuthorizationStatus.authorized {
+                    // Access is granted by user
+                    hanler()
+                }
+            }
+        default:
+            print("Error: no access to photo album.")
+        }
     }
     
 //    func camera() {
@@ -245,7 +274,7 @@ class CafeProfileVC: UIViewController {
 //            self.present(cameraController, animated: true, completion: nil)
 //        }
 //    }
-//    
+//
 //    func photoLibrary() {
 //        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
 //            let photoLibraryController = UIImagePickerController()
@@ -255,44 +284,45 @@ class CafeProfileVC: UIViewController {
 //        }
 //    }
     
-    func showImageSheet() {
-        
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-            picker.sourceType = .camera
-            self.present(picker, animated: true, completion: nil)
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-            picker.sourceType = .photoLibrary
-            self.present(picker, animated: true, completion: nil)
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(actionSheet, animated: true, completion: nil)
-    }
+//    func showImageSheet() {
+//
+//        let picker = UIImagePickerController()
+//        picker.delegate = self
+//
+//        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+//
+//        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+//            picker.sourceType = .camera
+//            self.present(picker, animated: true, completion: nil)
+//        }))
+//
+//        actionSheet.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+//            picker.sourceType = .photoLibrary
+//            self.present(picker, animated: true, completion: nil)
+//        }))
+//
+//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//        present(actionSheet, animated: true, completion: nil)
+//    }
 }
 
-extension CafeProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension CafeProfileVC {
     
-    func cropImage(rawImage: UIImage) -> UIImage {
-        let crop = CGRect(x: 0, y: 0, width: 375, height: 245)
-        let imageRef: CGImage = rawImage.cgImage!.cropping(to: crop)!
-        let image: UIImage = UIImage(cgImage: imageRef, scale: rawImage.scale, orientation: rawImage.imageOrientation)
-        return image
-    }
+//    func cropImage(rawImage: UIImage) -> UIImage {
+//        let crop = CGRect(x: 0, y: 0, width: 375, height: 245)
+//        let imageRef: CGImage = rawImage.cgImage!.cropping(to: crop)!
+//        let image: UIImage = UIImage(cgImage: imageRef, scale: rawImage.scale, orientation: rawImage.imageOrientation)
+//        return image
+//    }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        self.takenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.takenImage = image
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
     }
