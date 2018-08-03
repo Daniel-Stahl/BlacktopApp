@@ -69,10 +69,8 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        performSegue(withIdentifier: "unwindToVC1", sender: nil)
-        
-//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-//        self.present(mapVC!, animated: true, completion: nil)
+        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+        self.present(mapVC!, animated: true, completion: nil)
         
     }
     
@@ -82,7 +80,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func linkPressed(_ sender: Any) {
-        
+        //Need this?
     }
     
     func loadProfile() {
@@ -98,7 +96,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.addCoffeeButton.isHidden = true
             }
         }
-        
+        //Refactor this like CafeProfileVC
         let imageRef = storage.child("photos").child(passedCafeID)
         let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
             if let data = data {
@@ -114,82 +112,95 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             let phone = data["phone"] as? String
             let website = data["website"] as? String
             
+            print(data)
+            
             self.cafeName.text = name
             self.cafePhone.text = phone
             self.cafeWebsite.text = website
         }
         
         ref.child("users").child(passedCafeID).child("location").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let address = data["address"] as? String
-            let city = data["city"] as? String
-            let state = data["state"] as? String
-            let zipcode = data["zipcode"] as? String
-            
-            self.cafeAddress.text = address
-            if city == "" && state == "" && zipcode == "" {
-                self.cafeCityStateZip.text = ""
+            if Datasnapshot.exists() {
+                guard let data = Datasnapshot.value as? [String: Any] else { return }
+                let address = data["address"] as? String
+                let city = data["city"] as? String
+                let state = data["state"] as? String
+                let zipcode = data["zipcode"] as? String
+                
+                if address == "" && city == "" && state == "" && zipcode == "" {
+                    self.cafeAddress.text = ""
+                    self.cafeCityStateZip.text = ""
+                } else {
+                    self.cafeAddress.text = address
+                    self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+                }
             } else {
-                self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+                self.cafeAddress.text = ""
+                self.cafeCityStateZip.text = ""
             }
         }
         
         ref.child("users").child(passedCafeID).child("hours").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let mondayOpen = data["monOpen"] as? String
-            let mondayClose = data["monClose"] as? String
-            let tuesdayOpen = data["tueOpen"] as? String
-            let tuesdayClose = data["tueClose"] as? String
-            let wednesdayOpen = data["wedOpen"] as? String
-            let wednesdayClose = data["wedClose"] as? String
-            let thursdayOpen = data["thuOpen"] as? String
-            let thursdayClose = data["thuClose"] as? String
-            let fridayOpen = data["friOpen"] as? String
-            let fridayClose = data["friClose"] as? String
-            let saturdayOpen = data["satOpen"] as? String
-            let saturdayClose = data["satClose"] as? String
-            let sundayOpen = data["sunOpen"] as? String
-            let sundayClose = data["sunClose"] as? String
-            
-            let dayOfTheWeek = "\(Date().dayOfWeek()!)"
-            
-            switch dayOfTheWeek {
-            case "Monday": if mondayOpen == "" && mondayClose == "" {
-                self.cafeHours.text = "Closed"
+            if Datasnapshot.exists() {
+                guard let data = Datasnapshot.value as? [String: Any] else { return }
+                let mondayOpen = data["monOpen"] as? String
+                let mondayClose = data["monClose"] as? String
+                let tuesdayOpen = data["tueOpen"] as? String
+                let tuesdayClose = data["tueClose"] as? String
+                let wednesdayOpen = data["wedOpen"] as? String
+                let wednesdayClose = data["wedClose"] as? String
+                let thursdayOpen = data["thuOpen"] as? String
+                let thursdayClose = data["thuClose"] as? String
+                let fridayOpen = data["friOpen"] as? String
+                let fridayClose = data["friClose"] as? String
+                let saturdayOpen = data["satOpen"] as? String
+                let saturdayClose = data["satClose"] as? String
+                let sundayOpen = data["sunOpen"] as? String
+                let sundayClose = data["sunClose"] as? String
+                
+                let dayOfTheWeek = "\(Date().dayOfWeek()!)"
+                
+                switch dayOfTheWeek {
+                case "Monday": if mondayOpen == "" && mondayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
+                }
+                case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
+                }
+                case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                   self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
+                }
+                case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
+                }
+                case "Friday": if fridayOpen == "" && fridayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
+                }
+                case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
+                }
+                case "Sunday": if sundayOpen == "" && sundayClose == "" {
+                    self.cafeHours.text = "Closed"
+                } else {
+                    self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+                }
+                    default: self.cafeHours.text = "Not open"
+                }
             } else {
-                self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
-            }
-            case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-                self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
-            }
-            case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-               self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
-            }
-            case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-                self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
-            }
-            case "Friday": if fridayOpen == "" && fridayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-                self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
-            }
-            case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-                self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
-            }
-            case "Sunday": if sundayOpen == "" && sundayClose == "" {
-                self.cafeHours.text = "Closed"
-            } else {
-                self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
-            }
-                default: self.cafeHours.text = "Not open"
+                
+                self.cafeHours.text = ""
             }
         }
     }

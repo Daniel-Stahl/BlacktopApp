@@ -34,14 +34,12 @@ class SignUpVC: UIViewController {
         if userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
-                    
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        if self.userRole == "cafe" {
-                            let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
-                            self.present(cafeProfileVC!, animated: true, completion: nil)
-                        } else {
+                        if success {
                             let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
                             self.present(mapVC!, animated: true, completion: nil)
+                        } else {
+                            print(error!)
                         }
                     })
                 } else {

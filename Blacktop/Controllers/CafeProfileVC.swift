@@ -64,13 +64,15 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         state.inputView = statePicker
         
         picker.delegate = self
-        showcafeInfo()
+        
+        
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //showcafeInfo()
+        showcafeInfo()
+        
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -105,37 +107,28 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func showcafeInfo() {
-//        let imageRef = storage.child("photos").child(currentUser!)
-//        imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
-//            if error != nil {
-//                print(error)
-//            } else {
-//                let image: UIImage = UIImage(data: data!)!
-//                self.profileImage.image = image
-//            }
-//        }
-        
         ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            guard let cafePhoto = data?["photoURL"] as? String,
-            let cafeName = data?["name"] as? String,
-            let cafePhone = data?["phone"] as? String,
-            let cafeWebsite = data?["website"] as? String else { return }
+            guard let data = Datasnapshot.value as? [String: Any] else { return }
+            let cafeName = data["name"] as? String
+            let cafePhone = data["phone"] as? String
+            let cafeWebsite = data["website"] as? String
             
-            guard let url = URL(string: cafePhoto) else { return }
-            let imageData = try? Data(contentsOf: url)
-            self.profileImage.image = UIImage(data: imageData!)
             self.name.text = cafeName
             self.phone.text = cafePhone
             self.website.text = cafeWebsite
+            
+            guard let cafePhoto = data["photoURL"] as? String else { return }
+            guard let url = URL(string: cafePhoto) else { return }
+            let imageData = try? Data(contentsOf: url)
+            self.profileImage.image = UIImage(data: imageData!)
         }
         
         ref.child("users").child(currentUser!).child("location").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let cafeAddress = data["address"] as? String
-            let cafeCity = data["city"] as? String
-            let cafeState = data["state"] as? String
-            let cafeZipcode = data["zipcode"] as? String
+            let data = Datasnapshot.value as? NSDictionary
+            guard let cafeAddress = data?["address"] as? String,
+            let cafeCity = data?["city"] as? String,
+            let cafeState = data?["state"] as? String,
+            let cafeZipcode = data?["zipcode"] as? String else { return }
             
             self.address.text = cafeAddress
             self.city.text = cafeCity
@@ -179,30 +172,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {
-        
         updateUserProfile()
-        
-//        if takenImage != nil {
-//            let imageData = UIImageJPEGRepresentation(takenImage, 0.0)
-//            let imageRef = storage.child("photos").child(currentUser!)
-//
-//            imageRef.putData(imageData!).observe(.success) { (Imagesnapshot) in
-//                imageRef.downloadURL(completion: { (url, err) in
-//                    self.imageDownloadURL = url?.path
-//                })
-//            }
-//        } else {
-//            print("takenImage is nil")
-//        }
-        
-//        let cafeDetails = ["name": name.text!, "location": ["address": address.text!, "city": city.text!, "state": state.text!, "zipcode": zipcode.text!], "phone": phone.text!, "website": website.text!, "hours": ["monOpen": monOpen.text!, "monClose": monClose.text!, "tueOpen": tueOpen.text!, "tueClose": tueClose.text!, "wedOpen": wedOpen.text!, "wedClose": wedClose.text!, "thuOpen": thuOpen.text!, "thuClose": thuClose.text!, "friOpen": friOpen.text!, "friClose": friClose.text!, "satOpen": satOpen.text!, "satClose": satClose.text!, "sunOpen": sunOpen.text!, "sunClose": sunClose.text!]] as [String : Any]
-//
-//        ref.child("users").child(currentUser!).updateChildValues(cafeDetails)
-        
-        self.changeImageButton.isHidden = true
-        self.editCafeProfileButton.isHidden = false
-        self.saveCafeProfileButton.isHidden = true
-        disableTextField()
     }
     
     func updateUserProfile() {
@@ -227,6 +197,11 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                                 print(error!)
                                 return
                             }
+                            //add spin here
+                            self.changeImageButton.isHidden = true
+                            self.editCafeProfileButton.isHidden = false
+                            self.saveCafeProfileButton.isHidden = true
+                            self.disableTextField()
                             print("Profile successfully updated!")
                         })
                     }
@@ -243,79 +218,28 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
             self.present(self.picker, animated: true, completion: nil)
         }
-        
-        
-        
     }
     
-    func checkPermission(hanler: @escaping () -> Void) {
+    func checkPermission(handler: @escaping () -> Void) {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
         case .authorized:
             // Access is already granted by user
-            hanler()
+            handler()
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { (newStatus) in
                 if newStatus == PHAuthorizationStatus.authorized {
                     // Access is granted by user
-                    hanler()
+                    handler()
                 }
             }
         default:
             print("Error: no access to photo album.")
         }
     }
-    
-//    func camera() {
-//        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-//            let cameraController = UIImagePickerController()
-//            cameraController.delegate = self
-//            cameraController.sourceType = .camera
-//            self.present(cameraController, animated: true, completion: nil)
-//        }
-//    }
-//
-//    func photoLibrary() {
-//        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-//            let photoLibraryController = UIImagePickerController()
-//            photoLibraryController.delegate = self
-//            photoLibraryController.sourceType = .photoLibrary
-//            self.present(photoLibraryController, animated: true, completion: nil)
-//        }
-//    }
-    
-//    func showImageSheet() {
-//
-//        let picker = UIImagePickerController()
-//        picker.delegate = self
-//
-//        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//
-//        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-//            picker.sourceType = .camera
-//            self.present(picker, animated: true, completion: nil)
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-//            picker.sourceType = .photoLibrary
-//            self.present(picker, animated: true, completion: nil)
-//        }))
-//
-//        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//
-//        present(actionSheet, animated: true, completion: nil)
-//    }
 }
 
 extension CafeProfileVC {
-    
-//    func cropImage(rawImage: UIImage) -> UIImage {
-//        let crop = CGRect(x: 0, y: 0, width: 375, height: 245)
-//        let imageRef: CGImage = rawImage.cgImage!.cropping(to: crop)!
-//        let image: UIImage = UIImage(cgImage: imageRef, scale: rawImage.scale, orientation: rawImage.imageOrientation)
-//        return image
-//    }
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
