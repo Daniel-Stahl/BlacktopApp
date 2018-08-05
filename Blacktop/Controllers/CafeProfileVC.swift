@@ -21,11 +21,15 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var changeImageButton: UIButton!
-    var takenImage = UIImage()
-    var imageDownloadURL: String?
     
+    var imageDownloadURL: String?
+    var takenImage = UIImage()
     var statePicker = UIPickerView()
     let picker = UIImagePickerController()
+    
+    
+    var screenSize = UIScreen.main.bounds
+    var spinner: UIActivityIndicatorView?
     
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
@@ -57,23 +61,36 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
+        showcafeInfo()
         zipcode.keyboardType = UIKeyboardType.numberPad
         
         statePicker.delegate = self
         state.inputView = statePicker
         
         picker.delegate = self
-        
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showcafeInfo()
+        //showcafeInfo()
         
     }
+    
+    func addSpinner() {
+        spinner = UIActivityIndicatorView()
+        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
+        spinner?.activityIndicatorViewStyle = .whiteLarge
+        spinner?.color = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
+        spinner?.startAnimating()
+        view.addSubview(spinner!)
+    }
+    
+    func stopSpinner() {
+        if spinner != nil {
+            spinner?.removeFromSuperview()
+        }
+    }
+    
     
     @IBAction func backButtonPressed(_ sender: Any) {
         let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
@@ -108,6 +125,15 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
     func showcafeInfo() {
         ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
+            let data = Datasnapshot.value as? NSDictionary
+            if let cafePhoto = data?["photoURL"] as? String {
+                let url = URL(string: cafePhoto)
+                let imageData = try? Data(contentsOf: url!)
+                self.profileImage.image = UIImage(data: imageData!)
+            }
+        }
+        
+        ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
             guard let data = Datasnapshot.value as? [String: Any] else { return }
             let cafeName = data["name"] as? String
             let cafePhone = data["phone"] as? String
@@ -116,11 +142,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             self.name.text = cafeName
             self.phone.text = cafePhone
             self.website.text = cafeWebsite
-            
-            guard let cafePhoto = data["photoURL"] as? String else { return }
-            guard let url = URL(string: cafePhoto) else { return }
-            let imageData = try? Data(contentsOf: url)
-            self.profileImage.image = UIImage(data: imageData!)
         }
         
         ref.child("users").child(currentUser!).child("location").observe(.value) { (Datasnapshot) in
@@ -176,8 +197,9 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func updateUserProfile() {
+        addSpinner()
         let imageRef = storage.child("photos").child(currentUser!)
-        guard let image = profileImage.image else { return }
+        guard let image = self.profileImage.image else { return }
         if let newImage = UIImageJPEGRepresentation(image, 0.0) {
             imageRef.putData(newImage, metadata: nil) { (metadata, error) in
                 if error != nil {
@@ -197,7 +219,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                                 print(error!)
                                 return
                             }
-                            //add spin here
+                            self.stopSpinner()
                             self.changeImageButton.isHidden = true
                             self.editCafeProfileButton.isHidden = false
                             self.saveCafeProfileButton.isHidden = true
@@ -211,7 +233,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {
-        //showImageSheet()
+
         checkPermission {
             self.picker.allowsEditing = false
             self.picker.sourceType = .photoLibrary
@@ -233,6 +255,9 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     handler()
                 }
             }
+        case .denied:
+            print("please change your settings in privacy > photos > Blacktop")
+            //alert user to change setting
         default:
             print("Error: no access to photo album.")
         }
@@ -245,10 +270,12 @@ extension CafeProfileVC {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.takenImage = image
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
+        
     }
 }
 
