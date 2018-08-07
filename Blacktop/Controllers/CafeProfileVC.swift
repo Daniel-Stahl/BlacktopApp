@@ -70,12 +70,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         picker.delegate = self
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //showcafeInfo()
-        
-    }
-    
     func addSpinner() {
         spinner = UIActivityIndicatorView()
         spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
@@ -90,7 +84,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             spinner?.removeFromSuperview()
         }
     }
-    
     
     @IBAction func backButtonPressed(_ sender: Any) {
         let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LogInVC: UIViewController {
 
@@ -25,6 +26,7 @@ class LogInVC: UIViewController {
                     let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
                     self.present(mapVC!, animated: true, completion: nil)
                 } else {
+                    self.showAlert(withError: error)
                     print(String(describing: error?.localizedDescription))
                 }
             }
@@ -36,4 +38,13 @@ class LogInVC: UIViewController {
         present(loginVC!, animated: true, completion: nil)
     }
     
+    func showAlert(withError error: Error!) {
+        let errorCode = AuthErrorCode(rawValue: error._code)
+        let errorAlert = UIAlertController(title: "Error!", message: errorCode?.errorMessage, preferredStyle: .alert)
+        present(errorAlert, animated: true) {
+            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
+    }
 }
