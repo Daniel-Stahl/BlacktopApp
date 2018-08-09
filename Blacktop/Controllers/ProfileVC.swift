@@ -68,7 +68,14 @@ class ProfileVC: UIViewController {
 
 extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Favorite"
+        return "Favorites"
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.white
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
+        header.textLabel?.font = UIFont(name: "Avenir Next", size: 20)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -82,10 +89,10 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "UserFavoriteCell", for: indexPath) as? UserFavoriteCell else { return UITableViewCell() }
         let data = favoriteCafe[indexPath.row]
+        cell.configureCell(name: data.cafeName, address: data.cafeAddress, cityStateZip: data.cafeCityStateZip)
         let url = URL(string: data.cafeImageURL)
         let imageData = try? Data(contentsOf: url!)
         cell.cafeImage.image = UIImage(data: imageData!)
-        cell.configureCell(name: data.cafeName, address: data.cafeAddress, cityStateZip: data.cafeCityStateZip)
         
         return cell
     }

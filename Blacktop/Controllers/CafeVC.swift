@@ -81,7 +81,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
-        let favoriteCafeDetails = ["imageURL": favoriteImage!, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
+        let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
         print(favoriteCafeDetails)
     }

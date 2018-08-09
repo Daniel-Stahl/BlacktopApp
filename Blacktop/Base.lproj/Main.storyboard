@@ -781,15 +781,15 @@
                                     <action selector="pressedExitButton:" destination="eC7-Kh-YaZ" eventType="touchUpInside" id="eHd-j9-sYS"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nZ5-WM-zwR">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="130" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nZ5-WM-zwR">
                                 <rect key="frame" x="16" y="97" width="343" height="599"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserFavoriteCell" rowHeight="120" id="PMI-gb-9PY" customClass="UserFavoriteCell" customModule="Blacktop" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="120"/>
+                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserFavoriteCell" rowHeight="130" id="PMI-gb-9PY" customClass="UserFavoriteCell" customModule="Blacktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PMI-gb-9PY" id="RYz-zs-Bo1">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="130"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tEp-x0-WHd">
@@ -835,16 +835,18 @@
                                                 <constraint firstItem="JGH-qw-GMj" firstAttribute="leading" secondItem="tEp-x0-WHd" secondAttribute="leading" id="NNI-2J-OjF"/>
                                                 <constraint firstItem="JGH-qw-GMj" firstAttribute="top" secondItem="tEp-x0-WHd" secondAttribute="top" id="Y2Z-mf-KUa"/>
                                                 <constraint firstItem="tEp-x0-WHd" firstAttribute="leading" secondItem="RYz-zs-Bo1" secondAttribute="leading" id="YBY-FC-xAO"/>
-                                                <constraint firstAttribute="bottom" secondItem="tEp-x0-WHd" secondAttribute="bottom" id="nZ0-uS-3pc"/>
+                                                <constraint firstAttribute="bottom" secondItem="tEp-x0-WHd" secondAttribute="bottom" constant="10" id="nZ0-uS-3pc"/>
                                                 <constraint firstAttribute="trailing" secondItem="tEp-x0-WHd" secondAttribute="trailing" id="ttl-8G-Cev"/>
                                                 <constraint firstItem="JGH-qw-GMj" firstAttribute="bottom" secondItem="tEp-x0-WHd" secondAttribute="bottom" id="yQv-QW-q9P"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="cafeAddress" destination="JSj-ZB-n6L" id="jQq-7b-Vjv"/>
                                             <outlet property="cafeCityStateZip" destination="fBL-3a-jv1" id="ydX-fg-TpO"/>
                                             <outlet property="cafeImage" destination="tEp-x0-WHd" id="bYh-j2-DWE"/>
                                             <outlet property="cafeName" destination="Kjl-zB-slD" id="qS3-Br-byt"/>
+                                            <outlet property="overlay" destination="JGH-qw-GMj" id="FKw-Y0-jX8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
