@@ -13,6 +13,7 @@ var ref: DatabaseReference!
 
 class FirebaseService {
     static let instance = FirebaseService()
+    var currentUser = Auth.auth().currentUser?.uid
     
     func createUser(uid: String, userData: Dictionary<String, Any>) {
         ref = Database.database().reference()
@@ -34,6 +35,26 @@ class FirebaseService {
                 beansArray.append(coffeeBean)
             }
             handler(beansArray)
+        }
+    }
+    
+    func getFavoriteCafes(currentUser: String, handler: @escaping (_ favoritecafe: [FavoriteCafe]) -> ()) {
+        ref = Database.database().reference()
+        var favoriteCafeArray = [FavoriteCafe]()
+        ref.child("users").child(currentUser).child("favorites").observe(.value) { (favoriteSnapshot) in
+            favoriteCafeArray.removeAll()
+            guard let data = favoriteSnapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            for favorite in data {
+                let cafeImageURL = favorite.childSnapshot(forPath: "imageURL").value as! String
+                let cafeName = favorite.childSnapshot(forPath: "name").value as! String
+                let cafeAddress = favorite.childSnapshot(forPath: "location/address").value as! String
+                let cafeCityStateZip = favorite.childSnapshot(forPath: "location/cityStateZip").value as! String
+                let favoriteKey = favorite.key
+                let favoriteCafe = FavoriteCafe(cafeImageURL: cafeImageURL, cafeName: cafeName, cafeAddress: cafeAddress, cafeCityStateZip: cafeCityStateZip, key: favoriteKey)
+                favoriteCafeArray.append(favoriteCafe)
+            }
+            handler(favoriteCafeArray)
         }
     }
 }

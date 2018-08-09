@@ -27,7 +27,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     var statePicker = UIPickerView()
     let picker = UIImagePickerController()
     
-    
     var screenSize = UIScreen.main.bounds
     var spinner: UIActivityIndicatorView?
     

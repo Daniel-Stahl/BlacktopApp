@@ -10,6 +10,15 @@ import UIKit
 
 class UserFavoriteCell: UITableViewCell {
 
+    @IBOutlet weak var cafeImage: UIImageView!
+    @IBOutlet weak var cafeName: UILabel!
+    @IBOutlet weak var cafeAddress: UILabel!
+    @IBOutlet weak var cafeCityStateZip: UILabel!
     
+    func configureCell(name: String, address: String, cityStateZip: String) {
+        self.cafeName.text = name
+        self.cafeAddress.text = address
+        self.cafeCityStateZip.text = cityStateZip
+    }
 
 }

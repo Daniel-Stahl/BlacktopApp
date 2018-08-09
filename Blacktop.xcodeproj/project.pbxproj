@@ -30,6 +30,7 @@
 		436D031E211A26F400885864 /* UserFavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D031D211A26F400885864 /* UserFavoriteCell.swift */; };
 		436D0320211A2E6900885864 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D031F211A2E6900885864 /* ForgotPasswordVC.swift */; };
 		436D0322211A46BF00885864 /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0321211A46BF00885864 /* ErrorDisplay.swift */; };
+		436D0324211BA50D00885864 /* FavoriteCafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0323211BA50D00885864 /* FavoriteCafe.swift */; };
 		43920C0F210FE05C0023B3AF /* Pods-Blacktop.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3599970CAF1E974C6FB64D6A /* Pods-Blacktop.debug.xcconfig */; };
 		43920C10210FE0610023B3AF /* Pods-Blacktop.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */; };
 		43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */; };
@@ -66,6 +67,7 @@
 		436D031D211A26F400885864 /* UserFavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFavoriteCell.swift; sourceTree = "<group>"; };
 		436D031F211A2E6900885864 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		436D0321211A46BF00885864 /* ErrorDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDisplay.swift; sourceTree = "<group>"; };
+		436D0323211BA50D00885864 /* FavoriteCafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCafe.swift; sourceTree = "<group>"; };
 		43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBeanCell.swift; sourceTree = "<group>"; };
 		43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeBeanVC.swift; sourceTree = "<group>"; };
 		43D202302100015500C8F0FD /* CoffeeBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBean.swift; sourceTree = "<group>"; };
@@ -109,13 +111,13 @@
 		432FF74620ACACB800FC2F8B /* Blacktop */ = {
 			isa = PBXGroup;
 			children = (
+				432FF74B20ACACB800FC2F8B /* Main.storyboard */,
 				43D2023221041F5400C8F0FD /* Extensions */,
 				432FF77420B3816300FC2F8B /* Models */,
 				432FF76720ACE4DC00FC2F8B /* Services */,
 				432FF75B20ACD15500FC2F8B /* Views */,
 				432FF75E20ACD31B00FC2F8B /* Controllers */,
 				432FF74720ACACB800FC2F8B /* AppDelegate.swift */,
-				432FF74B20ACACB800FC2F8B /* Main.storyboard */,
 				432FF74E20ACACB900FC2F8B /* Assets.xcassets */,
 				432FF75020ACACB900FC2F8B /* LaunchScreen.storyboard */,
 				432FF75320ACACB900FC2F8B /* Info.plist */,
@@ -170,6 +172,7 @@
 				43FEED3F20E1A0B700EB1E44 /* Cafe.swift */,
 				432C37F320F0350000CC25D7 /* CafeAnnotationView.swift */,
 				43D202302100015500C8F0FD /* CoffeeBean.swift */,
+				436D0323211BA50D00885864 /* FavoriteCafe.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				432FF76020ACD40400FC2F8B /* LogInVC.swift in Sources */,
 				432FF76420ACD90900FC2F8B /* CustomView.swift in Sources */,
 				432FF75D20ACD18D00FC2F8B /* CustomButton.swift in Sources */,
+				436D0324211BA50D00885864 /* FavoriteCafe.swift in Sources */,
 				432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */,
 				432C37F620F3E26300CC25D7 /* CafeVC.swift in Sources */,
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,

@@ -27,7 +27,6 @@ class LogInVC: UIViewController {
                     self.present(mapVC!, animated: true, completion: nil)
                 } else {
                     self.showAlert(withError: error)
-                    print(String(describing: error?.localizedDescription))
                 }
             }
         }

@@ -22,16 +22,18 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var cafeWebsite: UILabel!
     @IBOutlet weak var cafeHours: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var favoriteCafeButton: UIButton!
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     var coffeeBean = [CoffeeBean]()
-    
+
     var passedCafeID: String = ""
-    
     func initData(uid: String) {
         self.passedCafeID = uid
     }
+    
+    var favoriteImage: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +73,19 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     @IBAction func backButtonPressed(_ sender: Any) {
         let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
         self.present(mapVC!, animated: true, completion: nil)
-        
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
         let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
         self.present(profileVC!, animated: true, completion: nil)
     }
+    
+    @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
+        let favoriteCafeDetails = ["imageURL": favoriteImage!, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
+        ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
+        print(favoriteCafeDetails)
+    }
+    
     
     @IBAction func linkPressed(_ sender: Any) {
         //Need this?
@@ -91,9 +99,11 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             if userRole == "cafe" && self.passedCafeID == self.currentUser {
                 self.editProfileButton.isHidden = false
                 self.addCoffeeButton.isHidden = false
+                self.favoriteCafeButton.isHidden = true
             } else {
                 self.editProfileButton.isHidden = true
                 self.addCoffeeButton.isHidden = true
+                self.favoriteCafeButton.isHidden = false
             }
         }
         //Refactor this like CafeProfileVC
@@ -102,8 +112,17 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             if let data = data {
                 let image = UIImage(data: data)
                 self.cafeImage.image = image
+                
+                print(image!)
             }
             print(error ?? "No error")
+        }
+        
+        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
+            let data = Datasnapshot.value as? NSDictionary
+            if let cafePhoto = data?["photoURL"] as? String {
+                self.favoriteImage = cafePhoto
+            }
         }
         
         ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
@@ -111,8 +130,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             let name = data["name"] as? String
             let phone = data["phone"] as? String
             let website = data["website"] as? String
-            
-            print(data)
             
             self.cafeName.text = name
             self.cafePhone.text = phone
