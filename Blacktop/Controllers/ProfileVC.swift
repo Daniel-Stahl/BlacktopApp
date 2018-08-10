@@ -90,10 +90,11 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "UserFavoriteCell", for: indexPath) as? UserFavoriteCell else { return UITableViewCell() }
         let data = favoriteCafe[indexPath.row]
         cell.configureCell(name: data.cafeName, address: data.cafeAddress, cityStateZip: data.cafeCityStateZip)
-        let url = URL(string: data.cafeImageURL)
-        let imageData = try? Data(contentsOf: url!)
-        cell.cafeImage.image = UIImage(data: imageData!)
-        
+        if let url = URL(string: data.cafeImageURL) {
+            if let imageData = try? Data(contentsOf: url) {
+                cell.cafeImage.image = UIImage(data: imageData)
+            }
+        }
         return cell
     }
 }

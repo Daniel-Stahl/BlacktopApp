@@ -49,6 +49,11 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         let phoneTap = UITapGestureRecognizer(target: self, action: #selector(tappedPhone))
         phoneTap.numberOfTapsRequired = 1
         cafePhone.addGestureRecognizer(phoneTap)
+        
+        ref.child("user").child(currentUser!).child("favorites").child(passedCafeID).observe(.value) { (favoriteSnapshot) in
+            let data = favoriteSnapshot.exists()
+            print(data)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -81,6 +86,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
+        
         let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
         print(favoriteCafeDetails)
@@ -122,6 +128,8 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             let data = Datasnapshot.value as? NSDictionary
             if let cafePhoto = data?["photoURL"] as? String {
                 self.favoriteImage = cafePhoto
+            } else {
+                self.favoriteImage = ""
             }
         }
         
