@@ -516,13 +516,22 @@
                                             <action selector="favoriteCafeButtonPressed:" destination="zfX-zw-tf9" eventType="touchUpInside" id="pmo-eR-1MJ"/>
                                         </connections>
                                     </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jl9-ir-ItK">
+                                        <rect key="frame" x="325" y="5" width="30" height="30"/>
+                                        <state key="normal" image="favorite_filled"/>
+                                        <connections>
+                                            <action selector="filledFavoriteCafeButtonPressed:" destination="zfX-zw-tf9" eventType="touchUpInside" id="8SD-ov-5Gw"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.19215686269999999" green="0.19215686269999999" blue="0.19215686269999999" alpha="0.20411494006849315" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="r9v-Fr-vMc" firstAttribute="top" secondItem="YDB-hW-D9B" secondAttribute="top" constant="7" id="5FV-Md-X2a"/>
                                     <constraint firstItem="NZE-RC-nlk" firstAttribute="top" secondItem="YDB-hW-D9B" secondAttribute="top" constant="5" id="6f3-ZB-hvg"/>
+                                    <constraint firstItem="jl9-ir-ItK" firstAttribute="top" secondItem="YDB-hW-D9B" secondAttribute="top" constant="5" id="HE5-dg-Hkr"/>
                                     <constraint firstItem="r9v-Fr-vMc" firstAttribute="leading" secondItem="YDB-hW-D9B" secondAttribute="leading" constant="20" id="PhX-1e-g7i"/>
                                     <constraint firstItem="0dt-zn-lA0" firstAttribute="top" secondItem="YDB-hW-D9B" secondAttribute="top" constant="5" id="Ry3-Fg-LGc"/>
+                                    <constraint firstAttribute="trailing" secondItem="jl9-ir-ItK" secondAttribute="trailing" constant="20" id="bxy-LY-VYv"/>
                                     <constraint firstAttribute="trailing" secondItem="0dt-zn-lA0" secondAttribute="trailing" constant="20" id="cCs-lM-gK2"/>
                                     <constraint firstAttribute="trailing" secondItem="NZE-RC-nlk" secondAttribute="trailing" constant="20" id="sV5-xQ-guh"/>
                                 </constraints>
@@ -625,6 +634,7 @@
                         <outlet property="cafeWebsite" destination="K1i-RQ-h8Q" id="wke-JI-I8f"/>
                         <outlet property="editProfileButton" destination="0dt-zn-lA0" id="dXe-49-0GS"/>
                         <outlet property="favoriteCafeButton" destination="NZE-RC-nlk" id="d1T-uD-e3e"/>
+                        <outlet property="filledFavoriteCafeButton" destination="jl9-ir-ItK" id="f3a-ZK-dNs"/>
                         <outlet property="tableView" destination="GZb-oa-bZJ" id="Jeu-Z6-jWC"/>
                         <segue destination="n3E-R7-WlG" kind="unwind" identifier="unwindToVC1" unwindAction="unwindToVC1WithSegue:" id="oZF-HG-2wn"/>
                     </connections>
@@ -785,7 +795,7 @@
                                 <rect key="frame" x="16" y="97" width="343" height="599"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserFavoriteCell" rowHeight="130" id="PMI-gb-9PY" customClass="UserFavoriteCell" customModule="Blacktop" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserFavoriteCell" rowHeight="130" id="PMI-gb-9PY" customClass="UserFavoriteCell" customModule="Blacktop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="343" height="130"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PMI-gb-9PY" id="RYz-zs-Bo1">
@@ -1662,6 +1672,7 @@
         <image name="center-user" width="30" height="30"/>
         <image name="defaultcupimage" width="375" height="200"/>
         <image name="favorite" width="30" height="30"/>
+        <image name="favorite_filled" width="30" height="30"/>
         <image name="plus" width="30" height="30"/>
         <image name="profile" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>

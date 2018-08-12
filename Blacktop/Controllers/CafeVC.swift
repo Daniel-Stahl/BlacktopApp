@@ -23,6 +23,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var cafeHours: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
     @IBOutlet weak var favoriteCafeButton: UIButton!
+    @IBOutlet weak var filledFavoriteCafeButton: UIButton!
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
@@ -49,11 +50,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         let phoneTap = UITapGestureRecognizer(target: self, action: #selector(tappedPhone))
         phoneTap.numberOfTapsRequired = 1
         cafePhone.addGestureRecognizer(phoneTap)
-        
-        ref.child("user").child(currentUser!).child("favorites").child(passedCafeID).observe(.value) { (favoriteSnapshot) in
-            let data = favoriteSnapshot.exists()
-            print(data)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +58,15 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
+        }
+        
+        ref.child("users").child(currentUser!).child("favorites").child(self.passedCafeID).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists() {
+                self.filledFavoriteCafeButton.isHidden = false
+            } else {
+                self.filledFavoriteCafeButton.isHidden = true
+                self.favoriteCafeButton.isHidden = false
+            }
         }
     }
     
@@ -89,9 +94,16 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         
         let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
+        self.favoriteCafeButton.isHidden = true
+        self.filledFavoriteCafeButton.isHidden = false
         print(favoriteCafeDetails)
     }
     
+    @IBAction func filledFavoriteCafeButtonPressed(_ sender: Any) {
+        ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).removeValue()
+        self.filledFavoriteCafeButton.isHidden = true
+        self.favoriteCafeButton.isHidden = false
+    }
     
     @IBAction func linkPressed(_ sender: Any) {
         //Need this?
@@ -106,10 +118,10 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.editProfileButton.isHidden = false
                 self.addCoffeeButton.isHidden = false
                 self.favoriteCafeButton.isHidden = true
+                self.filledFavoriteCafeButton.isHidden = true
             } else {
                 self.editProfileButton.isHidden = true
                 self.addCoffeeButton.isHidden = true
-                self.favoriteCafeButton.isHidden = false
             }
         }
         //Refactor this like CafeProfileVC
@@ -224,14 +236,13 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                     default: self.cafeHours.text = "Not open"
                 }
             } else {
-                
                 self.cafeHours.text = ""
             }
         }
     }
 
     @IBAction func addCoffeePressed(_ sender: Any) {
-        
+        //Do I need this?
     }
 }
 

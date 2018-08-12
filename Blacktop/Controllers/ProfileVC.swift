@@ -97,4 +97,11 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = favoriteCafe[indexPath.row]
+        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+        cafeVC?.initData(uid: data.key)
+        self.present(cafeVC!, animated: true, completion: nil)
+    }
 }
