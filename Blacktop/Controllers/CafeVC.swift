@@ -60,14 +60,8 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             self.tableView.reloadData()
         }
         
-        ref.child("users").child(currentUser!).child("favorites").child(self.passedCafeID).observeSingleEvent(of: .value) { (snapshot) in
-            if snapshot.exists() {
-                self.filledFavoriteCafeButton.isHidden = false
-            } else {
-                self.filledFavoriteCafeButton.isHidden = true
-                self.favoriteCafeButton.isHidden = false
-            }
-        }
+        showFavoriteButton()
+        
     }
     
     @objc func tappedLink() {
@@ -90,8 +84,29 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         self.present(profileVC!, animated: true, completion: nil)
     }
     
-    @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
+    func showFavoriteButton() {
+        ref.child("users").child(currentUser!).observeSingleEvent(of: .value) { (Snapshot) in
+            let data = Snapshot.value as! [String: Any]
+            let userRole = data["role"] as! String
+            
+            if userRole == "cafe" {
+                self.favoriteCafeButton.isHidden = true
+                self.filledFavoriteCafeButton.isHidden = true
+            } else {
+                self.ref.child("users").child(self.currentUser!).child("favorites").child(self.passedCafeID).observeSingleEvent(of: .value) { (snapshot) in
+                    if snapshot.exists() {
+                        self.filledFavoriteCafeButton.isHidden = false
+                    } else {
+                        self.filledFavoriteCafeButton.isHidden = true
+                        self.favoriteCafeButton.isHidden = false
+                    }
+                }
+            }
+        }
         
+    }
+    
+    @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
         let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
         self.favoriteCafeButton.isHidden = true

@@ -25,6 +25,9 @@ class ProfileVC: UIViewController {
         self.passedCafeID = uid
     }
     
+    var screenSize = UIScreen.main.bounds
+    var spinner: UIActivityIndicatorView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -36,9 +39,26 @@ class ProfileVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        addSpinner()
         FirebaseService.instance.getFavoriteCafes(currentUser: currentUser!) { (returnedFavoriteCafe) in
             self.favoriteCafe = returnedFavoriteCafe
             self.tableView.reloadData()
+            self.stopSpinner()
+        }
+    }
+    
+    func addSpinner() {
+        spinner = UIActivityIndicatorView()
+        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
+        spinner?.activityIndicatorViewStyle = .whiteLarge
+        spinner?.color = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
+        spinner?.startAnimating()
+        view.addSubview(spinner!)
+    }
+    
+    func stopSpinner() {
+        if spinner != nil {
+            spinner?.removeFromSuperview()
         }
     }
     
