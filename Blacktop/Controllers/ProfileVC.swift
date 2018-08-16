@@ -44,6 +44,7 @@ class ProfileVC: UIViewController {
             self.favoriteCafe = returnedFavoriteCafe
             self.tableView.reloadData()
             self.stopSpinner()
+            
         }
     }
     
@@ -55,7 +56,7 @@ class ProfileVC: UIViewController {
         spinner?.startAnimating()
         view.addSubview(spinner!)
     }
-    
+
     func stopSpinner() {
         if spinner != nil {
             spinner?.removeFromSuperview()

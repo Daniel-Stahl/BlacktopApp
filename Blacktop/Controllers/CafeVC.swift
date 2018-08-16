@@ -75,8 +75,11 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-        self.present(mapVC!, animated: true, completion: nil)
+//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+//        self.present(mapVC!, animated: true, completion: nil)
+        
+        let mapVC = MapVC()
+        navigationController?.pushViewController(mapVC, animated: true)
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {

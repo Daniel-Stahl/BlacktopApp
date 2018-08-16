@@ -60,9 +60,14 @@ class MapVC: UIViewController {
     
     
     @IBAction func viewCafePressed(_ sender: Any) {
-        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-        cafeVC?.initData(uid: cafeID)
-        self.present(cafeVC!, animated: true, completion: nil)
+//        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+//        cafeVC?.initData(uid: cafeID)
+//        self.present(cafeVC!, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: self)
+        let cafeVC = CafeVC()
+        cafeVC.initData(uid: cafeID)
+        navigationController.pushViewController(cafeVC, animated: true)
+        
         
     }
     
