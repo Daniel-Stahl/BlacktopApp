@@ -13,6 +13,7 @@ class ProfileVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var favoriteCafeImage: UIImageView!
+    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
     var ref: DatabaseReference!
     var currentUser = Auth.auth().currentUser?.uid
@@ -64,8 +65,9 @@ class ProfileVC: UIViewController {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-        self.present(mapVC!, animated: true, completion: nil)
+//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+//        self.present(mapVC!, animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func pressedExitButton(_ sender: Any) {

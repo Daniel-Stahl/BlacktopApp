@@ -75,16 +75,16 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+        //let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
 //        self.present(mapVC!, animated: true, completion: nil)
-        
-        let mapVC = MapVC()
-        navigationController?.pushViewController(mapVC, animated: true)
+//        presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "unwindFromCafeVC", sender: self)
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
-        let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
-        self.present(profileVC!, animated: true, completion: nil)
+        //let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
+        //self.present(cafeProfileVC!, animated: true, completion: nil)
+        performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
     }
     
     func showFavoriteButton() {

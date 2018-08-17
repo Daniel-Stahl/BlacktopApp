@@ -39,16 +39,22 @@ class SignUpVC: UIViewController {
             AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        if success {
+                        if success && self.userRole == "cafe" {
                             self.stopSpinner()
-                            let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-                            self.present(mapVC!, animated: true, completion: nil)
+//                            let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
+//                            self.present(mapVC!, animated: true, completion: nil)
+                            self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
+                        } else if success && self.userRole == "user" {
+                            self.stopSpinner()
+                            self.performSegue(withIdentifier: "toMapVC", sender: nil)
                         } else {
-                            self.showAlert(withError: error)
+                            self.stopSpinner()
+                           self.showAlert(withError: error)
                         }
                     })
                 } else {
-                    print(String(describing: error?.localizedDescription))
+                    self.stopSpinner()
+                    self.showAlert(withError: error)
                 }
             }
         }

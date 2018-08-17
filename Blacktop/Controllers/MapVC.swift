@@ -20,7 +20,7 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutAddress: UILabel!
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
-    @IBAction func unwindToVC1(segue:UIStoryboardSegue) { }
+    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     var cafeID = ""
     
     let locationManager = CLLocationManager()
@@ -52,23 +52,16 @@ class MapVC: UIViewController {
                 cafeVC?.initData(uid: (Auth.auth().currentUser?.uid)!)
                 self.present(cafeVC!, animated: true, completion: nil)
             } else {
-                let profileVC = self.storyboard?.instantiateViewController(withIdentifier: "ProfileVC")
-                self.present(profileVC!, animated: true, completion: nil)
+                self.performSegue(withIdentifier: "toProfileVC", sender: nil)
             }
         }
     }
     
     
     @IBAction func viewCafePressed(_ sender: Any) {
-//        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-//        cafeVC?.initData(uid: cafeID)
-//        self.present(cafeVC!, animated: true, completion: nil)
-        let navigationController = UINavigationController(rootViewController: self)
-        let cafeVC = CafeVC()
-        cafeVC.initData(uid: cafeID)
-        navigationController.pushViewController(cafeVC, animated: true)
-        
-        
+        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+        cafeVC?.initData(uid: cafeID)
+        self.present(cafeVC!, animated: true, completion: nil)
     }
     
     

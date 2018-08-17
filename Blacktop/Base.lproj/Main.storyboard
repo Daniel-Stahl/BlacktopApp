@@ -43,6 +43,7 @@
                                         </state>
                                         <connections>
                                             <action selector="pressedLogInButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BOd-UG-mJM"/>
+                                            <segue destination="kDn-J3-dDc" kind="show" identifier="toLogInVC" id="QDx-ad-KAe"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vpo-qY-FFz" customClass="CustomButton" customModule="Blacktop" customModuleProvider="target">
@@ -58,6 +59,7 @@
                                         </state>
                                         <connections>
                                             <action selector="pressedSignUpButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L4l-z9-mks"/>
+                                            <segue destination="ERl-Qh-00b" kind="show" identifier="toSignUpVC" id="i38-Py-smR"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -79,7 +81,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-970" y="24"/>
+            <point key="canvasLocation" x="346" y="-726"/>
         </scene>
         <!--Log InVC-->
         <scene sceneID="bwc-61-5a2">
@@ -157,7 +159,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zjm-h2-w0x" customClass="CustomButton" customModule="Blacktop" customModuleProvider="target">
-                                <rect key="frame" x="40" y="678" width="295" height="50"/>
+                                <rect key="frame" x="40" y="712" width="295" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="tC7-SK-CaE"/>
@@ -188,6 +190,7 @@
                     <connections>
                         <outlet property="userEmail" destination="6pE-gt-LPK" id="xmj-EW-8yw"/>
                         <outlet property="userPassword" destination="S0D-VD-PBd" id="bll-f0-gJ9"/>
+                        <segue destination="nyF-l5-JFo" kind="show" identifier="toMapVC" id="uHP-Sg-0RZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hz4-Wy-Taf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -296,7 +299,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="twp-C8-OL7" customClass="CustomView" customModule="Blacktop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="565" width="335" height="128"/>
+                                <rect key="frame" x="20" y="531" width="335" height="128"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enp-Js-SZK">
                                         <rect key="frame" x="8" y="8.0000000000000018" width="45.666666666666664" height="24.666666666666671"/>
@@ -421,6 +424,7 @@
                         <outlet property="cafeCalloutPhone" destination="AE6-xO-Mfc" id="BE1-PB-2XE"/>
                         <outlet property="cafeCalloutView" destination="twp-C8-OL7" id="tui-1T-k0k"/>
                         <outlet property="mapView" destination="Fgs-Ew-YDC" id="m7x-D6-5oq"/>
+                        <segue destination="eC7-Kh-YaZ" kind="show" identifier="toProfileVC" id="3Oy-hE-grO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZMD-4n-W8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -636,7 +640,8 @@
                         <outlet property="favoriteCafeButton" destination="NZE-RC-nlk" id="d1T-uD-e3e"/>
                         <outlet property="filledFavoriteCafeButton" destination="jl9-ir-ItK" id="f3a-ZK-dNs"/>
                         <outlet property="tableView" destination="GZb-oa-bZJ" id="Jeu-Z6-jWC"/>
-                        <segue destination="n3E-R7-WlG" kind="unwind" identifier="unwindToVC1" unwindAction="unwindToVC1WithSegue:" id="oZF-HG-2wn"/>
+                        <segue destination="hWn-V9-pXD" kind="show" identifier="toCafeProfileVC" id="vLG-sW-sJz"/>
+                        <segue destination="n3E-R7-WlG" kind="unwind" identifier="unwindFromCafeVC" unwindAction="unwindFromCafeVCWithSegue:" id="FdW-cp-xRv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zbv-qx-w3g" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1016,6 +1021,8 @@
                         <outlet property="userEmail" destination="9xJ-Ve-l6m" id="eKv-Lv-HMU"/>
                         <outlet property="userName" destination="oxd-Eb-v6d" id="D3f-z2-TlJ"/>
                         <outlet property="userPassword" destination="63l-7Y-WSQ" id="sq5-vW-XqT"/>
+                        <segue destination="nyF-l5-JFo" kind="show" identifier="toMapVC" id="5QS-Ei-Z3M"/>
+                        <segue destination="hWn-V9-pXD" kind="show" identifier="toCafeProfileVC" id="SeK-9e-k2r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Dg-vt-gvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1677,4 +1684,8 @@
         <image name="profile" width="30" height="30"/>
         <image name="settings" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="vLG-sW-sJz"/>
+        <segue reference="uHP-Sg-0RZ"/>
+    </inferredMetricsTieBreakers>
 </document>
