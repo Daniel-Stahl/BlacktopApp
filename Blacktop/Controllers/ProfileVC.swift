@@ -65,8 +65,6 @@ class ProfileVC: UIViewController {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-//        let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-//        self.present(mapVC!, animated: true, completion: nil)
         dismiss(animated: true, completion: nil)
     }
     

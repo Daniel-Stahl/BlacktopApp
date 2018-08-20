@@ -21,6 +21,7 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
     @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
+    
     var cafeID = ""
     
     let locationManager = CLLocationManager()
@@ -57,13 +58,11 @@ class MapVC: UIViewController {
         }
     }
     
-    
     @IBAction func viewCafePressed(_ sender: Any) {
         let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
         cafeVC?.initData(uid: cafeID)
         self.present(cafeVC!, animated: true, completion: nil)
     }
-    
     
     @IBAction func centerUserLocationButton(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {

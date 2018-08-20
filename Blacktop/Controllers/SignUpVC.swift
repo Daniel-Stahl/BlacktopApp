@@ -41,8 +41,6 @@ class SignUpVC: UIViewController {
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
                         if success && self.userRole == "cafe" {
                             self.stopSpinner()
-//                            let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-//                            self.present(mapVC!, animated: true, completion: nil)
                             self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
                         } else if success && self.userRole == "user" {
                             self.stopSpinner()

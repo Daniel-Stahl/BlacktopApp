@@ -15,7 +15,6 @@ class ForgotPasswordVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
     }
     @IBAction func pressedSubmitButton(_ sender: Any) {
         sendPasswordReset(withEmail: userEmail.text!) { (error) in

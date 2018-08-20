@@ -28,8 +28,6 @@ class LogInVC: UIViewController {
             AuthService.instance.loginUser(email: userEmail.text!, password: userPassword.text!) { (success, error) in
                 if success {
                     self.stopSpinner()
-                    //let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC")
-                    //self.present(mapVC!, animated: true, completion: nil)
                     self.performSegue(withIdentifier: "toMapVC", sender: nil)
                 } else {
                     self.stopSpinner()

@@ -24,14 +24,10 @@ class WelcomeVC: UIViewController {
     }
 
     @IBAction func pressedLogInButton(_ sender: Any) {
-//        let loginVC = storyboard?.instantiateViewController(withIdentifier: "LogInVC")
-//        present(loginVC!, animated: true, completion: nil)
         performSegue(withIdentifier: "toLogInVC", sender: nil)
     }
     
     @IBAction func pressedSignUpButton(_ sender: Any) {
-//        let loginVC = storyboard?.instantiateViewController(withIdentifier: "SignUpVC")
-//        present(loginVC!, animated: true, completion: nil)
         performSegue(withIdentifier: "toSignUpVC", sender: nil)
     }
     

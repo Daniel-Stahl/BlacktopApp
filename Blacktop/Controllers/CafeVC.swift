@@ -75,15 +75,10 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        //let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
-//        self.present(mapVC!, animated: true, completion: nil)
-//        presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
         performSegue(withIdentifier: "unwindFromCafeVC", sender: self)
     }
     
     @IBAction func editProfileButtonPressed(_ sender: Any) {
-        //let cafeProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeProfileVC")
-        //self.present(cafeProfileVC!, animated: true, completion: nil)
         performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
     }
     
@@ -106,7 +101,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
         }
-        
     }
     
     @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
@@ -121,10 +115,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).removeValue()
         self.filledFavoriteCafeButton.isHidden = true
         self.favoriteCafeButton.isHidden = false
-    }
-    
-    @IBAction func linkPressed(_ sender: Any) {
-        //Need this?
     }
     
     func loadProfile() {
@@ -257,10 +247,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.cafeHours.text = ""
             }
         }
-    }
-
-    @IBAction func addCoffeePressed(_ sender: Any) {
-        //Do I need this?
     }
 }
 
