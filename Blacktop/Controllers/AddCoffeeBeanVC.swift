@@ -26,10 +26,13 @@ class AddCoffeeBeanVC: UIViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
-        let addBeanDetails = ["name": beanName.text!, "roaster": roasterName.text!] as [String : Any]
-        ref.child("users").child(currentUser!).child("beans").childByAutoId().updateChildValues(addBeanDetails)
-        beanName.text = ""
-        roasterName.text = ""
+        if beanName.text == "" && roasterName.text == "" {
+            print("no beans")
+        } else {
+            let addBeanDetails = ["name": beanName.text!, "roaster": roasterName.text!] as [String : Any]
+            ref.child("users").child(currentUser!).child("beans").childByAutoId().updateChildValues(addBeanDetails)
+            beanName.text = ""
+            roasterName.text = ""
+        }
     }
-    
 }

@@ -181,7 +181,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             self.sunOpen.text = sunCafeOpen
             self.sunClose.text = sunCafeClose
         }
-
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {
@@ -194,6 +193,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         guard let image = self.profileImage.image else { return }
         if let newImage = UIImageJPEGRepresentation(image, 0.0) {
             imageRef.putData(newImage, metadata: nil) { (metadata, error) in
+                print(metadata)
                 if error != nil {
                     print(error!)
                     return
@@ -238,12 +238,10 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
         case .authorized:
-            // Access is already granted by user
             handler()
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { (newStatus) in
                 if newStatus == PHAuthorizationStatus.authorized {
-                    // Access is granted by user
                     handler()
                 }
             }
@@ -268,56 +266,6 @@ extension CafeProfileVC {
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
         
-    }
-}
-
-extension CafeProfileVC {
-    func disableTextField() {
-        name.isEnabled = false
-        address.isEnabled = false
-        city.isEnabled = false
-        state.isEnabled = false
-        zipcode.isEnabled = false
-        phone.isEnabled = false
-        website.isEnabled = false
-        monOpen.isEnabled = false
-        monClose.isEnabled = false
-        tueOpen.isEnabled = false
-        tueClose.isEnabled = false
-        wedOpen.isEnabled = false
-        wedClose.isEnabled = false
-        thuOpen.isEnabled = false
-        thuClose.isEnabled = false
-        friOpen.isEnabled = false
-        friClose.isEnabled = false
-        satOpen.isEnabled = false
-        satClose.isEnabled = false
-        sunOpen.isEnabled = false
-        sunClose.isEnabled = false
-    }
-    
-    func enableTextField() {
-        name.isEnabled = true
-        address.isEnabled = true
-        city.isEnabled = true
-        state.isEnabled = true
-        zipcode.isEnabled = true
-        phone.isEnabled = true
-        website.isEnabled = true
-        monOpen.isEnabled = true
-        monClose.isEnabled = true
-        tueOpen.isEnabled = true
-        tueClose.isEnabled = true
-        wedOpen.isEnabled = true
-        wedClose.isEnabled = true
-        thuOpen.isEnabled = true
-        thuClose.isEnabled = true
-        friOpen.isEnabled = true
-        friClose.isEnabled = true
-        satOpen.isEnabled = true
-        satClose.isEnabled = true
-        sunOpen.isEnabled = true
-        sunClose.isEnabled = true
     }
 }
 

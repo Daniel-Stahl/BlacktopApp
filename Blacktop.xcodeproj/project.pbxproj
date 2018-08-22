@@ -31,12 +31,12 @@
 		436D0320211A2E6900885864 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D031F211A2E6900885864 /* ForgotPasswordVC.swift */; };
 		436D0322211A46BF00885864 /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0321211A46BF00885864 /* ErrorDisplay.swift */; };
 		436D0324211BA50D00885864 /* FavoriteCafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0323211BA50D00885864 /* FavoriteCafe.swift */; };
+		4376C202212DAB4F00B1A251 /* TextFieldExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4376C201212DAB4F00B1A251 /* TextFieldExt.swift */; };
 		43920C0F210FE05C0023B3AF /* Pods-Blacktop.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3599970CAF1E974C6FB64D6A /* Pods-Blacktop.debug.xcconfig */; };
 		43920C10210FE0610023B3AF /* Pods-Blacktop.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C5754C0CB318540D92DC9764 /* Pods-Blacktop.release.xcconfig */; };
 		43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */; };
 		43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */; };
 		43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D202302100015500C8F0FD /* CoffeeBean.swift */; };
-		43D2023621064F9C00C8F0FD /* StatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2023521064F9C00C8F0FD /* StatePicker.swift */; };
 		43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */; };
 		43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FEED3F20E1A0B700EB1E44 /* Cafe.swift */; };
 /* End PBXBuildFile section */
@@ -68,10 +68,10 @@
 		436D031F211A2E6900885864 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		436D0321211A46BF00885864 /* ErrorDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDisplay.swift; sourceTree = "<group>"; };
 		436D0323211BA50D00885864 /* FavoriteCafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCafe.swift; sourceTree = "<group>"; };
+		4376C201212DAB4F00B1A251 /* TextFieldExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExt.swift; sourceTree = "<group>"; };
 		43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBeanCell.swift; sourceTree = "<group>"; };
 		43D2022E20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoffeeBeanVC.swift; sourceTree = "<group>"; };
 		43D202302100015500C8F0FD /* CoffeeBean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeBean.swift; sourceTree = "<group>"; };
-		43D2023521064F9C00C8F0FD /* StatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatePicker.swift; sourceTree = "<group>"; };
 		43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeAnnotation.swift; sourceTree = "<group>"; };
 		43FEED3F20E1A0B700EB1E44 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
 		4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blacktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,7 +134,6 @@
 				432FF76320ACD90900FC2F8B /* CustomView.swift */,
 				432FF77720B389DC00FC2F8B /* TimePicker.swift */,
 				43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */,
-				43D2023521064F9C00C8F0FD /* StatePicker.swift */,
 				436D031D211A26F400885864 /* UserFavoriteCell.swift */,
 			);
 			path = Views;
@@ -181,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				436D0321211A46BF00885864 /* ErrorDisplay.swift */,
+				4376C201212DAB4F00B1A251 /* TextFieldExt.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -335,7 +335,6 @@
 				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
 				436D0320211A2E6900885864 /* ForgotPasswordVC.swift in Sources */,
 				43D202312100015500C8F0FD /* CoffeeBean.swift in Sources */,
-				43D2023621064F9C00C8F0FD /* StatePicker.swift in Sources */,
 				432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */,
 				43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,
@@ -351,6 +350,7 @@
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,
 				43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */,
 				43D2022F20FFE1FB00C8F0FD /* AddCoffeeBeanVC.swift in Sources */,
+				4376C202212DAB4F00B1A251 /* TextFieldExt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

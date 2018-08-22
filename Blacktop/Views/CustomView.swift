@@ -12,7 +12,7 @@ class CustomView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        layer.cornerRadius = 10
+        layer.cornerRadius = 16
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 5, height: 5)
         layer.shadowOpacity = 0.4
