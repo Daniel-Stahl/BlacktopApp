@@ -95,9 +95,10 @@ extension MapVC: MKMapViewDelegate {
                     let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
                     let geoCoder = CLGeocoder()
                     geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
-                        let location = cafeLocation?.first?.location?.coordinate
-                        let annotation = CafeAnnotation(coordinate: location!, uid: cafeID, name: name, address: address, city: city, state: state, zipcode: zipcode, phoneNumber: phoneNumber)
-                        self.mapView.addAnnotation(annotation)
+                        if let location = cafeLocation?.first?.location?.coordinate {
+                            let annotation = CafeAnnotation(coordinate: location, uid: cafeID, name: name, address: address, city: city, state: state, zipcode: zipcode, phoneNumber: phoneNumber)
+                            self.mapView.addAnnotation(annotation)
+                        }
                     })
                 }
             }
