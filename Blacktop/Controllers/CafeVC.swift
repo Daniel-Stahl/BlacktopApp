@@ -71,8 +71,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         return .lightContent
     }
     
-    
-    
     @objc func tappedLink() {
         let url = URL(string: "https://\(cafeWebsite.text!)")
         UIApplication.shared.open(url!)

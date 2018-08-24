@@ -60,13 +60,20 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        showcafeInfo()
+        
+//        showcafeInfo()
         zipcode.keyboardType = UIKeyboardType.numberPad
         
         statePicker.delegate = self
         state.inputView = statePicker
         
         picker.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.global(qos: .userInitiated).async {
+          self.showcafeInfo()
+        }
     }
     
     func addSpinner() {

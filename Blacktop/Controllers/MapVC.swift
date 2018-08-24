@@ -35,12 +35,13 @@ class MapVC: UIViewController {
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
+        cafePins()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cafePins()
+        //cafePins()
     }
     
     @IBAction func profileButtonPressed(_ sender: Any) {
@@ -66,6 +67,7 @@ class MapVC: UIViewController {
     
     @IBAction func centerUserLocationButton(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
+            locationManager.requestLocation()
             centerMapOnUserLocation()
         }
     }
@@ -76,6 +78,7 @@ extension MapVC: MKMapViewDelegate {
         guard let coordinate = locationManager.location?.coordinate else { return }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, regionRadius * 2, regionRadius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
+        locationManager.stopUpdatingLocation()
     }
     
     func cafePins() {
@@ -143,9 +146,20 @@ extension MapVC: MKMapViewDelegate {
 extension MapVC: CLLocationManagerDelegate {
     func confirmAuthorization() {
         if authorizationStatus == .notDetermined {
-            locationManager.requestAlwaysAuthorization()
+            locationManager.requestWhenInUseAuthorization()
         } else {
             return
         }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            print("Found user's location: \(location)")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to find user's location: \(error.localizedDescription)")
+    }
+    
 }
