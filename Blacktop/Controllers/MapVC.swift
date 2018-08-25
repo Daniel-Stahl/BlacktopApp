@@ -37,11 +37,39 @@ class MapVC: UIViewController {
         confirmAuthorization()
         cafePins()
         
+        ref.child("users").observe(.value) { (dataSnap) in
+            for userChild in dataSnap.children {
+                let childSnap = userChild as! DataSnapshot
+                let data = childSnap.childSnapshot(forPath: "location")
+                print(data)
+                for value in data.children {
+                    if let snap = value as? DataSnapshot {
+                        if let dict = snap.value as? NSDictionary {
+                            if let address = dict["address"] as? String {
+                                print(address)
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+//        for customerChild in snapshot.children {
+//            let childSnap = customerChild as! DataSnapshot
+//            let subscriptionSnap = childSnap.childSnapshot(forPath: "subscription")
+//            for subscriptionChild in subscriptionSnap.children {
+//                let snap = subscriptionChild as! DataSnapshot
+//                let dict = snap.value as! [String: Any]
+//                let subNo = dict["sub_no"] as! String
+//                print(subNo)
+//            }
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //cafePins()
+        
+
     }
     
     @IBAction func profileButtonPressed(_ sender: Any) {
