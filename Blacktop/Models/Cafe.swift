@@ -10,37 +10,38 @@ import UIKit
 import CoreLocation
 
 class Cafe {
-    var location: CLLocationCoordinate2D = kCLLocationCoordinate2DInvalid
+    var key: String
     var name: String
     var address: String
     var city: String
     var state: String
     var zipcode: String
+    var phone: String
+    var website: String
     
-    init(name: String, address: String, city: String, state: String, zipcode: String) {
+    init(key: String, name: String, address: String, city: String, state: String, zipcode: String, phone: String, website: String) {
+        self.key = key
         self.name = name
         self.address = address
         self.city = city
         self.state = state
         self.zipcode = zipcode
+        self.phone = phone
+        self.website = website
     }
     
-    convenience init? (dictionary: [String: Any]) {
+    convenience init? (dictionary: [String: Any], key: String) {
+        let key = key
         guard let name = dictionary["name"] as? String,
-            let address = dictionary["location/address"] as? String,
-            let city = dictionary["location/city"] as? String,
-            let state = dictionary["location/state"] as? String,
-            let zip = dictionary["location/zipcode"] as? String else { return nil }
+        let location = dictionary["location"] as? [String: Any],
+        let address = location["address"] as? String,
+        let city = location["city"] as? String,
+        let state = location["state"] as? String,
+        let zipcode = location["zipcode"] as? String,
+        let phone = dictionary["phone"] as? String,
+        let website = dictionary["website"] as? String else { return nil }
         
-        self.init(name: name, address: address, city: city, state: state, zipcode: zip)
-        
-        if address != "" && city != "" && state != "" && zipcode != "" {
-            let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
-            let geoCoder = CLGeocoder()
-            geoCoder.geocodeAddressString(cafeAddress) { (cafeLocation, error) in
-                self.location = (cafeLocation?.first?.location?.coordinate)!
-            }
-        }
+        self.init(key: key, name: name, address: address, city: city, state: state, zipcode: zipcode, phone: phone, website: website)
         
     }
 }

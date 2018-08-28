@@ -31,46 +31,27 @@ class MapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        //getCafeData()
         cafeCalloutView.isHidden = true
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
         cafePins()
         
-        ref.child("users").observe(.value) { (dataSnap) in
-            for userChild in dataSnap.children {
-                let childSnap = userChild as! DataSnapshot
-                let data = childSnap.childSnapshot(forPath: "location")
-                print(data)
-                for value in data.children {
-                    if let snap = value as? DataSnapshot {
-                        if let dict = snap.value as? NSDictionary {
-                            if let address = dict["address"] as? String {
-                                print(address)
-                            }
-                        }
-                    }
-                }
-            }
-            
-        }
         
-//        for customerChild in snapshot.children {
-//            let childSnap = customerChild as! DataSnapshot
-//            let subscriptionSnap = childSnap.childSnapshot(forPath: "subscription")
-//            for subscriptionChild in subscriptionSnap.children {
-//                let snap = subscriptionChild as! DataSnapshot
-//                let dict = snap.value as! [String: Any]
-//                let subNo = dict["sub_no"] as! String
-//                print(subNo)
-//            }
-//        }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-
-    }
+//    func getCafeData() {
+//        ref.child("users").observe(.value) { (dataSnap) in
+//            for userChild in dataSnap.children {
+//                let childSnap = userChild as! DataSnapshot
+//                let data = childSnap.childSnapshot(forPath: "location")
+//                guard let cafeData = data.value as? [String: Any] else { return }
+//                print(cafeData)
+//                let cafe = Cafe(dictionary: cafeData)
+//            }
+//        }
+//    }
     
     @IBAction func profileButtonPressed(_ sender: Any) {
         ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
@@ -110,24 +91,18 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func cafePins() {
-        ref.child("users").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.children.allObjects as? [DataSnapshot] else { return }
-            for cafeData in data {
-                guard let address = cafeData.childSnapshot(forPath: "location/address").value as? String,
-                    let city = cafeData.childSnapshot(forPath: "location/city").value as? String,
-                    let state = cafeData.childSnapshot(forPath: "location/state").value as? String,
-                    let zipcode = cafeData.childSnapshot(forPath: "location/zipcode").value as? String,
-                    let name = cafeData.childSnapshot(forPath: "name").value as? String,
-                    let phoneNumber = cafeData.childSnapshot(forPath: "phone").value as? String else { continue }
-                
-                    let cafeID = cafeData.key
-                
-                if address != "" && city != "" && state != "" && zipcode != "" {
-                    let cafeAddress = "\(address) \(city) \(state) \(zipcode)"
+        ref.child("users").observe(.value) { (dataSnap) in
+            for userChild in dataSnap.children {
+                let childSnap = userChild as! DataSnapshot
+                guard let cafeData = childSnap.value as? [String: Any] else { return }
+                let cafe = Cafe(dictionary: cafeData, key: childSnap.key)
+
+                if cafe?.address != nil && cafe?.city != nil && cafe?.state != nil && cafe?.zipcode != nil {
+                    let cafeAddress = "\(cafe!.address) \(cafe!.city) \(cafe!.state) \(cafe!.zipcode)"
                     let geoCoder = CLGeocoder()
                     geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
                         if let location = cafeLocation?.first?.location?.coordinate {
-                            let annotation = CafeAnnotation(coordinate: location, uid: cafeID, name: name, address: address, city: city, state: state, zipcode: zipcode, phoneNumber: phoneNumber)
+                            let annotation = CafeAnnotation(coordinate: location, uid: cafe!.key, name: cafe!.name, address: cafe!.address, city: cafe!.city, state: cafe!.state, zipcode: cafe!.zipcode, phoneNumber: cafe!.phone)
                             self.mapView.addAnnotation(annotation)
                         }
                     })

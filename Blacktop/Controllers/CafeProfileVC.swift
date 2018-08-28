@@ -132,28 +132,18 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             }
         }
         
-        ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let cafeName = data["name"] as? String
-            let cafePhone = data["phone"] as? String
-            let cafeWebsite = data["website"] as? String
+        ref.child("users").child(currentUser!).observe(.value) { (dataSnap) in
+            guard let cafeData = dataSnap.value as? [String: Any] else { return }
+            let cafe = Cafe(dictionary: cafeData, key: dataSnap.key)
             
-            self.name.text = cafeName
-            self.phone.text = cafePhone
-            self.website.text = cafeWebsite
-        }
-        
-        ref.child("users").child(currentUser!).child("location").observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            guard let cafeAddress = data?["address"] as? String,
-            let cafeCity = data?["city"] as? String,
-            let cafeState = data?["state"] as? String,
-            let cafeZipcode = data?["zipcode"] as? String else { return }
+            self.name.text = cafe?.name
+            self.address.text = cafe?.address
+            self.city.text = cafe?.city
+            self.state.text = cafe?.state
+            self.zipcode.text = cafe?.zipcode
+            self.phone.text = cafe?.phone
+            self.website.text = cafe?.website
             
-            self.address.text = cafeAddress
-            self.city.text = cafeCity
-            self.state.text = cafeState
-            self.zipcode.text = cafeZipcode
         }
         
         ref.child("users").child(currentUser!).child("hours").observe(.value) { (Datasnapshot) in
