@@ -139,23 +139,12 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.addCoffeeButton.isHidden = true
             }
         }
-        //Refactor this like CafeProfileVC
-//        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
-//            let data = Datasnapshot.value as? NSDictionary
-//            if let cafePhoto = data?["photoURL"] as? String {
-//                let url = URL(string: cafePhoto)
-//                let imageData = try? Data(contentsOf: url!)
-//                self.cafeImage.image = UIImage(data: imageData!)
-//            }
-//        }
         
         let imageRef = storage.child("photos").child(passedCafeID)
         let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
             if let data = data {
                 let image = UIImage(data: data)
                 self.cafeImage.image = image
-                
-                print(image!)
             }
             print(error ?? "No error")
         }

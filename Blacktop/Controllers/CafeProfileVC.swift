@@ -61,19 +61,11 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         super.viewDidLoad()
         ref = Database.database().reference()
         
-//        showcafeInfo()
+        showcafeInfo()
         zipcode.keyboardType = UIKeyboardType.numberPad
-        
         statePicker.delegate = self
         state.inputView = statePicker
-        
         picker.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        DispatchQueue.global(qos: .userInitiated).async {
-          self.showcafeInfo()
-        }
     }
     
     func addSpinner() {
@@ -123,6 +115,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func showcafeInfo() {
+        //Refactor this
         ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
             let data = Datasnapshot.value as? NSDictionary
             if let cafePhoto = data?["photoURL"] as? String {
@@ -144,39 +137,20 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             self.phone.text = cafe?.phone
             self.website.text = cafe?.website
             
-        }
-        
-        ref.child("users").child(currentUser!).child("hours").observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let monCafeOpen = data["monOpen"] as? String
-            let monCafeClose = data["monClose"] as? String
-            let tueCafeOpen = data["tueOpen"] as? String
-            let tueCafeClose = data["tueClose"] as? String
-            let wedCafeOpen = data["wedOpen"] as? String
-            let wedCafeClose = data["wedClose"] as? String
-            let thuCafeOpen = data["thuOpen"] as? String
-            let thuCafeClose = data["thuClose"] as? String
-            let friCafeOpen = data["friOpen"] as? String
-            let friCafeClose = data["friClose"] as? String
-            let satCafeOpen = data["satOpen"] as? String
-            let satCafeClose = data["satClose"] as? String
-            let sunCafeOpen = data["sunOpen"] as? String
-            let sunCafeClose = data["sunClose"] as? String
-            
-            self.monOpen.text = monCafeOpen
-            self.monClose.text = monCafeClose
-            self.tueOpen.text = tueCafeOpen
-            self.tueClose.text = tueCafeClose
-            self.wedOpen.text = wedCafeOpen
-            self.wedClose.text = wedCafeClose
-            self.thuOpen.text = thuCafeOpen
-            self.thuClose.text = thuCafeClose
-            self.friOpen.text = friCafeOpen
-            self.friClose.text = friCafeClose
-            self.satOpen.text = satCafeOpen
-            self.satClose.text = satCafeClose
-            self.sunOpen.text = sunCafeOpen
-            self.sunClose.text = sunCafeClose
+            self.monOpen.text = cafe?.monOpen
+            self.monClose.text = cafe?.monClose
+            self.tueOpen.text = cafe?.tueOpen
+            self.tueClose.text = cafe?.tueClose
+            self.wedOpen.text = cafe?.wedOpen
+            self.wedClose.text = cafe?.wedClose
+            self.thuOpen.text = cafe?.thuOpen
+            self.thuClose.text = cafe?.thuClose
+            self.friOpen.text = cafe?.friOpen
+            self.friClose.text = cafe?.friClose
+            self.satOpen.text = cafe?.satOpen
+            self.satClose.text = cafe?.satClose
+            self.sunOpen.text = cafe?.sunOpen
+            self.sunClose.text = cafe?.sunClose
         }
     }
     
@@ -190,7 +164,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         guard let image = self.profileImage.image else { return }
         if let newImage = UIImageJPEGRepresentation(image, 0.0) {
             imageRef.putData(newImage, metadata: nil) { (metadata, error) in
-                print(metadata)
                 if error != nil {
                     print(error!)
                     return
@@ -244,10 +217,27 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             }
         case .denied:
             print("please change your settings in privacy > photos > Blacktop")
-            //alert user to change setting
+            changeSettingsAlert()
         default:
             print("Error: no access to photo album.")
         }
+    }
+    
+    func changeSettingsAlert() {
+        let alert = UIAlertController(title: "Access to photos denied", message: "please change your settings in privacy > photos > Blacktop", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (_) in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else { return }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Setting is opened: \(success)")
+                })
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (_) in
+            
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 
