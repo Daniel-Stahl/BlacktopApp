@@ -11,6 +11,8 @@ import CoreLocation
 
 class Cafe {
     var key: String
+    var role: String
+    var image: String
     var name: String
     var address: String
     var city: String
@@ -18,6 +20,7 @@ class Cafe {
     var zipcode: String
     var phone: String
     var website: String
+    var hours: [String: Any]
     var monOpen: String
     var monClose: String
     var tueOpen: String
@@ -34,29 +37,34 @@ class Cafe {
     var sunClose: String
     
     init(key: String,
-        name: String,
-        address: String,
-        city: String,
-        state: String,
-        zipcode: String,
-        phone: String,
-        website: String,
-        monOpen: String,
-        monClose: String,
-        tueOpen: String,
-        tueClose: String,
-        wedOpen: String,
-        wedClose: String,
-        thuOpen: String,
-        thuClose: String,
-        friOpen: String,
-        friClose: String,
-        satOpen: String,
-        satClose: String,
-        sunOpen: String,
-        sunClose: String) {
+         role: String,
+         image: String,
+         name: String,
+         address: String,
+         city: String,
+         state: String,
+         zipcode: String,
+         phone: String,
+         website: String,
+         hours: [String: Any],
+         monOpen: String,
+         monClose: String,
+         tueOpen: String,
+         tueClose: String,
+         wedOpen: String,
+         wedClose: String,
+         thuOpen: String,
+         thuClose: String,
+         friOpen: String,
+         friClose: String,
+         satOpen: String,
+         satClose: String,
+         sunOpen: String,
+         sunClose: String) {
         
         self.key = key
+        self.role = role
+        self.image = image
         self.name = name
         self.address = address
         self.city = city
@@ -64,6 +72,7 @@ class Cafe {
         self.zipcode = zipcode
         self.phone = phone
         self.website = website
+        self.hours = hours
         self.monOpen = monOpen
         self.monClose = monClose
         self.tueOpen = tueOpen
@@ -82,7 +91,9 @@ class Cafe {
     
     convenience init? (dictionary: [String: Any], key: String) {
         let key = key
-        guard let name = dictionary["name"] as? String,
+        guard let role = dictionary["role"] as? String,
+        let image = dictionary["photoURL"] as? String,
+        let name = dictionary["name"] as? String,
         let location = dictionary["location"] as? [String: Any],
         let address = location["address"] as? String,
         let city = location["city"] as? String,
@@ -108,6 +119,8 @@ class Cafe {
         let sunClose = hours["sunClose"] as? String else { return nil }
         
         self.init(key: key,
+                  role: role,
+                  image: image,
                   name: name,
                   address: address,
                   city: city,
@@ -115,6 +128,7 @@ class Cafe {
                   zipcode: zipcode,
                   phone: phone,
                   website: website,
+                  hours: hours,
                   monOpen: monOpen,
                   monClose: monClose,
                   tueOpen: tueOpen,

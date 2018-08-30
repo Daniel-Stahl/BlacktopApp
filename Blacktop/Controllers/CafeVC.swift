@@ -54,6 +54,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         loadProfile()
         FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
@@ -125,9 +126,18 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func loadProfile() {
-        ref.child("users").child(passedCafeID).observeSingleEvent(of: .value) { (Snapshot) in
-            let data = Snapshot.value as! [String: Any]
-            let userRole = data["role"] as! String
+        ref.child("users").child(passedCafeID).observe(.value) { (dataSnap) in
+            guard let cafeData = dataSnap.value as? [String: Any] else { return }
+            let cafe = Cafe(dictionary: cafeData, key: dataSnap.key)
+
+            let userRole = cafe?.role
+            self.cafeName.text = cafe?.name
+            let address = cafe?.address
+            let city = cafe?.city
+            let state = cafe?.state
+            let zipcode = cafe?.zipcode
+            self.cafePhone.text = cafe?.phone
+            self.cafeWebsite.text = cafe?.website
             
             if userRole == "cafe" && self.passedCafeID == self.currentUser {
                 self.editProfileButton.isHidden = false
@@ -138,75 +148,31 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.editProfileButton.isHidden = true
                 self.addCoffeeButton.isHidden = true
             }
-        }
-        
-        let imageRef = storage.child("photos").child(passedCafeID)
-        let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
-            if let data = data {
-                let image = UIImage(data: data)
-                self.cafeImage.image = image
-            }
-            print(error ?? "No error")
-        }
-        
-        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            if let cafePhoto = data?["photoURL"] as? String {
-                self.favoriteImage = cafePhoto
-            } else {
-                self.favoriteImage = ""
-            }
-        }
-        
-        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
-            guard let data = Datasnapshot.value as? [String: Any] else { return }
-            let name = data["name"] as? String
-            let phone = data["phone"] as? String
-            let website = data["website"] as? String
             
-            self.cafeName.text = name
-            self.cafePhone.text = phone
-            self.cafeWebsite.text = website
-        }
-        
-        ref.child("users").child(passedCafeID).child("location").observe(.value) { (Datasnapshot) in
-            if Datasnapshot.exists() {
-                guard let data = Datasnapshot.value as? [String: Any] else { return }
-                let address = data["address"] as? String
-                let city = data["city"] as? String
-                let state = data["state"] as? String
-                let zipcode = data["zipcode"] as? String
-                
-                if address == "" && city == "" && state == "" && zipcode == "" {
-                    self.cafeAddress.text = ""
-                    self.cafeCityStateZip.text = ""
-                } else {
-                    self.cafeAddress.text = address
-                    self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
-                }
-            } else {
+            if address == "" && city == "" && state == "" && zipcode == "" {
                 self.cafeAddress.text = ""
                 self.cafeCityStateZip.text = ""
+            } else {
+                self.cafeAddress.text = address
+                self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
             }
-        }
-        
-        ref.child("users").child(passedCafeID).child("hours").observe(.value) { (Datasnapshot) in
-            if Datasnapshot.exists() {
-                guard let data = Datasnapshot.value as? [String: Any] else { return }
-                let mondayOpen = data["monOpen"] as? String
-                let mondayClose = data["monClose"] as? String
-                let tuesdayOpen = data["tueOpen"] as? String
-                let tuesdayClose = data["tueClose"] as? String
-                let wednesdayOpen = data["wedOpen"] as? String
-                let wednesdayClose = data["wedClose"] as? String
-                let thursdayOpen = data["thuOpen"] as? String
-                let thursdayClose = data["thuClose"] as? String
-                let fridayOpen = data["friOpen"] as? String
-                let fridayClose = data["friClose"] as? String
-                let saturdayOpen = data["satOpen"] as? String
-                let saturdayClose = data["satClose"] as? String
-                let sundayOpen = data["sunOpen"] as? String
-                let sundayClose = data["sunClose"] as? String
+            
+            if dataSnap.exists() {
+            
+                let mondayOpen = cafe?.monOpen
+                let mondayClose = cafe?.monClose
+                let tuesdayOpen = cafe?.tueOpen
+                let tuesdayClose = cafe?.tueClose
+                let wednesdayOpen = cafe?.wedOpen
+                let wednesdayClose = cafe?.wedClose
+                let thursdayOpen = cafe?.thuOpen
+                let thursdayClose = cafe?.thuClose
+                let fridayOpen = cafe?.friOpen
+                let fridayClose = cafe?.friClose
+                let saturdayOpen = cafe?.satOpen
+                let saturdayClose = cafe?.satClose
+                let sundayOpen = cafe?.sunOpen
+                let sundayClose = cafe?.sunClose
                 
                 let dayOfTheWeek = "\(Date().dayOfWeek()!)"
                 
@@ -250,6 +216,25 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 }
             } else {
                 self.cafeHours.text = ""
+            }
+
+        }
+        
+        let imageRef = storage.child("photos").child(passedCafeID)
+        let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
+            if let data = data {
+                let image = UIImage(data: data)
+                self.cafeImage.image = image
+            }
+            print(error ?? "No error")
+        }
+        
+        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
+            let data = Datasnapshot.value as? NSDictionary
+            if let cafePhoto = data?["photoURL"] as? String {
+                self.favoriteImage = cafePhoto
+            } else {
+                self.favoriteImage = ""
             }
         }
     }

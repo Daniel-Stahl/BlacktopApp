@@ -16,9 +16,11 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
     let storage = Storage.storage().reference()
     
+    var cafe: Cafe?
+    
     @IBOutlet weak var editCafeProfileButton: UIButton!
     @IBOutlet weak var saveCafeProfileButton: UIButton!
-    
+
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var changeImageButton: UIButton!
     
@@ -61,11 +63,20 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         super.viewDidLoad()
         ref = Database.database().reference()
         
-        showcafeInfo()
         zipcode.keyboardType = UIKeyboardType.numberPad
         statePicker.delegate = self
         state.inputView = statePicker
         picker.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        addSpinner()
+        FirebaseService.instance.getCurrentUserCafeData(currentUser: currentUser!) { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.showcafeInfo()
+            self.stopSpinner()
+        }
     }
     
     func addSpinner() {
@@ -115,43 +126,34 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func showcafeInfo() {
-        //Refactor this
-        ref.child("users").child(currentUser!).observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            if let cafePhoto = data?["photoURL"] as? String {
-                let url = URL(string: cafePhoto)
-                let imageData = try? Data(contentsOf: url!)
-                self.profileImage.image = UIImage(data: imageData!)
-            }
+        if let cafePhoto = cafe?.image {
+            let url = URL(string: cafePhoto)
+            let imageData = try? Data(contentsOf: url!)
+            self.profileImage.image = UIImage(data: imageData!)
         }
         
-        ref.child("users").child(currentUser!).observe(.value) { (dataSnap) in
-            guard let cafeData = dataSnap.value as? [String: Any] else { return }
-            let cafe = Cafe(dictionary: cafeData, key: dataSnap.key)
-            
-            self.name.text = cafe?.name
-            self.address.text = cafe?.address
-            self.city.text = cafe?.city
-            self.state.text = cafe?.state
-            self.zipcode.text = cafe?.zipcode
-            self.phone.text = cafe?.phone
-            self.website.text = cafe?.website
-            
-            self.monOpen.text = cafe?.monOpen
-            self.monClose.text = cafe?.monClose
-            self.tueOpen.text = cafe?.tueOpen
-            self.tueClose.text = cafe?.tueClose
-            self.wedOpen.text = cafe?.wedOpen
-            self.wedClose.text = cafe?.wedClose
-            self.thuOpen.text = cafe?.thuOpen
-            self.thuClose.text = cafe?.thuClose
-            self.friOpen.text = cafe?.friOpen
-            self.friClose.text = cafe?.friClose
-            self.satOpen.text = cafe?.satOpen
-            self.satClose.text = cafe?.satClose
-            self.sunOpen.text = cafe?.sunOpen
-            self.sunClose.text = cafe?.sunClose
-        }
+        self.name.text = cafe?.name
+        self.address.text = cafe?.address
+        self.city.text = cafe?.city
+        self.state.text = cafe?.state
+        self.zipcode.text = cafe?.zipcode
+        self.phone.text = cafe?.phone
+        self.website.text = cafe?.website
+
+        self.monOpen.text = cafe?.monOpen
+        self.monClose.text = cafe?.monClose
+        self.tueOpen.text = cafe?.tueOpen
+        self.tueClose.text = cafe?.tueClose
+        self.wedOpen.text = cafe?.wedOpen
+        self.wedClose.text = cafe?.wedClose
+        self.thuOpen.text = cafe?.thuOpen
+        self.thuClose.text = cafe?.thuClose
+        self.friOpen.text = cafe?.friOpen
+        self.friClose.text = cafe?.friClose
+        self.satOpen.text = cafe?.satOpen
+        self.satClose.text = cafe?.satClose
+        self.sunOpen.text = cafe?.sunOpen
+        self.sunClose.text = cafe?.sunClose
     }
     
     @IBAction func pressedSaveButton(_ sender: Any) {

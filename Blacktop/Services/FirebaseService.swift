@@ -20,41 +20,81 @@ class FirebaseService {
         ref.child("users").child(uid).updateChildValues(userData)
     }
     
-    func getCoffeeBeans(passedUID: String, handler: @escaping (_ coffeebeans: [CoffeeBean]) -> ()) {
-        ref = Database.database().reference()
-        var beansArray = [CoffeeBean]()
-        ref.child("users").child(passedUID).child("beans").observe(.value) { (beanSnapshot) in
-            beansArray.removeAll()
-            guard let data = beanSnapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            for bean in data {
-                let beanName = bean.childSnapshot(forPath: "name").value as! String
-                let roasterName = bean.childSnapshot(forPath: "roaster").value as! String
-                let beanKey = bean.key
-                let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName, key: beanKey)
-                beansArray.append(coffeeBean)
+    func getCafeData(completion: @escaping (_ cafe: [Cafe]) -> ()) {
+        DispatchQueue.global(qos: .background).async {
+            ref = Database.database().reference()
+            var cafeArray = [Cafe]()
+            ref.child("users").observe(.value) { (dataSnap) in
+                for userChild in dataSnap.children {
+                    let childSnap = userChild as! DataSnapshot
+                    guard let cafeData = childSnap.value as? [String: Any] else { return }
+                    if let cafe = Cafe(dictionary: cafeData, key: childSnap.key) {
+                       cafeArray.append(cafe)
+                    }
+                    DispatchQueue.main.async {
+                       completion(cafeArray)
+                    }
+                }
             }
-            handler(beansArray)
+        }
+    }
+    
+    func getCurrentUserCafeData(currentUser: String, completion: @escaping (_ cafe: Cafe) -> ()) {
+        DispatchQueue.global(qos: .background).async {
+            ref = Database.database().reference()
+            ref.child("users").child(currentUser).observe(.value) { (dataSnap) in
+                guard let cafeData = dataSnap.value as? [String: Any] else { return }
+                let cafe = Cafe(dictionary: cafeData, key: dataSnap.key)
+                DispatchQueue.main.async {
+                    completion(cafe!)
+                }
+            }
+        }
+    }
+    
+    func getCoffeeBeans(passedUID: String, handler: @escaping (_ coffeebeans: [CoffeeBean]) -> ()) {
+        DispatchQueue.global(qos: .background).async {
+            ref = Database.database().reference()
+            var beansArray = [CoffeeBean]()
+            ref.child("users").child(passedUID).child("beans").observe(.value) { (beanSnapshot) in
+                beansArray.removeAll()
+                guard let data = beanSnapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                for bean in data {
+                    let beanName = bean.childSnapshot(forPath: "name").value as! String
+                    let roasterName = bean.childSnapshot(forPath: "roaster").value as! String
+                    let beanKey = bean.key
+                    let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName, key: beanKey)
+                    beansArray.append(coffeeBean)
+                }
+                DispatchQueue.main.async {
+                    handler(beansArray)
+                }
+            }
         }
     }
     
     func getFavoriteCafes(currentUser: String, handler: @escaping (_ favoritecafe: [FavoriteCafe]) -> ()) {
-        ref = Database.database().reference()
-        var favoriteCafeArray = [FavoriteCafe]()
-        ref.child("users").child(currentUser).child("favorites").observe(.value) { (favoriteSnapshot) in
-            favoriteCafeArray.removeAll()
-            guard let data = favoriteSnapshot.children.allObjects as? [DataSnapshot] else { return }
-            
-            for favorite in data {
-                let cafeImageURL = favorite.childSnapshot(forPath: "imageURL").value as! String
-                let cafeName = favorite.childSnapshot(forPath: "name").value as! String
-                let cafeAddress = favorite.childSnapshot(forPath: "location/address").value as! String
-                let cafeCityStateZip = favorite.childSnapshot(forPath: "location/cityStateZip").value as! String
-                let favoriteKey = favorite.key
-                let favoriteCafe = FavoriteCafe(cafeImageURL: cafeImageURL, cafeName: cafeName, cafeAddress: cafeAddress, cafeCityStateZip: cafeCityStateZip, key: favoriteKey)
-                favoriteCafeArray.append(favoriteCafe)
+        DispatchQueue.global(qos: .background).async {
+            ref = Database.database().reference()
+            var favoriteCafeArray = [FavoriteCafe]()
+            ref.child("users").child(currentUser).child("favorites").observe(.value) { (favoriteSnapshot) in
+                favoriteCafeArray.removeAll()
+                guard let data = favoriteSnapshot.children.allObjects as? [DataSnapshot] else { return }
+                
+                for favorite in data {
+                    let cafeImageURL = favorite.childSnapshot(forPath: "imageURL").value as! String
+                    let cafeName = favorite.childSnapshot(forPath: "name").value as! String
+                    let cafeAddress = favorite.childSnapshot(forPath: "location/address").value as! String
+                    let cafeCityStateZip = favorite.childSnapshot(forPath: "location/cityStateZip").value as! String
+                    let favoriteKey = favorite.key
+                    let favoriteCafe = FavoriteCafe(cafeImageURL: cafeImageURL, cafeName: cafeName, cafeAddress: cafeAddress, cafeCityStateZip: cafeCityStateZip, key: favoriteKey)
+                    favoriteCafeArray.append(favoriteCafe)
+                }
+                DispatchQueue.main.async {
+                    handler(favoriteCafeArray)
+                }
             }
-            handler(favoriteCafeArray)
         }
     }
 }

@@ -22,6 +22,7 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutPhone: UILabel!
     @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
+    var cafe = [Cafe]()
     var cafeID = ""
     
     let locationManager = CLLocationManager()
@@ -31,39 +32,32 @@ class MapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        //getCafeData()
         cafeCalloutView.isHidden = true
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
-        cafePins()
-        
-        
+
+//        FirebaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafe = returnedCafe
+//            self.cafePins()
+//        }
     }
     
-//    func getCafeData() {
-//        ref.child("users").observe(.value) { (dataSnap) in
-//            for userChild in dataSnap.children {
-//                let childSnap = userChild as! DataSnapshot
-//                let data = childSnap.childSnapshot(forPath: "location")
-//                guard let cafeData = data.value as? [String: Any] else { return }
-//                print(cafeData)
-//                let cafe = Cafe(dictionary: cafeData)
-//            }
-//        }
-//    }
-    
     @IBAction func profileButtonPressed(_ sender: Any) {
-        ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
-            let data = Snapshot.value as! [String: Any]
-            let userRole = data["role"] as! String
-            
-            if userRole == "cafe" {
-                let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-                cafeVC?.initData(uid: (Auth.auth().currentUser?.uid)!)
-                self.present(cafeVC!, animated: true, completion: nil)
-            } else {
-                self.performSegue(withIdentifier: "toProfileVC", sender: nil)
+        DispatchQueue.global(qos: .background).async {
+            self.ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+                let data = Snapshot.value as! [String: Any]
+                let userRole = data["role"] as! String
+                
+                DispatchQueue.main.async {
+                    if userRole == "cafe" {
+                        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
+                        cafeVC?.initData(uid: (Auth.auth().currentUser?.uid)!)
+                        self.present(cafeVC!, animated: true, completion: nil)
+                    } else {
+                        self.performSegue(withIdentifier: "toProfileVC", sender: nil)
+                    }
+                }
             }
         }
     }
@@ -90,23 +84,24 @@ extension MapVC: MKMapViewDelegate {
         locationManager.stopUpdatingLocation()
     }
     
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        FirebaseService.instance.getCafeData { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.cafePins()
+        }
+    }
+    
     func cafePins() {
-        ref.child("users").observe(.value) { (dataSnap) in
-            for userChild in dataSnap.children {
-                let childSnap = userChild as! DataSnapshot
-                guard let cafeData = childSnap.value as? [String: Any] else { return }
-                let cafe = Cafe(dictionary: cafeData, key: childSnap.key)
-
-                if cafe?.address != nil && cafe?.city != nil && cafe?.state != nil && cafe?.zipcode != nil {
-                    let cafeAddress = "\(cafe!.address) \(cafe!.city) \(cafe!.state) \(cafe!.zipcode)"
-                    let geoCoder = CLGeocoder()
-                    geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
-                        if let location = cafeLocation?.first?.location?.coordinate {
-                            let annotation = CafeAnnotation(coordinate: location, uid: cafe!.key, name: cafe!.name, address: cafe!.address, city: cafe!.city, state: cafe!.state, zipcode: cafe!.zipcode, phoneNumber: cafe!.phone)
-                            self.mapView.addAnnotation(annotation)
-                        }
-                    })
-                }
+        for data in cafe {
+            if data.address != "" && data.city != "" && data.state != "" && data.zipcode != "" {
+                let cafeAddress = "\(data.address) \(data.city) \(data.state) \(data.zipcode)"
+                let geoCoder = CLGeocoder()
+                geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
+                    if let location = cafeLocation?.first?.location?.coordinate {
+                        let annotation = CafeAnnotation(coordinate: location, uid: data.key, name: data.name, address: data.address, city: data.city, state: data.state, zipcode: data.zipcode, phoneNumber: data.phone)
+                        self.mapView.addAnnotation(annotation)
+                    }
+                })
             }
         }
     }
