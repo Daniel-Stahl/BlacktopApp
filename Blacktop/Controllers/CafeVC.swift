@@ -27,6 +27,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var cafe: Cafe?
     var coffeeBean = [CoffeeBean]()
 
     var passedCafeID: String = ""
@@ -34,7 +35,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         self.passedCafeID = uid
     }
     
-    var favoriteImage: String?
+    var favoriteImage: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +56,11 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        loadProfile()
+        FirebaseService.instance.getCurrentUserCafeData(currentUser: passedCafeID) { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.loadProfile()
+        }
+        
         FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
@@ -116,7 +121,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
         self.favoriteCafeButton.isHidden = true
         self.filledFavoriteCafeButton.isHidden = false
-        print(favoriteCafeDetails)
     }
     
     @IBAction func filledFavoriteCafeButtonPressed(_ sender: Any) {
@@ -126,116 +130,95 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func loadProfile() {
-        ref.child("users").child(passedCafeID).observe(.value) { (dataSnap) in
-            guard let cafeData = dataSnap.value as? [String: Any] else { return }
-            let cafe = Cafe(dictionary: cafeData, key: dataSnap.key)
-
-            let userRole = cafe?.role
-            self.cafeName.text = cafe?.name
-            let address = cafe?.address
-            let city = cafe?.city
-            let state = cafe?.state
-            let zipcode = cafe?.zipcode
-            self.cafePhone.text = cafe?.phone
-            self.cafeWebsite.text = cafe?.website
-            
-            if userRole == "cafe" && self.passedCafeID == self.currentUser {
-                self.editProfileButton.isHidden = false
-                self.addCoffeeButton.isHidden = false
-                self.favoriteCafeButton.isHidden = true
-                self.filledFavoriteCafeButton.isHidden = true
-            } else {
-                self.editProfileButton.isHidden = true
-                self.addCoffeeButton.isHidden = true
-            }
-            
-            if address == "" && city == "" && state == "" && zipcode == "" {
-                self.cafeAddress.text = ""
-                self.cafeCityStateZip.text = ""
-            } else {
-                self.cafeAddress.text = address
-                self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
-            }
-            
-            if dataSnap.exists() {
-            
-                let mondayOpen = cafe?.monOpen
-                let mondayClose = cafe?.monClose
-                let tuesdayOpen = cafe?.tueOpen
-                let tuesdayClose = cafe?.tueClose
-                let wednesdayOpen = cafe?.wedOpen
-                let wednesdayClose = cafe?.wedClose
-                let thursdayOpen = cafe?.thuOpen
-                let thursdayClose = cafe?.thuClose
-                let fridayOpen = cafe?.friOpen
-                let fridayClose = cafe?.friClose
-                let saturdayOpen = cafe?.satOpen
-                let saturdayClose = cafe?.satClose
-                let sundayOpen = cafe?.sunOpen
-                let sundayClose = cafe?.sunClose
-                
-                let dayOfTheWeek = "\(Date().dayOfWeek()!)"
-                
-                switch dayOfTheWeek {
-                case "Monday": if mondayOpen == "" && mondayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
-                }
-                case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
-                }
-                case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                   self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
-                }
-                case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
-                }
-                case "Friday": if fridayOpen == "" && fridayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
-                }
-                case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
-                }
-                case "Sunday": if sundayOpen == "" && sundayClose == "" {
-                    self.cafeHours.text = "Closed"
-                } else {
-                    self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
-                }
-                    default: self.cafeHours.text = "Not open"
-                }
-            } else {
-                self.cafeHours.text = ""
-            }
-
+        if let cafePhoto = self.cafe?.image {
+            let url = URL(string: cafePhoto)
+            let imageData = try? Data(contentsOf: url!)
+            self.cafeImage.image = UIImage(data: imageData!)
+            self.favoriteImage = cafePhoto
         }
         
-        let imageRef = storage.child("photos").child(passedCafeID)
-        let downloadTask = imageRef.getData(maxSize: 1024 * 1024) { (data, error) in
-            if let data = data {
-                let image = UIImage(data: data)
-                self.cafeImage.image = image
-            }
-            print(error ?? "No error")
+        
+        let userRole = cafe?.role
+        self.cafeName.text = cafe?.name
+        let address = cafe?.address
+        let city = cafe?.city
+        let state = cafe?.state
+        let zipcode = cafe?.zipcode
+        self.cafePhone.text = cafe?.phone
+        self.cafeWebsite.text = cafe?.website
+
+        if userRole == "cafe" && self.passedCafeID == self.currentUser {
+            self.editProfileButton.isHidden = false
+            self.addCoffeeButton.isHidden = false
+            self.favoriteCafeButton.isHidden = true
+            self.filledFavoriteCafeButton.isHidden = true
+        } else {
+            self.editProfileButton.isHidden = true
+            self.addCoffeeButton.isHidden = true
+        }
+
+        if address == "" && city == "" && state == "" && zipcode == "" {
+            self.cafeAddress.text = ""
+            self.cafeCityStateZip.text = ""
+        } else {
+            self.cafeAddress.text = address
+            self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
         }
         
-        ref.child("users").child(passedCafeID).observe(.value) { (Datasnapshot) in
-            let data = Datasnapshot.value as? NSDictionary
-            if let cafePhoto = data?["photoURL"] as? String {
-                self.favoriteImage = cafePhoto
+        let mondayOpen = cafe?.monOpen
+        let mondayClose = cafe?.monClose
+        let tuesdayOpen = cafe?.tueOpen
+        let tuesdayClose = cafe?.tueClose
+        let wednesdayOpen = cafe?.wedOpen
+        let wednesdayClose = cafe?.wedClose
+        let thursdayOpen = cafe?.thuOpen
+        let thursdayClose = cafe?.thuClose
+        let fridayOpen = cafe?.friOpen
+        let fridayClose = cafe?.friClose
+        let saturdayOpen = cafe?.satOpen
+        let saturdayClose = cafe?.satClose
+        let sundayOpen = cafe?.sunOpen
+        let sundayClose = cafe?.sunClose
+
+        let dayOfTheWeek = "\(Date().dayOfWeek()!)"
+
+        switch dayOfTheWeek {
+            case "Monday": if mondayOpen == "" && mondayClose == "" {
+                self.cafeHours.text = "Closed"
             } else {
-                self.favoriteImage = ""
+                self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
             }
+            case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
+            }
+            case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+               self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
+            }
+            case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
+            }
+            case "Friday": if fridayOpen == "" && fridayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
+            }
+            case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
+            }
+            case "Sunday": if sundayOpen == "" && sundayClose == "" {
+                self.cafeHours.text = "Closed"
+            } else {
+                self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+            }
+                default: self.cafeHours.text = "Not open"
         }
     }
 }
