@@ -40,9 +40,24 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: passedCafeID) { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.loadProfile()
+        }
+        
+        DatabaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
+            self.coffeeBean = returnedCoffeeBeans
+            self.tableView.reloadData()
+        }
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         let linkTap = UITapGestureRecognizer(target: self, action: #selector(tappedLink))
         linkTap.numberOfTapsRequired = 1
@@ -51,20 +66,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         let phoneTap = UITapGestureRecognizer(target: self, action: #selector(tappedPhone))
         phoneTap.numberOfTapsRequired = 1
         cafePhone.addGestureRecognizer(phoneTap)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
-        FirebaseService.instance.getCurrentUserCafeData(currentUser: passedCafeID) { (returnedCafe) in
-            self.cafe = returnedCafe
-            self.loadProfile()
-        }
-        
-        FirebaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
-            self.coffeeBean = returnedCoffeeBeans
-            self.tableView.reloadData()
-        }
         showFavoriteButton()
     }
     
@@ -136,7 +138,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             self.cafeImage.image = UIImage(data: imageData!)
             self.favoriteImage = cafePhoto
         }
-        
         
         let userRole = cafe?.role
         self.cafeName.text = cafe?.name

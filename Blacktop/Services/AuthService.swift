@@ -20,7 +20,7 @@ class AuthService {
             }
             
             let userData = ["provider": user.providerID , "name": name, "email": user.email, "role": userRole]
-            FirebaseService.instance.createUser(uid: user.uid, userData: userData)
+            DatabaseService.instance.createUser(uid: user.uid, userData: userData as Dictionary<String, Any>)
             userCreationComplete(true, nil)
         }
     }

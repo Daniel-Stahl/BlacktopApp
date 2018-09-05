@@ -11,8 +11,8 @@ import Firebase
 
 var ref: DatabaseReference!
 
-class FirebaseService {
-    static let instance = FirebaseService()
+class DatabaseService {
+    static let instance = DatabaseService()
     var currentUser = Auth.auth().currentUser?.uid
     
     func createUser(uid: String, userData: Dictionary<String, Any>) {

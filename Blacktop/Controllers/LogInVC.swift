@@ -14,8 +14,7 @@ class LogInVC: UIViewController {
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
     
-    var spinner: UIActivityIndicatorView?
-    var screenSize = UIScreen.main.bounds
+    let spinner = Spinner()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +22,14 @@ class LogInVC: UIViewController {
     }
     
     @IBAction func pressedLogInButton(_ sender: Any) {
-        addSpinner()
+        spinner.startSpinner(view: view)
         if userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.loginUser(email: userEmail.text!, password: userPassword.text!) { (success, error) in
                 if success {
-                    self.stopSpinner()
+                    self.spinner.stopSpinner()
                     self.performSegue(withIdentifier: "toMapVC", sender: nil)
                 } else {
-                    self.stopSpinner()
+                    self.spinner.stopSpinner()
                     self.showAlert(withError: error)
                 }
             }
@@ -49,21 +48,6 @@ class LogInVC: UIViewController {
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
                 self.dismiss(animated: true, completion: nil)
             })
-        }
-    }
-    
-    func addSpinner() {
-        spinner = UIActivityIndicatorView()
-        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
-        spinner?.activityIndicatorViewStyle = .whiteLarge
-        spinner?.color = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
-        spinner?.startAnimating()
-        view.addSubview(spinner!)
-    }
-    
-    func stopSpinner() {
-        if spinner != nil {
-            spinner?.removeFromSuperview()
         }
     }
 }

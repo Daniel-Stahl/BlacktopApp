@@ -36,11 +36,6 @@ class MapVC: UIViewController {
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
-
-//        FirebaseService.instance.getCafeData { (returnedCafe) in
-//            self.cafe = returnedCafe
-//            self.cafePins()
-//        }
     }
     
     @IBAction func profileButtonPressed(_ sender: Any) {
@@ -85,7 +80,7 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-        FirebaseService.instance.getCafeData { (returnedCafe) in
+        DatabaseService.instance.getCafeData { (returnedCafe) in
             self.cafe = returnedCafe
             self.cafePins()
         }
@@ -111,7 +106,7 @@ extension MapVC: MKMapViewDelegate {
         
         var annotationView = self.mapView.dequeueReusableAnnotationView(withIdentifier: "pin")
         if annotationView == nil {
-            annotationView = CafeAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "pin")
             annotationView?.canShowCallout = false
         } else {
             annotationView?.annotation = annotation
@@ -149,15 +144,4 @@ extension MapVC: CLLocationManagerDelegate {
             return
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            print("Found user's location: \(location)")
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Failed to find user's location: \(error.localizedDescription)")
-    }
-    
 }

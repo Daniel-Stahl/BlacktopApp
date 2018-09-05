@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		024C7330EA6ACB211A12E8C3 /* Pods_Blacktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DC091A51D72B3B5F10FF0BA /* Pods_Blacktop.framework */; };
-		432C37F420F0350000CC25D7 /* CafeAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C37F320F0350000CC25D7 /* CafeAnnotationView.swift */; };
 		432C37F620F3E26300CC25D7 /* CafeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C37F520F3E26300CC25D7 /* CafeVC.swift */; };
 		432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF74720ACACB800FC2F8B /* AppDelegate.swift */; };
 		432FF74A20ACACB800FC2F8B /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF74920ACACB800FC2F8B /* WelcomeVC.swift */; };
@@ -20,13 +19,14 @@
 		432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76120ACD7D400FC2F8B /* CustomTextField.swift */; };
 		432FF76420ACD90900FC2F8B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76320ACD90900FC2F8B /* CustomView.swift */; };
 		432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76520ACDF4C00FC2F8B /* SignUpVC.swift */; };
-		432FF76920ACE4ED00FC2F8B /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76820ACE4ED00FC2F8B /* FirebaseService.swift */; };
+		432FF76920ACE4ED00FC2F8B /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76820ACE4ED00FC2F8B /* DatabaseService.swift */; };
 		432FF76B20ACE9D900FC2F8B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76A20ACE9D900FC2F8B /* AuthService.swift */; };
 		432FF76D20AE246A00FC2F8B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */; };
 		432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF76E20AF5F9400FC2F8B /* MapVC.swift */; };
 		432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77020AF8E2000FC2F8B /* ProfileVC.swift */; };
 		432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */; };
 		432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432FF77720B389DC00FC2F8B /* TimePicker.swift */; };
+		4333ECE8214086A000FEC117 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333ECE7214086A000FEC117 /* Spinner.swift */; };
 		436D031E211A26F400885864 /* UserFavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D031D211A26F400885864 /* UserFavoriteCell.swift */; };
 		436D0320211A2E6900885864 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D031F211A2E6900885864 /* ForgotPasswordVC.swift */; };
 		436D0322211A46BF00885864 /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D0321211A46BF00885864 /* ErrorDisplay.swift */; };
@@ -43,7 +43,6 @@
 
 /* Begin PBXFileReference section */
 		3599970CAF1E974C6FB64D6A /* Pods-Blacktop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blacktop.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Blacktop/Pods-Blacktop.debug.xcconfig"; sourceTree = "<group>"; };
-		432C37F320F0350000CC25D7 /* CafeAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CafeAnnotationView.swift; sourceTree = "<group>"; };
 		432C37F520F3E26300CC25D7 /* CafeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeVC.swift; sourceTree = "<group>"; };
 		432FF74420ACACB800FC2F8B /* Blacktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blacktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		432FF74720ACACB800FC2F8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,13 +56,14 @@
 		432FF76120ACD7D400FC2F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		432FF76320ACD90900FC2F8B /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		432FF76520ACDF4C00FC2F8B /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
-		432FF76820ACE4ED00FC2F8B /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		432FF76820ACE4ED00FC2F8B /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		432FF76A20ACE9D900FC2F8B /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		432FF76C20AE246A00FC2F8B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		432FF76E20AF5F9400FC2F8B /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		432FF77020AF8E2000FC2F8B /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		432FF77220B33DDB00FC2F8B /* CafeProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeProfileVC.swift; sourceTree = "<group>"; };
 		432FF77720B389DC00FC2F8B /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
+		4333ECE7214086A000FEC117 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		436D031D211A26F400885864 /* UserFavoriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFavoriteCell.swift; sourceTree = "<group>"; };
 		436D031F211A2E6900885864 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
 		436D0321211A46BF00885864 /* ErrorDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDisplay.swift; sourceTree = "<group>"; };
@@ -135,6 +135,7 @@
 				432FF77720B389DC00FC2F8B /* TimePicker.swift */,
 				43D2022620FEB1F100C8F0FD /* CoffeeBeanCell.swift */,
 				436D031D211A26F400885864 /* UserFavoriteCell.swift */,
+				4333ECE7214086A000FEC117 /* Spinner.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -158,7 +159,7 @@
 		432FF76720ACE4DC00FC2F8B /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				432FF76820ACE4ED00FC2F8B /* FirebaseService.swift */,
+				432FF76820ACE4ED00FC2F8B /* DatabaseService.swift */,
 				432FF76A20ACE9D900FC2F8B /* AuthService.swift */,
 			);
 			path = Services;
@@ -169,7 +170,6 @@
 			children = (
 				43FEED3B20E17FBB00EB1E44 /* CafeAnnotation.swift */,
 				43FEED3F20E1A0B700EB1E44 /* Cafe.swift */,
-				432C37F320F0350000CC25D7 /* CafeAnnotationView.swift */,
 				43D202302100015500C8F0FD /* CoffeeBean.swift */,
 				436D0323211BA50D00885864 /* FavoriteCafe.swift */,
 			);
@@ -329,7 +329,6 @@
 				432FF77320B33DDB00FC2F8B /* CafeProfileVC.swift in Sources */,
 				43D2022720FEB1F100C8F0FD /* CoffeeBeanCell.swift in Sources */,
 				436D031E211A26F400885864 /* UserFavoriteCell.swift in Sources */,
-				432C37F420F0350000CC25D7 /* CafeAnnotationView.swift in Sources */,
 				432FF76620ACDF4C00FC2F8B /* SignUpVC.swift in Sources */,
 				436D0322211A46BF00885864 /* ErrorDisplay.swift in Sources */,
 				432FF77820B389DC00FC2F8B /* TimePicker.swift in Sources */,
@@ -339,13 +338,14 @@
 				43FEED4020E1A0B700EB1E44 /* Cafe.swift in Sources */,
 				432FF74820ACACB800FC2F8B /* AppDelegate.swift in Sources */,
 				432FF76B20ACE9D900FC2F8B /* AuthService.swift in Sources */,
-				432FF76920ACE4ED00FC2F8B /* FirebaseService.swift in Sources */,
+				432FF76920ACE4ED00FC2F8B /* DatabaseService.swift in Sources */,
 				432FF76F20AF5F9400FC2F8B /* MapVC.swift in Sources */,
 				432FF76020ACD40400FC2F8B /* LogInVC.swift in Sources */,
 				432FF76420ACD90900FC2F8B /* CustomView.swift in Sources */,
 				432FF75D20ACD18D00FC2F8B /* CustomButton.swift in Sources */,
 				436D0324211BA50D00885864 /* FavoriteCafe.swift in Sources */,
 				432FF77120AF8E2000FC2F8B /* ProfileVC.swift in Sources */,
+				4333ECE8214086A000FEC117 /* Spinner.swift in Sources */,
 				432C37F620F3E26300CC25D7 /* CafeVC.swift in Sources */,
 				432FF76220ACD7D400FC2F8B /* CustomTextField.swift in Sources */,
 				43FEED3C20E17FBB00EB1E44 /* CafeAnnotation.swift in Sources */,

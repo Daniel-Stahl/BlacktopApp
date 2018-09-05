@@ -15,8 +15,7 @@ class SignUpVC: UIViewController {
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
     
-    var spinner: UIActivityIndicatorView?
-    var screenSize = UIScreen.main.bounds
+    let spinner = Spinner()
     
     var userRole = "user"
     
@@ -34,24 +33,24 @@ class SignUpVC: UIViewController {
     }
     
     @IBAction func pressedSignUpButton(_ sender: Any) {
-        addSpinner()
+        spinner.startSpinner(view: view)
         if userEmail.text != nil && userPassword.text != nil {
             AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
                 if success {
                     AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
                         if success && self.userRole == "cafe" {
-                            self.stopSpinner()
+                            self.spinner.stopSpinner()
                             self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
                         } else if success && self.userRole == "user" {
-                            self.stopSpinner()
+                            self.spinner.stopSpinner()
                             self.performSegue(withIdentifier: "toMapVC", sender: nil)
                         } else {
-                            self.stopSpinner()
+                            self.spinner.stopSpinner()
                            self.showAlert(withError: error)
                         }
                     })
                 } else {
-                    self.stopSpinner()
+                    self.spinner.stopSpinner()
                     self.showAlert(withError: error)
                 }
             }
@@ -70,21 +69,6 @@ class SignUpVC: UIViewController {
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
                 self.dismiss(animated: true, completion: nil)
             })
-        }
-    }
-    
-    func addSpinner() {
-        spinner = UIActivityIndicatorView()
-        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
-        spinner?.activityIndicatorViewStyle = .whiteLarge
-        spinner?.color = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
-        spinner?.startAnimating()
-        view.addSubview(spinner!)
-    }
-    
-    func stopSpinner() {
-        if spinner != nil {
-            spinner?.removeFromSuperview()
         }
     }
 }

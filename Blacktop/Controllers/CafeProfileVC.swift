@@ -29,8 +29,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     var statePicker = UIPickerView()
     let picker = UIImagePickerController()
     
-    var screenSize = UIScreen.main.bounds
-    var spinner: UIActivityIndicatorView?
+    let spinner = Spinner()
     
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
@@ -63,35 +62,15 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         super.viewDidLoad()
         ref = Database.database().reference()
         
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser!) { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.showcafeInfo()
+        }
+        
         zipcode.keyboardType = UIKeyboardType.numberPad
         statePicker.delegate = self
         state.inputView = statePicker
         picker.delegate = self
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        addSpinner()
-        FirebaseService.instance.getCurrentUserCafeData(currentUser: currentUser!) { (returnedCafe) in
-            self.cafe = returnedCafe
-            self.showcafeInfo()
-            self.stopSpinner()
-        }
-    }
-    
-    func addSpinner() {
-        spinner = UIActivityIndicatorView()
-        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: screenSize.height / 2)
-        spinner?.activityIndicatorViewStyle = .whiteLarge
-        spinner?.color = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
-        spinner?.startAnimating()
-        view.addSubview(spinner!)
-    }
-    
-    func stopSpinner() {
-        if spinner != nil {
-            spinner?.removeFromSuperview()
-        }
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -161,7 +140,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func updateUserProfile() {
-        addSpinner()
+        spinner.startSpinner(view: view)
         let imageRef = storage.child("photos").child(currentUser!)
         guard let image = self.profileImage.image else { return }
         if let newImage = UIImageJPEGRepresentation(image, 0.0) {
@@ -183,7 +162,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                                 print(error!)
                                 return
                             }
-                            self.stopSpinner()
+                            self.spinner.stopSpinner()
                             self.changeImageButton.isHidden = true
                             self.editCafeProfileButton.isHidden = false
                             self.saveCafeProfileButton.isHidden = true
@@ -197,7 +176,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {
-
         checkPermission {
             self.picker.allowsEditing = false
             self.picker.sourceType = .photoLibrary
@@ -249,12 +227,10 @@ extension CafeProfileVC {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         self.takenImage = image
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)
-        
     }
 }
 
