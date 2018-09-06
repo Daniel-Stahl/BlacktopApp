@@ -11,19 +11,11 @@ import Firebase
 import Photos
 
 class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // add Marks
     var ref: DatabaseReference!
-    let currentUser = Auth.auth().currentUser?.uid
-    
     let storage = Storage.storage().reference()
-    
     var cafe: Cafe?
-    
-    @IBOutlet weak var editCafeProfileButton: UIButton!
-    @IBOutlet weak var saveCafeProfileButton: UIButton!
 
-    @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var changeImageButton: UIButton!
-    
     var imageDownloadURL: String?
     var takenImage = UIImage()
     var statePicker = UIPickerView()
@@ -31,6 +23,10 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     
     let spinner = Spinner()
     
+    @IBOutlet weak var editCafeProfileButton: UIButton!
+    @IBOutlet weak var saveCafeProfileButton: UIButton!
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var changeImageButton: UIButton!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var address: UITextField!
     @IBOutlet weak var city: UITextField!
@@ -38,7 +34,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     @IBOutlet weak var zipcode: UITextField!
     @IBOutlet weak var phone: UITextField!
     @IBOutlet weak var website: UITextField!
-    
     @IBOutlet weak var monOpen: TimePicker!
     @IBOutlet weak var monClose: TimePicker!
     @IBOutlet weak var tueOpen: TimePicker!
@@ -61,22 +56,23 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
-        DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser!) { (returnedCafe) in
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser) { (returnedCafe) in
             self.cafe = returnedCafe
             self.showcafeInfo()
         }
         
-        zipcode.keyboardType = UIKeyboardType.numberPad
+        zipcode.keyboardType = .numberPad
         statePicker.delegate = self
         state.inputView = statePicker
         picker.delegate = self
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-        cafeVC?.initData(uid: currentUser!)
-        self.present(cafeVC!, animated: true, completion: nil)
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC else { return }
+        cafeVC.initData(uid: currentUser)
+        present(cafeVC, animated: true, completion: nil)
     }
     
     @IBAction func pressedLogoutButton(_ sender: Any) {
@@ -86,8 +82,8 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             
             do {
                 try Auth.auth().signOut()
-                let welcomeVC = self.storyboard?.instantiateViewController(withIdentifier: "WelcomeVC") as? WelcomeVC
-                self.present(welcomeVC!, animated: true, completion: nil)
+                guard let welcomeVC = self.storyboard?.instantiateViewController(withIdentifier: "WelcomeVC") as? WelcomeVC else { return }
+                self.present(welcomeVC, animated: true, completion: nil)
             } catch {
                 print(error)
             }
@@ -140,39 +136,41 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func updateUserProfile() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
         spinner.startSpinner(view: view)
-        let imageRef = storage.child("photos").child(currentUser!)
-        guard let image = self.profileImage.image else { return }
-        if let newImage = UIImageJPEGRepresentation(image, 0.0) {
-            imageRef.putData(newImage, metadata: nil) { (metadata, error) in
+        let imageRef = storage.child("photos").child(currentUser)
+        guard let image = self.profileImage.image, let newImage = UIImageJPEGRepresentation(image, 0.0) else { return }
+        imageRef.putData(newImage, metadata: nil) { (metadata, error) in
+            if error != nil {
+                print(error!)
+                return
+            }
+            imageRef.downloadURL(completion: { (url, error) in
                 if error != nil {
                     print(error!)
                     return
                 }
-                imageRef.downloadURL(completion: { (url, error) in
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    if let profilePhotoURL = url?.absoluteString {
-                        let cafeDetails = ["photoURL": profilePhotoURL, "name": self.name.text!, "location": ["address": self.address.text!, "city": self.city.text!, "state": self.state.text!, "zipcode": self.zipcode.text!], "phone": self.phone.text!, "website": self.website.text!, "hours": ["monOpen": self.monOpen.text!, "monClose": self.monClose.text!, "tueOpen": self.tueOpen.text!, "tueClose": self.tueClose.text!, "wedOpen": self.wedOpen.text!, "wedClose": self.wedClose.text!, "thuOpen": self.thuOpen.text!, "thuClose": self.thuClose.text!, "friOpen": self.friOpen.text!, "friClose": self.friClose.text!, "satOpen": self.satOpen.text!, "satClose": self.satClose.text!, "sunOpen": self.sunOpen.text!, "sunClose": self.sunClose.text!]] as [String : Any]
-                        
-                        self.ref.child("users").child(self.currentUser!).updateChildValues(cafeDetails, withCompletionBlock: { (error, ref) in
-                            if error != nil {
-                                print(error!)
-                                return
-                            }
-                            self.spinner.stopSpinner()
-                            self.changeImageButton.isHidden = true
-                            self.editCafeProfileButton.isHidden = false
-                            self.saveCafeProfileButton.isHidden = true
-                            self.disableTextField()
-                            print("Profile successfully updated!")
-                        })
-                    }
-                })
-            }
+                if let profilePhotoURL = url?.absoluteString {
+                    //fix force unwraps
+                    let cafeDetails = ["photoURL": profilePhotoURL, "name": self.name.text!, "location": ["address": self.address.text!, "city": self.city.text!, "state": self.state.text!, "zipcode": self.zipcode.text!], "phone": self.phone.text!, "website": self.website.text!, "hours": ["monOpen": self.monOpen.text!, "monClose": self.monClose.text!, "tueOpen": self.tueOpen.text!, "tueClose": self.tueClose.text!, "wedOpen": self.wedOpen.text!, "wedClose": self.wedClose.text!, "thuOpen": self.thuOpen.text!, "thuClose": self.thuClose.text!, "friOpen": self.friOpen.text!, "friClose": self.friClose.text!, "satOpen": self.satOpen.text!, "satClose": self.satClose.text!, "sunOpen": self.sunOpen.text!, "sunClose": self.sunClose.text!]] as [String : Any]
+                    
+                    guard let currentUser = Auth.auth().currentUser?.uid else { return }
+                    self.ref.child("users").child(currentUser).updateChildValues(cafeDetails, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            print(error!)
+                            return
+                        }
+                        self.spinner.stopSpinner()
+                        self.changeImageButton.isHidden = true
+                        self.editCafeProfileButton.isHidden = false
+                        self.saveCafeProfileButton.isHidden = true
+                        self.disableTextField()
+                        print("Profile successfully updated!")
+                    })
+                }
+            })
         }
+        
     }
     
     @IBAction func pressedChangeImageButton(_ sender: Any) {
@@ -227,7 +225,7 @@ extension CafeProfileVC {
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
         self.takenImage = image
         self.profileImage.image = takenImage
         self.dismiss(animated: true, completion: nil)

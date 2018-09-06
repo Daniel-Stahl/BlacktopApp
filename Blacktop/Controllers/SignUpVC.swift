@@ -14,52 +14,38 @@ class SignUpVC: UIViewController {
     @IBOutlet weak var userName: CustomTextField!
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
-    
     let spinner = Spinner()
-    
     var userRole = "user"
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
     @IBAction func switchButton(_ sender: UISwitch) {
-        if (sender.isOn == false) {
-            userRole = "user"
-        } else {
-            userRole = "cafe"
-        }
+        userRole = sender.isOn ? "user": "cafe"
     }
     
     @IBAction func pressedSignUpButton(_ sender: Any) {
         spinner.startSpinner(view: view)
-        if userEmail.text != nil && userPassword.text != nil {
-            AuthService.instance.registerUser(name: userName.text!, email: userEmail.text!, password: userPassword.text!, userRole: userRole) { (success, error) in
-                if success {
-                    AuthService.instance.loginUser(email: self.userEmail.text!, password: self.userPassword.text!, loginComplete: { (success, error) in
-                        if success && self.userRole == "cafe" {
-                            self.spinner.stopSpinner()
-                            self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
-                        } else if success && self.userRole == "user" {
-                            self.spinner.stopSpinner()
-                            self.performSegue(withIdentifier: "toMapVC", sender: nil)
-                        } else {
-                            self.spinner.stopSpinner()
-                           self.showAlert(withError: error)
-                        }
-                    })
-                } else {
+        guard let name = userName.text, let email = userEmail.text, let password = userPassword.text else { return }
+        AuthService.instance.registerUser(name: name, email: email, password: password, userRole: userRole) { (success, error) in
+            if success {
+                AuthService.instance.loginUser(email: email, password: password, loginComplete: { (success, error) in
                     self.spinner.stopSpinner()
-                    self.showAlert(withError: error)
-                }
+                    if success && self.userRole == "cafe" {
+                        self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
+                    } else if success && self.userRole == "user" {
+                        self.performSegue(withIdentifier: "toMapVC", sender: nil)
+                    } else {
+                       self.showAlert(withError: error)
+                    }
+                })
+            } else {
+                self.spinner.stopSpinner()
+                self.showAlert(withError: error)
             }
         }
     }
     
     @IBAction func sendUserToLogin(_ sender: Any) {
-        let loginVC = storyboard?.instantiateViewController(withIdentifier: "LogInVC")
-        present(loginVC!, animated: true, completion: nil)
+        guard let loginVC = storyboard?.instantiateViewController(withIdentifier: "LogInVC") else { return }
+        present(loginVC, animated: true, completion: nil)
     }
     
     func showAlert(withError error: Error!) {

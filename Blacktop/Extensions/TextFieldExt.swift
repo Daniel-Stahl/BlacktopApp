@@ -10,6 +10,8 @@ import UIKit
 
 extension CafeProfileVC {
     func disableTextField() {
+        //view.subviews.forEach {($0 as! UIControl).isEnabled = false }
+        
         name.isEnabled = false
         address.isEnabled = false
         city.isEnabled = false

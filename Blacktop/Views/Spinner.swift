@@ -9,7 +9,7 @@
 import UIKit
 
 class Spinner: UIView {
-    
+    //Move to ViewControllers
     var spinner: UIActivityIndicatorView?
     
     func startSpinner(view: UIView) {

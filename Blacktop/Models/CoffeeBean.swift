@@ -9,9 +9,9 @@
 import UIKit
 
 class CoffeeBean {
-    var beanName: String
-    var roasterName: String
-    var key: String
+    let beanName: String
+    let roasterName: String
+    let key: String
     
     init(beanName: String, roasterName: String, key: String) {
         self.beanName = beanName

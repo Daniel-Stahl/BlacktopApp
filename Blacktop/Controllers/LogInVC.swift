@@ -13,32 +13,24 @@ class LogInVC: UIViewController {
 
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
-    
     let spinner = Spinner()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
     
     @IBAction func pressedLogInButton(_ sender: Any) {
         spinner.startSpinner(view: view)
-        if userEmail.text != nil && userPassword.text != nil {
-            AuthService.instance.loginUser(email: userEmail.text!, password: userPassword.text!) { (success, error) in
-                if success {
-                    self.spinner.stopSpinner()
-                    self.performSegue(withIdentifier: "toMapVC", sender: nil)
-                } else {
-                    self.spinner.stopSpinner()
-                    self.showAlert(withError: error)
-                }
+        guard let email = userEmail.text, let password = userPassword.text else { return }
+        AuthService.instance.loginUser(email: email, password: password) { (success, error) in
+            self.spinner.stopSpinner()
+            if success {
+                self.performSegue(withIdentifier: "toMapVC", sender: nil)
+            } else {
+                self.showAlert(withError: error)
             }
         }
     }
     
     @IBAction func sendUserToSignup(_ sender: Any) {
-        let loginVC = storyboard?.instantiateViewController(withIdentifier: "SignUpVC")
-        present(loginVC!, animated: true, completion: nil)
+        guard let loginVC = storyboard?.instantiateViewController(withIdentifier: "SignUpVC") else { return }
+        present(loginVC, animated: true, completion: nil)
     }
     
     func showAlert(withError error: Error!) {

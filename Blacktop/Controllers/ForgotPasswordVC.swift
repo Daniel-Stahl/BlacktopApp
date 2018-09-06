@@ -12,10 +12,6 @@ import Firebase
 class ForgotPasswordVC: UIViewController {
     @IBOutlet weak var userEmail: CustomTextField!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
     @IBAction func pressedSubmitButton(_ sender: Any) {
         sendPasswordReset(withEmail: userEmail.text!) { (error) in
             self.alertUser(withError: error)
@@ -47,6 +43,7 @@ class ForgotPasswordVC: UIViewController {
             present(successAlert, animated: true) {
                 Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
                     self.dismiss(animated: true, completion: nil)
+                    self.userEmail.text = ""
                 })
             }
         }

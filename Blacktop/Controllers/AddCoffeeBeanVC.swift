@@ -29,6 +29,7 @@ class AddCoffeeBeanVC: UIViewController {
         if beanName.text == "" && roasterName.text == "" {
             print("no beans")
         } else {
+            //fix force unwraps
             let addBeanDetails = ["name": beanName.text!, "roaster": roasterName.text!] as [String : Any]
             ref.child("users").child(currentUser!).child("beans").childByAutoId().updateChildValues(addBeanDetails)
             beanName.text = ""

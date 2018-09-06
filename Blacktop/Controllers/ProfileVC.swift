@@ -13,40 +13,35 @@ class ProfileVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var favoriteCafeImage: UIImageView!
-    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
-    
-    var ref: DatabaseReference!
-    var currentUser = Auth.auth().currentUser?.uid
-    
-    var favoriteCafe = [FavoriteCafe]()
-    
-    var passedCafeID: String = ""
-    
-    func initData(uid: String) {
-        self.passedCafeID = uid
-    }
     
     let spinner = Spinner()
+    var ref: DatabaseReference!
+    var favoriteCafe = [FavoriteCafe]()
+    var cafeID: String = ""
+    
+    func initData(uid: String) {
+        self.cafeID = uid
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-
         tableView.delegate = self
         tableView.dataSource = self
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         spinner.startSpinner(view: view)
-        DatabaseService.instance.getFavoriteCafes(currentUser: currentUser!) { (returnedFavoriteCafe) in
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        DatabaseService.instance.getFavoriteCafes(currentUser: currentUser) { (returnedFavoriteCafe) in
             self.favoriteCafe = returnedFavoriteCafe
             self.tableView.reloadData()
             self.spinner.stopSpinner()
-            
         }
     }
+    
+    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -78,7 +73,7 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = UIColor.white
-        let header = view as! UITableViewHeaderFooterView
+        guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = #colorLiteral(red: 0.2511912882, green: 0.2511980534, blue: 0.2511944175, alpha: 1)
         header.textLabel?.font = UIFont(name: "Avenir Next", size: 20)
     }
@@ -105,8 +100,8 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = favoriteCafe[indexPath.row]
-        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-        cafeVC?.initData(uid: data.key)
-        self.present(cafeVC!, animated: true, completion: nil)
+        guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC else { return }
+        cafeVC.initData(uid: data.uid)
+        present(cafeVC, animated: true, completion: nil)
     }
 }

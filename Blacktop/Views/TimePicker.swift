@@ -13,26 +13,18 @@ class TimePicker: UITextField, UITextFieldDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         textFieldDidBeginEditing(self)
-
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        let timePickerView: UIDatePicker = UIDatePicker()
-        
+        let timePickerView = UIDatePicker()
         timePickerView.datePickerMode = UIDatePicker.Mode.time
-        
         self.inputView = timePickerView
-        
-        timePickerView.addTarget(self, action: #selector(timePickerValueChanged), for: UIControl.Event.valueChanged)
-        
+        timePickerView.addTarget(self, action: #selector(timePickerValueChanged), for: .valueChanged)
     }
     
     @objc func timePickerValueChanged(sender: UIDatePicker) {
-        
         let timeFormatter = DateFormatter()
-        
         timeFormatter.timeStyle = .short
-        
         self.text = timeFormatter.string(from: sender.date)
         
     }

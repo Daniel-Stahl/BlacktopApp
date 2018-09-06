@@ -9,17 +9,17 @@
 import UIKit
 
 class FavoriteCafe {
-    var cafeImageURL: String
-    var cafeName: String
-    var cafeAddress: String
-    var cafeCityStateZip: String
-    var key: String
+    let cafeImageURL: String
+    let cafeName: String
+    let cafeAddress: String
+    let cafeCityStateZip: String
+    let uid: String
     
-    init(cafeImageURL: String, cafeName: String, cafeAddress: String, cafeCityStateZip: String, key: String) {
+    init(cafeImageURL: String, cafeName: String, cafeAddress: String, cafeCityStateZip: String, uid: String) {
         self.cafeImageURL = cafeImageURL
         self.cafeName = cafeName
         self.cafeAddress = cafeAddress
         self.cafeCityStateZip = cafeCityStateZip
-        self.key = key
+        self.uid = uid
     }
 }

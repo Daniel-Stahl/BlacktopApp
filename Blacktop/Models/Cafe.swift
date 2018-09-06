@@ -6,36 +6,34 @@
 //  Copyright © 2018 Daniel Stahl. All rights reserved.
 //
 
-import UIKit
-
 class Cafe {
-    var key: String
-    var role: String
-    var image: String
-    var name: String
-    var address: String
-    var city: String
-    var state: String
-    var zipcode: String
-    var phone: String
-    var website: String
-    var hours: [String: Any]
-    var monOpen: String
-    var monClose: String
-    var tueOpen: String
-    var tueClose: String
-    var wedOpen: String
-    var wedClose: String
-    var thuOpen: String
-    var thuClose: String
-    var friOpen: String
-    var friClose: String
-    var satOpen: String
-    var satClose: String
-    var sunOpen: String
-    var sunClose: String
+    let uid: String
+    let role: String
+    let image: String
+    let name: String
+    let address: String
+    let city: String
+    let state: String
+    let zipcode: String
+    let phone: String
+    let website: String
+    let hours: [String: Any]
+    let monOpen: String
+    let monClose: String
+    let tueOpen: String
+    let tueClose: String
+    let wedOpen: String
+    let wedClose: String
+    let thuOpen: String
+    let thuClose: String
+    let friOpen: String
+    let friClose: String
+    let satOpen: String
+    let satClose: String
+    let sunOpen: String
+    let sunClose: String
     
-    init(key: String,
+    init(uid: String,
          role: String,
          image: String,
          name: String,
@@ -61,7 +59,7 @@ class Cafe {
          sunOpen: String,
          sunClose: String) {
         
-        self.key = key
+        self.uid = uid
         self.role = role
         self.image = image
         self.name = name
@@ -88,8 +86,7 @@ class Cafe {
         self.sunClose = sunClose
     }
     
-    convenience init? (dictionary: [String: Any], key: String) {
-        let key = key
+    convenience init? (dictionary: [String: Any], uid: String) {
         guard let role = dictionary["role"] as? String,
         let image = dictionary["photoURL"] as? String,
         let name = dictionary["name"] as? String,
@@ -117,7 +114,7 @@ class Cafe {
         let sunOpen = hours["sunOpen"] as? String,
         let sunClose = hours["sunClose"] as? String else { return nil }
         
-        self.init(key: key,
+        self.init(uid: uid,
                   role: role,
                   image: image,
                   name: name,

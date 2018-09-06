@@ -11,13 +11,13 @@ import MapKit
 
 class CafeAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
-    var uid: String
-    var name: String
-    var address: String
-    var city: String
-    var state: String
-    var zipcode: String
-    var phoneNumber: String
+    let uid: String
+    let name: String
+    let address: String
+    let city: String
+    let state: String
+    let zipcode: String
+    let phoneNumber: String
     
     init(coordinate: CLLocationCoordinate2D, uid: String, name: String, address: String, city: String, state: String, zipcode: String, phoneNumber: String) {
         self.coordinate = coordinate

@@ -20,9 +20,8 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutAddress: UILabel!
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
-    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
-    var cafe = [Cafe]()
+    var cafes = [Cafe]()
     var cafeID = ""
     
     let locationManager = CLLocationManager()
@@ -38,29 +37,28 @@ class MapVC: UIViewController {
         confirmAuthorization()
     }
     
+    @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
+    
     @IBAction func profileButtonPressed(_ sender: Any) {
-        DispatchQueue.global(qos: .background).async {
-            self.ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
-                let data = Snapshot.value as! [String: Any]
-                let userRole = data["role"] as! String
-                
-                DispatchQueue.main.async {
-                    if userRole == "cafe" {
-                        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-                        cafeVC?.initData(uid: (Auth.auth().currentUser?.uid)!)
-                        self.present(cafeVC!, animated: true, completion: nil)
-                    } else {
-                        self.performSegue(withIdentifier: "toProfileVC", sender: nil)
-                    }
+        self.ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+            DispatchQueue.main.async {
+            let data = Snapshot.value as! [String: Any]
+            let userRole = data["role"] as! String
+                if userRole == "cafe" {
+                    guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC, let uid = Auth.auth().currentUser?.uid else { return }
+                    cafeVC.initData(uid: uid)
+                    self.present(cafeVC, animated: true, completion: nil)
+                } else {
+                    self.performSegue(withIdentifier: "toProfileVC", sender: nil)
                 }
             }
         }
     }
     
     @IBAction func viewCafePressed(_ sender: Any) {
-        let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC
-        cafeVC?.initData(uid: cafeID)
-        self.present(cafeVC!, animated: true, completion: nil)
+        guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC else { return }
+        cafeVC.initData(uid: cafeID)
+        self.present(cafeVC, animated: true, completion: nil)
     }
     
     @IBAction func centerUserLocationButton(_ sender: Any) {
@@ -81,19 +79,19 @@ extension MapVC: MKMapViewDelegate {
     
     func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
         DatabaseService.instance.getCafeData { (returnedCafe) in
-            self.cafe = returnedCafe
+            self.cafes = returnedCafe
             self.cafePins()
         }
     }
     
     func cafePins() {
-        for data in cafe {
+        for data in cafes {
             if data.address != "" && data.city != "" && data.state != "" && data.zipcode != "" {
                 let cafeAddress = "\(data.address) \(data.city) \(data.state) \(data.zipcode)"
                 let geoCoder = CLGeocoder()
                 geoCoder.geocodeAddressString(cafeAddress, completionHandler: { (cafeLocation, error) in
                     if let location = cafeLocation?.first?.location?.coordinate {
-                        let annotation = CafeAnnotation(coordinate: location, uid: data.key, name: data.name, address: data.address, city: data.city, state: data.state, zipcode: data.zipcode, phoneNumber: data.phone)
+                        let annotation = CafeAnnotation(coordinate: location, uid: data.uid, name: data.name, address: data.address, city: data.city, state: data.state, zipcode: data.zipcode, phoneNumber: data.phone)
                         self.mapView.addAnnotation(annotation)
                     }
                 })

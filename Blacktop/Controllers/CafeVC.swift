@@ -12,7 +12,6 @@ import Firebase
 class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     var ref: DatabaseReference!
     let storage = Storage.storage().reference()
-    let currentUser = Auth.auth().currentUser?.uid
     
     @IBOutlet weak var cafeImage: UIImageView!
     @IBOutlet weak var cafeName: UILabel!
@@ -30,9 +29,9 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     var cafe: Cafe?
     var coffeeBean = [CoffeeBean]()
 
-    var passedCafeID: String = ""
+    var cafeID: String = ""
     func initData(uid: String) {
-        self.passedCafeID = uid
+        self.cafeID = uid
     }
     
     var favoriteImage: String = ""
@@ -41,12 +40,12 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         ref = Database.database().reference()
         
-        DatabaseService.instance.getCurrentUserCafeData(currentUser: passedCafeID) { (returnedCafe) in
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
             self.cafe = returnedCafe
             self.loadProfile()
         }
         
-        DatabaseService.instance.getCoffeeBeans(passedUID: passedCafeID) { (returnedCoffeeBeans) in
+        DatabaseService.instance.getCoffeeBeans(passedUID: cafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
         }
@@ -98,7 +97,8 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func showFavoriteButton() {
-        ref.child("users").child(currentUser!).observeSingleEvent(of: .value) { (Snapshot) in
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        ref.child("users").child(currentUser).observeSingleEvent(of: .value) { (Snapshot) in
             let data = Snapshot.value as! [String: Any]
             let userRole = data["role"] as! String
             
@@ -106,7 +106,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
                 self.favoriteCafeButton.isHidden = true
                 self.filledFavoriteCafeButton.isHidden = true
             } else {
-                self.ref.child("users").child(self.currentUser!).child("favorites").child(self.passedCafeID).observeSingleEvent(of: .value) { (snapshot) in
+                self.ref.child("users").child(currentUser).child("favorites").child(self.cafeID).observeSingleEvent(of: .value) { (snapshot) in
                     if snapshot.exists() {
                         self.filledFavoriteCafeButton.isHidden = false
                     } else {
@@ -119,19 +119,23 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
+        // fix force unwraps
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
         let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
-        ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).updateChildValues(favoriteCafeDetails)
+        ref.child("users").child(currentUser).child("favorites").child(cafeID).updateChildValues(favoriteCafeDetails)
         self.favoriteCafeButton.isHidden = true
         self.filledFavoriteCafeButton.isHidden = false
     }
     
     @IBAction func filledFavoriteCafeButtonPressed(_ sender: Any) {
-        ref.child("users").child(currentUser!).child("favorites").child(passedCafeID).removeValue()
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        ref.child("users").child(currentUser).child("favorites").child(cafeID).removeValue()
         self.filledFavoriteCafeButton.isHidden = true
         self.favoriteCafeButton.isHidden = false
     }
     
     func loadProfile() {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
         if let cafePhoto = self.cafe?.image {
             let url = URL(string: cafePhoto)
             let imageData = try? Data(contentsOf: url!)
@@ -148,7 +152,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
         self.cafePhone.text = cafe?.phone
         self.cafeWebsite.text = cafe?.website
 
-        if userRole == "cafe" && self.passedCafeID == self.currentUser {
+        if userRole == "cafe" && self.cafeID == currentUser {
             self.editProfileButton.isHidden = false
             self.addCoffeeButton.isHidden = false
             self.favoriteCafeButton.isHidden = true
@@ -241,7 +245,8 @@ extension CafeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if currentUser != passedCafeID {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return false }
+        if currentUser != cafeID {
             return false
         } else {
             return true
@@ -249,10 +254,11 @@ extension CafeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             let beanData = coffeeBean[indexPath.row]
             
-            ref.child("users").child(currentUser!).child("beans").child(beanData.key).removeValue()
+            ref.child("users").child(currentUser).child("beans").child(beanData.key).removeValue()
             coffeeBean.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
             
