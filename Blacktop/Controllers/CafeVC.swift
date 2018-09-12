@@ -13,6 +13,12 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     var ref: DatabaseReference!
     let storage = Storage.storage().reference()
     
+    var cafe: Cafe?
+    var coffeeBean = [CoffeeBean]()
+    var cafeID: String = ""
+    
+    var favoriteImage: String = ""
+    
     @IBOutlet weak var cafeImage: UIImageView!
     @IBOutlet weak var cafeName: UILabel!
     @IBOutlet weak var cafeAddress: UILabel!
@@ -26,30 +32,60 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var addCoffeeButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var cafe: Cafe?
-    var coffeeBean = [CoffeeBean]()
-
-    var cafeID: String = ""
     func initData(uid: String) {
         self.cafeID = uid
     }
-    
-    var favoriteImage: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
         
-        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
-            self.cafe = returnedCafe
-            self.loadProfile()
-        }
+//        ref.child("users").child(cafeID).observe(.value) { (dataSnap) in
+//            //print(dataSnap)
+//            guard let userSnap = dataSnap.value as? [String: Any] else { return }
+//            print(userSnap)
+//
+//            guard let role = userSnap["role"] as? String else { return }
+//            guard let name = userSnap["name"] as? String else { return }
+//            guard let image = userSnap["photoURL"] as? String else { return }
+//            guard let location = userSnap["location"] as? [String: Any] else { return }
+//            guard let address = location["address"] as? String else { return }
+//            guard let city = location["city"] as? String else { return }
+//            guard let state = location["state"] as? String else { return }
+//            guard let zipcode = location["zipcode"] as? String else { return }
+//            guard let phone = userSnap["phone"] as? String else { return }
+//            guard let website = userSnap["website"] as? String else { return }
+//            guard let hours = userSnap["hours"] as? [String: Any] else { return }
+//            guard let monOpen = hours["monOpen"] as? String else { return }
+//            guard let monClose = hours["monClose"] as? String else { return }
+//            guard let tueOpen = hours["tueOpen"] as? String else { return }
+//            guard let tueClose = hours["tueClose"] as? String else { return }
+//            guard let wedOpen = hours["wedOpen"] as? String else { return }
+//            guard let wedClose = hours["wedClose"] as? String else { return }
+//            guard let thuOpen = hours["thuOpen"] as? String else { return }
+//            guard let thuClose = hours["thuClose"] as? String else { return }
+//            guard let friOpen = hours["friOpen"] as? String else { return }
+//            guard let friClose = hours["friClose"] as? String else { return }
+//            guard let satOpen = hours["satOpen"] as? String else { return }
+//            guard let satClose = hours["satClose"] as? String else { return }
+//            guard let sunOpen = hours["sunOpen"] as? String else { return }
+//            guard let sunClose = hours["sunClose"] as? String else { return }
+//            print(name)
+//        }
+        
+        //My method getting cafe user data.
+//        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
+//            //When function is called it returns current user cafe data.
+//            self.cafe = returnedCafe
+//            self.loadProfile()
+//        }
         
         DatabaseService.instance.getCoffeeBeans(passedUID: cafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
         }
         
+        print(cafeID)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -57,6 +93,12 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        //loadProfile()
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
+            //When function is called it returns current user cafe data.
+            self.cafe = returnedCafe
+            self.loadProfile()
+        }
         
         let linkTap = UITapGestureRecognizer(target: self, action: #selector(tappedLink))
         linkTap.numberOfTapsRequired = 1
@@ -79,12 +121,14 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func tappedLink() {
-        let url = URL(string: "https://\(cafeWebsite.text!)")
+        guard let website = cafeWebsite.text else { return }
+        let url = URL(string: "https://\(website)")
         UIApplication.shared.open(url!)
     }
     
     @objc func tappedPhone() {
-        let phoneNumber = URL(string: "tel://\(cafePhone.text!)")
+        guard let phone = cafePhone.text else { return }
+        let phoneNumber = URL(string: "tel://\(phone)")
         UIApplication.shared.open(phoneNumber!)
     }
     
@@ -99,8 +143,8 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     func showFavoriteButton() {
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         ref.child("users").child(currentUser).observeSingleEvent(of: .value) { (Snapshot) in
-            let data = Snapshot.value as! [String: Any]
-            let userRole = data["role"] as! String
+            guard let data = Snapshot.value as? [String: Any] else { return }
+            guard let userRole = data["role"] as? String else { return }
             
             if userRole == "cafe" {
                 self.favoriteCafeButton.isHidden = true
@@ -119,9 +163,9 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBAction func favoriteCafeButtonPressed(_ sender: Any) {
-        // fix force unwraps
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        let favoriteCafeDetails = ["imageURL": favoriteImage, "name": cafeName.text!, "location": ["address": cafeAddress.text!, "cityStateZip": cafeCityStateZip.text!]] as [String : Any]
+        guard let name = cafeName.text, let address = cafeAddress.text, let cityStateZip = cafeCityStateZip.text else { return }
+        let favoriteCafeDetails = ["imageURL": favoriteImage, "name": name, "location": ["address": address, "cityStateZip": cityStateZip]] as [String : Any]
         ref.child("users").child(currentUser).child("favorites").child(cafeID).updateChildValues(favoriteCafeDetails)
         self.favoriteCafeButton.isHidden = true
         self.filledFavoriteCafeButton.isHidden = false
@@ -136,23 +180,7 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     
     func loadProfile() {
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
-        if let cafePhoto = self.cafe?.image {
-            let url = URL(string: cafePhoto)
-            let imageData = try? Data(contentsOf: url!)
-            self.cafeImage.image = UIImage(data: imageData!)
-            self.favoriteImage = cafePhoto
-        }
-        
-        let userRole = cafe?.role
-        self.cafeName.text = cafe?.name
-        let address = cafe?.address
-        let city = cafe?.city
-        let state = cafe?.state
-        let zipcode = cafe?.zipcode
-        self.cafePhone.text = cafe?.phone
-        self.cafeWebsite.text = cafe?.website
-
-        if userRole == "cafe" && self.cafeID == currentUser {
+        if self.cafeID == currentUser {
             self.editProfileButton.isHidden = false
             self.addCoffeeButton.isHidden = false
             self.favoriteCafeButton.isHidden = true
@@ -161,29 +189,48 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             self.editProfileButton.isHidden = true
             self.addCoffeeButton.isHidden = true
         }
+        
+        guard let cafePhoto = cafe?.image else { return }
+        if cafePhoto == "" {
+            print("photo blank")
+        } else {
+            guard let url = URL(string: cafePhoto) else { return }
+            guard let imageData = try? Data(contentsOf: url) else { return }
+            self.cafeImage.image = UIImage(data: imageData)
+            self.favoriteImage = cafePhoto
+        }
+        
+        //let userRole = cafe?.role
+        self.cafeName.text = cafe?.name
+        let address = cafe?.address
+        guard let city = cafe?.city,
+        let state = cafe?.state,
+        let zipcode = cafe?.zipcode else { return }
+        self.cafePhone.text = cafe?.phone
+        self.cafeWebsite.text = cafe?.website
 
         if address == "" && city == "" && state == "" && zipcode == "" {
             self.cafeAddress.text = ""
             self.cafeCityStateZip.text = ""
         } else {
             self.cafeAddress.text = address
-            self.cafeCityStateZip.text = "\(city!), \(state!) \(zipcode!)"
+            self.cafeCityStateZip.text = "\(city), \(state) \(zipcode)"
         }
         
-        let mondayOpen = cafe?.monOpen
-        let mondayClose = cafe?.monClose
-        let tuesdayOpen = cafe?.tueOpen
-        let tuesdayClose = cafe?.tueClose
-        let wednesdayOpen = cafe?.wedOpen
-        let wednesdayClose = cafe?.wedClose
-        let thursdayOpen = cafe?.thuOpen
-        let thursdayClose = cafe?.thuClose
-        let fridayOpen = cafe?.friOpen
-        let fridayClose = cafe?.friClose
-        let saturdayOpen = cafe?.satOpen
-        let saturdayClose = cafe?.satClose
-        let sundayOpen = cafe?.sunOpen
-        let sundayClose = cafe?.sunClose
+        guard let mondayOpen = cafe?.monOpen,
+        let mondayClose = cafe?.monClose,
+        let tuesdayOpen = cafe?.tueOpen,
+        let tuesdayClose = cafe?.tueClose,
+        let wednesdayOpen = cafe?.wedOpen,
+        let wednesdayClose = cafe?.wedClose,
+        let thursdayOpen = cafe?.thuOpen,
+        let thursdayClose = cafe?.thuClose,
+        let fridayOpen = cafe?.friOpen,
+        let fridayClose = cafe?.friClose,
+        let saturdayOpen = cafe?.satOpen,
+        let saturdayClose = cafe?.satClose,
+        let sundayOpen = cafe?.sunOpen,
+        let sundayClose = cafe?.sunClose else { return }
 
         let dayOfTheWeek = "\(Date().dayOfWeek()!)"
 
@@ -191,37 +238,37 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             case "Monday": if mondayOpen == "" && mondayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(mondayOpen!) - \(mondayClose!)"
+                self.cafeHours.text = "Today \(mondayOpen) - \(mondayClose)"
             }
             case "Tuesday": if tuesdayOpen == "" && tuesdayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(tuesdayOpen!) - \(tuesdayClose!)"
+                self.cafeHours.text = "Today \(tuesdayOpen) - \(tuesdayClose)"
             }
             case "Wednesday": if wednesdayOpen == "" && wednesdayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-               self.cafeHours.text = "Today \(wednesdayOpen!) - \(wednesdayClose!)"
+               self.cafeHours.text = "Today \(wednesdayOpen) - \(wednesdayClose)"
             }
             case "Thursday": if thursdayOpen == "" && thursdayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(thursdayOpen!) - \(thursdayClose!)"
+                self.cafeHours.text = "Today \(thursdayOpen) - \(thursdayClose)"
             }
             case "Friday": if fridayOpen == "" && fridayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(fridayOpen!) - \(fridayClose!)"
+                self.cafeHours.text = "Today \(fridayOpen) - \(fridayClose)"
             }
             case "Saturday": if saturdayOpen == "" && saturdayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(saturdayOpen!) - \(saturdayClose!)"
+                self.cafeHours.text = "Today \(saturdayOpen) - \(saturdayClose)"
             }
             case "Sunday": if sundayOpen == "" && sundayClose == "" {
                 self.cafeHours.text = "Closed"
             } else {
-                self.cafeHours.text = "Today \(sundayOpen!) - \(sundayClose!)"
+                self.cafeHours.text = "Today \(sundayOpen) - \(sundayClose)"
             }
                 default: self.cafeHours.text = "Not open"
         }
@@ -258,10 +305,9 @@ extension CafeVC: UITableViewDelegate, UITableViewDataSource {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             let beanData = coffeeBean[indexPath.row]
             
-            ref.child("users").child(currentUser).child("beans").child(beanData.key).removeValue()
+            ref.child("users").child(currentUser).child("beans").child(beanData.uid).removeValue()
             coffeeBean.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
-            
         }
     }
 }
@@ -271,6 +317,5 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
         return dateFormatter.string(from: self).capitalized
-        
     }
 }

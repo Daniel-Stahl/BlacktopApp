@@ -9,9 +9,6 @@
 import Foundation
 import Firebase
 
-//turn property
-
-
 class DatabaseService {
     var ref: DatabaseReference!
     static let instance = DatabaseService()
@@ -28,8 +25,8 @@ class DatabaseService {
         ref.child("users").observe(.value) { (dataSnap) in
             DispatchQueue.main.async {
                 for userChild in dataSnap.children {
-                    let childSnap = userChild as! DataSnapshot
-                    guard let cafeData = childSnap.value as? [String: Any] else { return }
+                    guard let childSnap = userChild as? DataSnapshot,
+                    let cafeData = childSnap.value as? [String: Any] else { return }
                     if let cafe = Cafe(dictionary: cafeData, uid: childSnap.key) {
                         cafeArray.append(cafe)
                     }
@@ -39,13 +36,16 @@ class DatabaseService {
         }
     }
     
+    //function that gets current cafe data.
     func getCurrentUserCafeData(currentUser: String, completion: @escaping (_ cafe: Cafe) -> ()) {
         ref = Database.database().reference()
         ref.child("users").child(currentUser).observe(.value) { (dataSnap) in
             DispatchQueue.main.async {
-                guard let cafeData = dataSnap.value as? [String: Any] else { return }
-                let cafe = Cafe(dictionary: cafeData, uid: dataSnap.key)
-                completion(cafe!)
+                if let cafeData = dataSnap.value as? [String: Any] {
+                    if let cafe = Cafe(dictionary: cafeData, uid: dataSnap.key) {
+                    completion(cafe)
+                    }
+                }
             }
         }
     }
@@ -60,8 +60,8 @@ class DatabaseService {
                 for bean in data {
                     let beanName = bean.childSnapshot(forPath: "name").value as! String
                     let roasterName = bean.childSnapshot(forPath: "roaster").value as! String
-                    let beanKey = bean.key
-                    let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName, key: beanKey)
+                    let beanUID = bean.key
+                    let coffeeBean = CoffeeBean(beanName: beanName, roasterName: roasterName, uid: beanUID)
                     beansArray.append(coffeeBean)
                 }
                 handler(beansArray)

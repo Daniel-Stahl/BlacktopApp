@@ -12,13 +12,13 @@ import Firebase
 class AddCoffeeBeanVC: UIViewController {
     var ref: DatabaseReference!
     let currentUser = Auth.auth().currentUser?.uid
+    
     @IBOutlet weak var beanName: CustomTextField!
     @IBOutlet weak var roasterName: CustomTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
     }
     
     @IBAction func closeButtonPressed(_ sender: Any) {
@@ -29,8 +29,8 @@ class AddCoffeeBeanVC: UIViewController {
         if beanName.text == "" && roasterName.text == "" {
             print("no beans")
         } else {
-            //fix force unwraps
-            let addBeanDetails = ["name": beanName.text!, "roaster": roasterName.text!] as [String : Any]
+            guard let name = beanName.text, let roaster = roasterName.text else { return }
+            let addBeanDetails = ["name": name, "roaster": roaster] as [String : Any]
             ref.child("users").child(currentUser!).child("beans").childByAutoId().updateChildValues(addBeanDetails)
             beanName.text = ""
             roasterName.text = ""

@@ -56,17 +56,28 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
         DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser) { (returnedCafe) in
             self.cafe = returnedCafe
             self.showcafeInfo()
         }
         
+        //showcafeInfo()
         zipcode.keyboardType = .numberPad
         statePicker.delegate = self
         state.inputView = statePicker
         picker.delegate = self
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+//        DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser) { (returnedCafe) in
+//            self.cafe = returnedCafe
+//            self.showcafeInfo()
+//        }
+//    }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
@@ -101,11 +112,15 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func showcafeInfo() {
-        if let cafePhoto = cafe?.image {
-            let url = URL(string: cafePhoto)
-            let imageData = try? Data(contentsOf: url!)
-            self.profileImage.image = UIImage(data: imageData!)
+        guard let cafePhoto = cafe?.image else { return }
+        if cafePhoto == "" {
+            print("photo blank")
+        } else {
+            guard let url = URL(string: cafePhoto) else { return }
+            guard let imageData = try? Data(contentsOf: url) else { return }
+            self.profileImage.image = UIImage(data: imageData)
         }
+        
         
         self.name.text = cafe?.name
         self.address.text = cafe?.address
@@ -151,8 +166,8 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     return
                 }
                 if let profilePhotoURL = url?.absoluteString {
-                    //fix force unwraps
-                    let cafeDetails = ["photoURL": profilePhotoURL, "name": self.name.text!, "location": ["address": self.address.text!, "city": self.city.text!, "state": self.state.text!, "zipcode": self.zipcode.text!], "phone": self.phone.text!, "website": self.website.text!, "hours": ["monOpen": self.monOpen.text!, "monClose": self.monClose.text!, "tueOpen": self.tueOpen.text!, "tueClose": self.tueClose.text!, "wedOpen": self.wedOpen.text!, "wedClose": self.wedClose.text!, "thuOpen": self.thuOpen.text!, "thuClose": self.thuClose.text!, "friOpen": self.friOpen.text!, "friClose": self.friClose.text!, "satOpen": self.satOpen.text!, "satClose": self.satClose.text!, "sunOpen": self.sunOpen.text!, "sunClose": self.sunClose.text!]] as [String : Any]
+                    guard let name = self.name.text, let address = self.address.text, let city = self.city.text, let state = self.state.text, let zipcode = self.zipcode.text, let phone = self.phone.text, let website = self.website.text, let monOpen = self.monOpen.text, let monClose = self.monClose.text, let tueOpen = self.tueOpen.text, let tueClose = self.tueClose.text, let wedOpen = self.wedOpen.text, let wedClose = self.wedClose.text, let thuOpen = self.thuOpen.text, let thuClose = self.thuClose.text, let friOpen = self.friOpen.text, let friClose = self.friClose.text, let satOpen = self.satOpen.text, let satClose = self.satClose.text, let sunOpen = self.sunOpen.text, let sunClose = self.sunClose.text else { return }
+                    let cafeDetails = ["photoURL": profilePhotoURL, "name": name, "location": ["address": address, "city": city, "state": state, "zipcode": zipcode], "phone": phone, "website": website, "hours": ["monOpen": monOpen, "monClose": monClose, "tueOpen": tueOpen, "tueClose": tueClose, "wedOpen": wedOpen, "wedClose": wedClose, "thuOpen": thuOpen, "thuClose": thuClose, "friOpen": friOpen, "friClose": friClose, "satOpen": satOpen, "satClose": satClose, "sunOpen": sunOpen, "sunClose": sunClose]] as [String : Any]
                     
                     guard let currentUser = Auth.auth().currentUser?.uid else { return }
                     self.ref.child("users").child(currentUser).updateChildValues(cafeDetails, withCompletionBlock: { (error, ref) in

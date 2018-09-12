@@ -13,6 +13,12 @@ import Firebase
 
 class MapVC: UIViewController {
     var ref: DatabaseReference!
+    var cafes = [Cafe]()
+    var cafeID = ""
+    
+    let locationManager = CLLocationManager()
+    let authorizationStatus = CLLocationManager.authorizationStatus()
+    let regionRadius: Double = 1000
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var cafeCalloutView: UIView!
@@ -21,13 +27,6 @@ class MapVC: UIViewController {
     @IBOutlet weak var cafeCalloutCityStateZip: UILabel!
     @IBOutlet weak var cafeCalloutPhone: UILabel!
     
-    var cafes = [Cafe]()
-    var cafeID = ""
-    
-    let locationManager = CLLocationManager()
-    let authorizationStatus = CLLocationManager.authorizationStatus()
-    let regionRadius: Double = 1000
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -35,18 +34,24 @@ class MapVC: UIViewController {
         mapView.delegate = self
         locationManager.delegate = self
         confirmAuthorization()
+        
+        DatabaseService.instance.getCafeData { (returnedCafe) in
+            self.cafes = returnedCafe
+            self.cafePins()
+        }
     }
     
     @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
     @IBAction func profileButtonPressed(_ sender: Any) {
-        self.ref.child("users").child((Auth.auth().currentUser?.uid)!).observeSingleEvent(of: .value) { (Snapshot) in
+        guard let currentUser = Auth.auth().currentUser?.uid else { return }
+        ref.child("users").child(currentUser).observeSingleEvent(of: .value) { (Snapshot) in
             DispatchQueue.main.async {
-            let data = Snapshot.value as! [String: Any]
-            let userRole = data["role"] as! String
+            guard let data = Snapshot.value as? [String: Any],
+                let userRole = data["role"] as? String else { return }
                 if userRole == "cafe" {
-                    guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC, let uid = Auth.auth().currentUser?.uid else { return }
-                    cafeVC.initData(uid: uid)
+                    guard let cafeVC = self.storyboard?.instantiateViewController(withIdentifier: "CafeVC") as? CafeVC else { return }
+                    cafeVC.initData(uid: currentUser)
                     self.present(cafeVC, animated: true, completion: nil)
                 } else {
                     self.performSegue(withIdentifier: "toProfileVC", sender: nil)
@@ -77,12 +82,12 @@ extension MapVC: MKMapViewDelegate {
         locationManager.stopUpdatingLocation()
     }
     
-    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-        DatabaseService.instance.getCafeData { (returnedCafe) in
-            self.cafes = returnedCafe
-            self.cafePins()
-        }
-    }
+//    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+//        DatabaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafes = returnedCafe
+//            self.cafePins()
+//        }
+//    }
     
     func cafePins() {
         for data in cafes {

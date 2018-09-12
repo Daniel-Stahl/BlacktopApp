@@ -19,8 +19,14 @@ class AuthService {
                 return
             }
             
-            let userData = ["provider": user.providerID , "name": name, "email": user.email, "role": userRole]
-            DatabaseService.instance.createUser(uid: user.uid, userData: userData as Dictionary<String, Any>)
+            if userRole == "cafe" {
+                let userData = ["provider": user.providerID , "name": name, "email": user.email, "role": userRole, "photoURL": "", "location": ["address": "", "city": "", "state": "", "zipcode": ""], "phone": "", "website": "", "hours": ["monOpen": "", "monClose": "", "tueOpen": "", "tueClose": "", "wedOpen": "", "wedClose": "", "thuOpen": "", "thuClose": "", "friOpen": "", "friClose": "", "satOpen": "", "satClose": "", "sunOpen": "", "sunClose": ""]] as [String : Any]
+                DatabaseService.instance.createUser(uid: user.uid, userData: userData as Dictionary<String, Any>)
+            } else {
+                let userData = ["provider": user.providerID , "name": name, "email": user.email, "role": userRole]
+                DatabaseService.instance.createUser(uid: user.uid, userData: userData as Dictionary<String, Any>)
+            }
+            
             userCreationComplete(true, nil)
         }
     }

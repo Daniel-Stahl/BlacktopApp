@@ -299,7 +299,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="twp-C8-OL7" customClass="CustomView" customModule="Blacktop" customModuleProvider="target">
-                                <rect key="frame" x="20" y="565" width="335" height="128"/>
+                                <rect key="frame" x="20" y="531" width="335" height="128"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enp-Js-SZK">
                                         <rect key="frame" x="8" y="8.0000000000000018" width="45.666666666666664" height="24.666666666666671"/>
@@ -1032,7 +1032,7 @@
             <objects>
                 <viewController storyboardIdentifier="CafeProfileVC" id="hWn-V9-pXD" customClass="CafeProfileVC" customModule="Blacktop" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="INS-1G-kfx">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1075"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n78-2R-wlE">

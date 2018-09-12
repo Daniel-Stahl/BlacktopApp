@@ -9,8 +9,8 @@
 class Cafe {
     let uid: String
     let role: String
-    let image: String
     let name: String
+    let image: String
     let address: String
     let city: String
     let state: String
@@ -35,8 +35,8 @@ class Cafe {
     
     init(uid: String,
          role: String,
-         image: String,
          name: String,
+         image: String,
          address: String,
          city: String,
          state: String,
@@ -61,8 +61,8 @@ class Cafe {
         
         self.uid = uid
         self.role = role
-        self.image = image
         self.name = name
+        self.image = image
         self.address = address
         self.city = city
         self.state = state
@@ -88,8 +88,8 @@ class Cafe {
     
     convenience init? (dictionary: [String: Any], uid: String) {
         guard let role = dictionary["role"] as? String,
-        let image = dictionary["photoURL"] as? String,
         let name = dictionary["name"] as? String,
+        let image = dictionary["photoURL"] as? String,
         let location = dictionary["location"] as? [String: Any],
         let address = location["address"] as? String,
         let city = location["city"] as? String,
@@ -97,7 +97,6 @@ class Cafe {
         let zipcode = location["zipcode"] as? String,
         let phone = dictionary["phone"] as? String,
         let website = dictionary["website"] as? String,
-            
         let hours = dictionary["hours"] as? [String: Any],
         let monOpen = hours["monOpen"] as? String,
         let monClose = hours["monClose"] as? String,
@@ -116,8 +115,8 @@ class Cafe {
         
         self.init(uid: uid,
                   role: role,
-                  image: image,
                   name: name,
+                  image: image,
                   address: address,
                   city: city,
                   state: state,

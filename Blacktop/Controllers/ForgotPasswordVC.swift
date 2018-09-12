@@ -13,7 +13,8 @@ class ForgotPasswordVC: UIViewController {
     @IBOutlet weak var userEmail: CustomTextField!
     
     @IBAction func pressedSubmitButton(_ sender: Any) {
-        sendPasswordReset(withEmail: userEmail.text!) { (error) in
+        guard let email = userEmail.text else { return }
+        sendPasswordReset(withEmail: email) { (error) in
             self.alertUser(withError: error)
         }
     }

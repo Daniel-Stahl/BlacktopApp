@@ -10,10 +10,10 @@ import UIKit
 import Firebase
 
 class LogInVC: UIViewController {
+    let spinner = Spinner()
 
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
-    let spinner = Spinner()
     
     @IBAction func pressedLogInButton(_ sender: Any) {
         spinner.startSpinner(view: view)

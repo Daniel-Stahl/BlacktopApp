@@ -10,14 +10,13 @@ import UIKit
 import Firebase
 
 class ProfileVC: UIViewController {
-    
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var favoriteCafeImage: UIImageView!
-    
     let spinner = Spinner()
     var ref: DatabaseReference!
     var favoriteCafe = [FavoriteCafe]()
     var cafeID: String = ""
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var favoriteCafeImage: UIImageView!
     
     func initData(uid: String) {
         self.cafeID = uid
@@ -54,8 +53,8 @@ class ProfileVC: UIViewController {
             
             do {
                 try Auth.auth().signOut()
-                let welcomeVC = self.storyboard?.instantiateViewController(withIdentifier: "WelcomeVC") as? WelcomeVC
-                self.present(welcomeVC!, animated: true, completion: nil)
+                guard let welcomeVC = self.storyboard?.instantiateViewController(withIdentifier: "WelcomeVC") as? WelcomeVC else { return }
+                self.present(welcomeVC, animated: true, completion: nil)
             } catch {
                 print(error)
             }

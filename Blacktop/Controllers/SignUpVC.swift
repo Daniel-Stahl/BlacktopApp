@@ -10,15 +10,22 @@ import UIKit
 import Firebase
 
 class SignUpVC: UIViewController {
+    let spinner = Spinner()
+    var userRole = "user"
 
     @IBOutlet weak var userName: CustomTextField!
     @IBOutlet weak var userEmail: CustomTextField!
     @IBOutlet weak var userPassword: CustomTextField!
-    let spinner = Spinner()
-    var userRole = "user"
     
     @IBAction func switchButton(_ sender: UISwitch) {
-        userRole = sender.isOn ? "user": "cafe"
+        if sender.isOn {
+            userRole = "cafe"
+        } else {
+            userRole = "user"
+        }
+        
+        
+        //userRole = sender.isOn ? "user" : "cafe"
     }
     
     @IBAction func pressedSignUpButton(_ sender: Any) {
@@ -29,7 +36,7 @@ class SignUpVC: UIViewController {
                 AuthService.instance.loginUser(email: email, password: password, loginComplete: { (success, error) in
                     self.spinner.stopSpinner()
                     if success && self.userRole == "cafe" {
-                        self.performSegue(withIdentifier: "toCafeProfileVC", sender: nil)
+                        self.performSegue(withIdentifier: "toMapVC", sender: nil)
                     } else if success && self.userRole == "user" {
                         self.performSegue(withIdentifier: "toMapVC", sender: nil)
                     } else {
@@ -49,8 +56,8 @@ class SignUpVC: UIViewController {
     }
     
     func showAlert(withError error: Error!) {
-        let errorCode = AuthErrorCode(rawValue: error._code)
-        let errorAlert = UIAlertController(title: "Error!", message: errorCode?.errorMessage, preferredStyle: .alert)
+        guard let errorCode = AuthErrorCode(rawValue: error._code) else { return }
+        let errorAlert = UIAlertController(title: "Error!", message: errorCode.errorMessage, preferredStyle: .alert)
         present(errorAlert, animated: true) {
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
                 self.dismiss(animated: true, completion: nil)
