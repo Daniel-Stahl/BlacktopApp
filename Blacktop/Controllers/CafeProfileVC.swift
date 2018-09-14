@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Photos
+import AnyFormatKit
 
 class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // add Marks
@@ -63,21 +64,11 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             self.showcafeInfo()
         }
         
-        //showcafeInfo()
         zipcode.keyboardType = .numberPad
         statePicker.delegate = self
         state.inputView = statePicker
         picker.delegate = self
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        guard let currentUser = Auth.auth().currentUser?.uid else { return }
-//        DatabaseService.instance.getCurrentUserCafeData(currentUser: currentUser) { (returnedCafe) in
-//            self.cafe = returnedCafe
-//            self.showcafeInfo()
-//        }
-//    }
     
     @IBAction func backButtonPressed(_ sender: Any) {
         guard let currentUser = Auth.auth().currentUser?.uid else { return }
@@ -120,7 +111,6 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             guard let imageData = try? Data(contentsOf: url) else { return }
             self.profileImage.image = UIImage(data: imageData)
         }
-        
         
         self.name.text = cafe?.name
         self.address.text = cafe?.address
@@ -217,7 +207,7 @@ class CafeProfileVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     func changeSettingsAlert() {
-        let alert = UIAlertController(title: "Access to photos denied", message: "please change your settings in privacy > photos > Blacktop", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Access to photos denied", message: "please change your settings in Privacy > Photos > Blacktop", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (_) in
             guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else { return }
             

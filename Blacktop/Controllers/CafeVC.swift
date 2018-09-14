@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import AnyFormatKit
 
 class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     var ref: DatabaseReference!
@@ -39,53 +40,17 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
-        
-//        ref.child("users").child(cafeID).observe(.value) { (dataSnap) in
-//            //print(dataSnap)
-//            guard let userSnap = dataSnap.value as? [String: Any] else { return }
-//            print(userSnap)
-//
-//            guard let role = userSnap["role"] as? String else { return }
-//            guard let name = userSnap["name"] as? String else { return }
-//            guard let image = userSnap["photoURL"] as? String else { return }
-//            guard let location = userSnap["location"] as? [String: Any] else { return }
-//            guard let address = location["address"] as? String else { return }
-//            guard let city = location["city"] as? String else { return }
-//            guard let state = location["state"] as? String else { return }
-//            guard let zipcode = location["zipcode"] as? String else { return }
-//            guard let phone = userSnap["phone"] as? String else { return }
-//            guard let website = userSnap["website"] as? String else { return }
-//            guard let hours = userSnap["hours"] as? [String: Any] else { return }
-//            guard let monOpen = hours["monOpen"] as? String else { return }
-//            guard let monClose = hours["monClose"] as? String else { return }
-//            guard let tueOpen = hours["tueOpen"] as? String else { return }
-//            guard let tueClose = hours["tueClose"] as? String else { return }
-//            guard let wedOpen = hours["wedOpen"] as? String else { return }
-//            guard let wedClose = hours["wedClose"] as? String else { return }
-//            guard let thuOpen = hours["thuOpen"] as? String else { return }
-//            guard let thuClose = hours["thuClose"] as? String else { return }
-//            guard let friOpen = hours["friOpen"] as? String else { return }
-//            guard let friClose = hours["friClose"] as? String else { return }
-//            guard let satOpen = hours["satOpen"] as? String else { return }
-//            guard let satClose = hours["satClose"] as? String else { return }
-//            guard let sunOpen = hours["sunOpen"] as? String else { return }
-//            guard let sunClose = hours["sunClose"] as? String else { return }
-//            print(name)
-//        }
-        
-        //My method getting cafe user data.
-//        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
-//            //When function is called it returns current user cafe data.
-//            self.cafe = returnedCafe
-//            self.loadProfile()
-//        }
+
+        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
+            self.cafe = returnedCafe
+            self.loadProfile()
+        }
         
         DatabaseService.instance.getCoffeeBeans(passedUID: cafeID) { (returnedCoffeeBeans) in
             self.coffeeBean = returnedCoffeeBeans
             self.tableView.reloadData()
         }
         
-        print(cafeID)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
@@ -93,12 +58,6 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //loadProfile()
-        DatabaseService.instance.getCurrentUserCafeData(currentUser: cafeID) { (returnedCafe) in
-            //When function is called it returns current user cafe data.
-            self.cafe = returnedCafe
-            self.loadProfile()
-        }
         
         let linkTap = UITapGestureRecognizer(target: self, action: #selector(tappedLink))
         linkTap.numberOfTapsRequired = 1
@@ -200,15 +159,17 @@ class CafeVC: UIViewController, UIGestureRecognizerDelegate {
             self.favoriteImage = cafePhoto
         }
         
-        //let userRole = cafe?.role
+        let phoneFormatter = TextFormatter(textPattern: "(###) ###-####")
+        let formatedNumber = phoneFormatter.formattedText(from: cafe?.phone)
+        
         self.cafeName.text = cafe?.name
         let address = cafe?.address
         guard let city = cafe?.city,
         let state = cafe?.state,
         let zipcode = cafe?.zipcode else { return }
-        self.cafePhone.text = cafe?.phone
+        self.cafePhone.text = formatedNumber
         self.cafeWebsite.text = cafe?.website
-
+        
         if address == "" && city == "" && state == "" && zipcode == "" {
             self.cafeAddress.text = ""
             self.cafeCityStateZip.text = ""

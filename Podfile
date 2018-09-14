@@ -11,4 +11,5 @@ target 'Blacktop' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'IQKeyboardManagerSwift'
+  pod 'AnyFormatKit'
 end

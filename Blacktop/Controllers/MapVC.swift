@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import Firebase
+import AnyFormatKit
 
 class MapVC: UIViewController {
     var ref: DatabaseReference!
@@ -70,7 +71,26 @@ class MapVC: UIViewController {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             locationManager.requestLocation()
             centerMapOnUserLocation()
+        } else if authorizationStatus == .notDetermined || authorizationStatus == .denied {
+            changeSettingsAlert()
         }
+    }
+    
+    func changeSettingsAlert() {
+        let alert = UIAlertController(title: "Access to location denied", message: "please change your settings in Privacy > Location Services > Blacktop", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (_) in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else { return }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Setting is opened: \(success)")
+                })
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (_) in
+            
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -81,13 +101,6 @@ extension MapVC: MKMapViewDelegate {
         mapView.setRegion(coordinateRegion, animated: true)
         locationManager.stopUpdatingLocation()
     }
-    
-//    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-//        DatabaseService.instance.getCafeData { (returnedCafe) in
-//            self.cafes = returnedCafe
-//            self.cafePins()
-//        }
-//    }
     
     func cafePins() {
         for data in cafes {
@@ -121,12 +134,15 @@ extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if view.annotation is MKUserLocation { return }
         
-        let cafeAnnotation = view.annotation as! CafeAnnotation
+        guard let cafeAnnotation = view.annotation as? CafeAnnotation else { return }
 
+        let phoneFormatter = TextFormatter(textPattern: "(###) ###-####")
+        let formatedNumber = phoneFormatter.formattedText(from: cafeAnnotation.phoneNumber)
+        
         cafeCalloutName.text = cafeAnnotation.name
         cafeCalloutAddress.text = cafeAnnotation.address
         cafeCalloutCityStateZip.text = "\(cafeAnnotation.city), \(cafeAnnotation.state) \(cafeAnnotation.zipcode)"
-        cafeCalloutPhone.text = cafeAnnotation.phoneNumber
+        cafeCalloutPhone.text = formatedNumber
         cafeID = cafeAnnotation.uid
         cafeCalloutView.isHidden = false
 
