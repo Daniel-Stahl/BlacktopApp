@@ -36,7 +36,6 @@ class DatabaseService {
         }
     }
     
-    //function that gets current cafe data.
     func getCurrentUserCafeData(currentUser: String, completion: @escaping (_ cafe: Cafe) -> ()) {
         ref = Database.database().reference()
         ref.child("users").child(currentUser).observe(.value) { (dataSnap) in

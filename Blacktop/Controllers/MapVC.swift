@@ -31,6 +31,7 @@ class MapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
+        
         cafeCalloutView.isHidden = true
         mapView.delegate = self
         locationManager.delegate = self
@@ -41,6 +42,14 @@ class MapVC: UIViewController {
             self.cafePins()
         }
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        DatabaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafes = returnedCafe
+//            self.cafePins()
+//        }
+//    }
     
     @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
@@ -68,11 +77,10 @@ class MapVC: UIViewController {
     }
     
     @IBAction func centerUserLocationButton(_ sender: Any) {
-        if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
-            locationManager.requestLocation()
-            centerMapOnUserLocation()
-        } else if authorizationStatus == .notDetermined || authorizationStatus == .denied {
+        if locationManager.location == nil {
             changeSettingsAlert()
+        } else {
+            centerMapOnUserLocation()
         }
     }
     
@@ -99,8 +107,15 @@ extension MapVC: MKMapViewDelegate {
         guard let coordinate = locationManager.location?.coordinate else { return }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, regionRadius * 2, regionRadius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
-        locationManager.stopUpdatingLocation()
+//        locationManager.stopUpdatingLocation()
     }
+    
+//    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+//        DatabaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafes = returnedCafe
+//            self.cafePins()
+//        }
+//    }
     
     func cafePins() {
         for data in cafes {
