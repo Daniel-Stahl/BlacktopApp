@@ -43,13 +43,16 @@ class MapVC: UIViewController {
         }
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        DatabaseService.instance.getCafeData { (returnedCafe) in
-//            self.cafes = returnedCafe
-//            self.cafePins()
-//        }
-//    }
+    override func viewDidDisappear(_ animated: Bool) {
+        ref.removeAllObservers()
+    }
+    
+    @objc func profileButtonClicked() {
+        let storyboard = UIStoryboard(name: "CafeVC", bundle: nil)
+        guard let nc = storyboard.instantiateInitialViewController() as? UINavigationController,
+        let vc = nc.viewControllers.first as? CafeVC else { return }
+        present(vc, animated: true, completion: nil)
+    }
     
     @IBAction func unwindFromCafeVC(segue:UIStoryboardSegue) { }
     
@@ -107,15 +110,7 @@ extension MapVC: MKMapViewDelegate {
         guard let coordinate = locationManager.location?.coordinate else { return }
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate, regionRadius * 2, regionRadius * 2)
         mapView.setRegion(coordinateRegion, animated: true)
-//        locationManager.stopUpdatingLocation()
     }
-    
-//    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
-//        DatabaseService.instance.getCafeData { (returnedCafe) in
-//            self.cafes = returnedCafe
-//            self.cafePins()
-//        }
-//    }
     
     func cafePins() {
         for data in cafes {

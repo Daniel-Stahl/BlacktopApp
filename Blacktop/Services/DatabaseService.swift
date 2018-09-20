@@ -71,15 +71,15 @@ class DatabaseService {
     func getFavoriteCafes(currentUser: String, handler: @escaping (_ favoritecafe: [FavoriteCafe]) -> ()) {
         ref = Database.database().reference()
         var favoriteCafeArray = [FavoriteCafe]()
-        ref.child("users").child(currentUser).child("favorites").observe(.value) { (favoriteSnapshot) in
+        ref.child("users").child(currentUser).child("favorites").observeSingleEvent(of: .value) { (favoriteSnapshot) in
             DispatchQueue.main.async {
                 favoriteCafeArray.removeAll()
                 guard let data = favoriteSnapshot.children.allObjects as? [DataSnapshot] else { return }
                 for favorite in data {
-                    let cafeImageURL = favorite.childSnapshot(forPath: "imageURL").value as! String
-                    let cafeName = favorite.childSnapshot(forPath: "name").value as! String
-                    let cafeAddress = favorite.childSnapshot(forPath: "location/address").value as! String
-                    let cafeCityStateZip = favorite.childSnapshot(forPath: "location/cityStateZip").value as! String
+                    guard let cafeImageURL = favorite.childSnapshot(forPath: "imageURL").value as? String,
+                    let cafeName = favorite.childSnapshot(forPath: "name").value as? String,
+                    let cafeAddress = favorite.childSnapshot(forPath: "location/address").value as? String,
+                    let cafeCityStateZip = favorite.childSnapshot(forPath: "location/cityStateZip").value as? String else { return }
                     let favoriteKey = favorite.key
                     let favoriteCafe = FavoriteCafe(cafeImageURL: cafeImageURL, cafeName: cafeName, cafeAddress: cafeAddress, cafeCityStateZip: cafeCityStateZip, uid: favoriteKey)
                     favoriteCafeArray.append(favoriteCafe)
