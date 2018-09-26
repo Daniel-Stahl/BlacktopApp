@@ -37,15 +37,26 @@ class MapVC: UIViewController {
         locationManager.delegate = self
         confirmAuthorization()
         
+        ref.keepSynced(true)
+//        DatabaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafes = returnedCafe
+//            self.cafePins()
+//        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
         DatabaseService.instance.getCafeData { (returnedCafe) in
             self.cafes = returnedCafe
             self.cafePins()
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        ref.removeAllObservers()
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        DatabaseService.instance.getCafeData { (returnedCafe) in
+//            self.cafes = returnedCafe
+//            self.cafePins()
+//        }
+//    }
     
     @objc func profileButtonClicked() {
         let storyboard = UIStoryboard(name: "CafeVC", bundle: nil)
